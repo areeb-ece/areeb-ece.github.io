@@ -1,0 +1,86 @@
+/* ═══════════════════════════════════════════════════════════════════════════════
+   THE MASTER PALETTE for areeb-ece.github.io, PrereqFlow and OTU Calendar.
+
+   All three sites load this one file from https://areeb-ece.github.io/design/tokens.css
+   (the sibling sites live on the same address, so their security policy allows it).
+   Change a colour here, push to main, and every site picks it up when the portfolio
+   deploys. PrereqFlow and OTU Calendar keep a copy of these values in their own
+   css/style.css as a fallback for when they're opened offline or from disk.
+
+   Night (dark) is the default sheet; paper (light) is used by the sibling sites'
+   theme toggle. Text tiers: --ink (headings) → --ink-2 (body) → --ink-3 (labels,
+   the dimmest text; on the night sheet keep it at 4.5:1 or more against --card) → --ink-4 (marks only,
+   never text). The portfolio's browser check verifies --ink-3 against its night sky.
+
+   The [data-theme] selectors also let a script read either sheet's colours from a
+   probe element (PrereqFlow's image export does that); --master marks that this file
+   loaded.
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+:root, [data-theme="dark"] {
+  --master: 1;
+  --bg: #0F1114;
+  --sheet: #14161A;
+  --sheet-2: #17191E;
+  --card: #1C1F25;
+  --card-hover: #23272E;
+  --ink: #F1EDE5;
+  --ink-2: #CAC5BB;
+  --ink-3: #A29E96;
+  --ink-4: #6E6B65;
+  --rule: #2E323B;
+  --rule-2: #23262D;
+  --grid: rgba(241, 237, 229, 0.03);
+  --accent: #A3B8F0;
+  --accent-ink: #0F1114;
+  --focus-bg: #F3E8C9;
+  --focus-ink: #24201A;
+  --danger: #EE9585;
+  --warn: #EACB76;
+  --ok: #9FD4AB;
+  --scrim: rgba(6, 7, 9, 0.66);
+  --glow-a: rgba(146, 177, 238, 0.07);
+  --glow-b: rgba(240, 182, 142, 0.05);
+  --sheen: rgba(241, 237, 229, 0.07);
+  --hatch: rgba(241, 237, 229, 0.045);
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 8px 18px -12px rgba(0, 0, 0, 0.8);
+  --shadow-pop: 0 18px 50px -18px rgba(0, 0, 0, 0.85), 0 2px 6px rgba(0, 0, 0, 0.3);
+  /* pastel hues: --c* (OTU Calendar course colours), --h* (PrereqFlow tree highlights) */
+  --c0: #92B1EE; --c1: #9FD4AB; --c2: #F0B68E; --c3: #C4A9F2; --c4: #EACB76; --c5: #7DCBC4; --c6: #EBA3C6; --c7: #F0A391;
+  --h0: #9FD4AB; --h1: #C4A9F2; --h2: #F0A391; --h3: #EACB76; --h4: #7DCBC4; --h5: #EBA3C6;
+  --r-sm: 7px; --r: 10px; --r-lg: 16px;
+  color-scheme: dark;
+}
+
+:root[data-theme="light"], [data-theme="light"] {
+  --master: 1;
+  --bg: #F3F0E9;
+  --sheet: #FAF8F3;
+  --sheet-2: #F6F3EC;
+  --card: #FFFFFF;
+  --card-hover: #FFFDF8;
+  --ink: #2F2D36;
+  --ink-2: #5D5967;
+  --ink-3: #8A8592;
+  --ink-4: #B5B0B9;
+  --rule: #DDD7CB;
+  --rule-2: #E8E3D9;
+  --grid: rgba(47, 45, 54, 0.035);
+  --accent: #4F67C6;
+  --accent-ink: #FFFFFF;
+  --focus-bg: #FFE9A6;
+  --focus-ink: #2F2D36;
+  --danger: #C2564A;
+  --warn: #A9831B;
+  --ok: #3F8D5B;
+  --scrim: rgba(47, 45, 54, 0.32);
+  --glow-a: rgba(79, 103, 198, 0.06);
+  --glow-b: rgba(197, 113, 60, 0.05);
+  --sheen: rgba(79, 103, 198, 0.08);
+  --hatch: rgba(47, 45, 54, 0.05);
+  --shadow-card: 0 1px 2px rgba(47, 45, 54, 0.06), 0 8px 18px -12px rgba(47, 45, 54, 0.28);
+  --shadow-pop: 0 20px 50px -20px rgba(47, 45, 54, 0.35), 0 2px 6px rgba(47, 45, 54, 0.08);
+  --c0: #4E6BC8; --c1: #3F8D5B; --c2: #C5713C; --c3: #7A58C4; --c4: #A9831B; --c5: #2B8A84; --c6: #B6508A; --c7: #C65A45;
+  --h0: #3F8D5B; --h1: #7A58C4; --h2: #C65A45; --h3: #A9831B; --h4: #2B8A84; --h5: #B6508A;
+  color-scheme: light;
+}

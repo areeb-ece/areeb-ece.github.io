@@ -18,6 +18,7 @@ doesn't work as described, that's a bug, not something you're doing wrong.
 - [Cards](#cards)
 - [The home page](#the-home-page)
 - [Fonts](#fonts)
+- [Colours (all three sites)](#colours-all-three-sites)
 - [Markdown](#markdown)
 - [The typing animation](#the-typing-animation)
 - [Previewing on your computer](#previewing-on-your-computer)
@@ -95,7 +96,7 @@ content/
   frontmatter is what people see.
 - **Reserved names:** `prereqflow` and `otucalendar` can't be top-level folders, because
   those addresses already belong to those sites. They're listed under `reservedSlugs`
-  in `site.config.yaml`. `fonts`, `icons` and `sky` are used by the site itself.
+  in `site.config.yaml`. `fonts`, `icons`, `sky`, `design` and `js` are used by the site itself.
 
 ### The quick way (on your computer)
 
@@ -264,6 +265,27 @@ The whole site is set in mononoki, apart from maths, which always uses KaTeX's f
 
 **To use it:** `default` sets the font for the whole site, `code` sets it for code
 blocks, and `font: inter` in a page's frontmatter sets it for that page.
+
+---
+
+## Colours (all three sites)
+
+Every colour lives in one file: **`public/design/tokens.css`**, the master palette. This
+site, PrereqFlow and OTU Calendar all load it, so changing a value there and pushing to
+`main` restyles all three once this site deploys.
+
+- `--bg`, `--sheet`, `--card`: backgrounds, from darkest to lightest.
+- `--ink`, `--ink-2`, `--ink-3`: text, from headings to the dimmest labels. `--ink-4` is
+  only for lines and dots, never text.
+- `--accent`: links, the cursor and highlights. `--h0`…`--h5` and `--c0`…`--c7` are the
+  pastel hues.
+- The first block is the night sheet (what this site uses). The second is the paper
+  sheet, used by the light-theme button in PrereqFlow and OTU Calendar.
+
+Keep text readable: if you darken the backgrounds or dim `--ink-3`, run
+`npm run check`. The browser check measures `--ink-3` against the night sky and fails if
+it drops below the WCAG AA contrast level. PrereqFlow and OTU Calendar keep a copy of these
+values in their own `css/style.css`, used only when they're opened offline.
 
 ---
 

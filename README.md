@@ -56,7 +56,8 @@ src/lib/                  build code: config + frontmatter schemas, page tree, M
 src/lib/markdown/         unified pipeline, Shiki theme, KaTeX, Mermaid and WaveDrom renderers
 src/client/               the browser scripts: typing animation (timing.js has every constant),
                           sidebar tree, night-sky parallax, copy buttons
-src/styles/               the PrereqFlow / OTU Calendar sheet: tokens, components, prose, code, sky
+public/design/tokens.css  the master palette: colours for this site, PrereqFlow and OTU Calendar
+src/styles/               the PrereqFlow / OTU Calendar sheet: components, prose, code, sky
 src/pages/                routes: home, every content page, 404, generated fonts.css,
                           diagrams.css and the star tiles
 scripts/new-page.ts       npm run new
@@ -87,6 +88,15 @@ speed up to fit, so no page takes longer than 3 s. The home title types at 100â€
 after the cursor blinks alone for a second, once per visit. Any click, key or scroll
 finishes it. With JavaScript off, `animate: false` or reduced motion, the page shows
 straight away. Every timing constant is in `src/client/timing.js`.
+
+### One palette for three sites
+
+`public/design/tokens.css` is the master palette: every colour, radius and shadow, for
+the night and paper sheets. This site, [PrereqFlow](https://areeb-ece.github.io/prereqflow/)
+and [OTU Calendar](https://areeb-ece.github.io/otucalendar/) all load it from
+`/design/tokens.css` (they share the same address, so their security policies allow it).
+Edit it and push, and all three sites change when this one deploys. Mermaid's colours and
+the star tints are read from it at build time.
 
 ### Background
 

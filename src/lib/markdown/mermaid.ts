@@ -3,13 +3,15 @@
  * Mermaid measures text with a real browser layout engine, so the build drives the
  * same headless Chromium the browser tests use (Playwright). Every diagram is cached
  * by a hash of its source, the Mermaid version and the theme, so only new or changed
- * diagrams need the browser. Each SVG's <style> block is moved out into
- * /diagrams.css, because the page's CSP doesn't allow inline <style>. */
+ * diagrams need the browser. Each SVG's <style> block is moved out into /diagrams.css,
+ * because the page's CSP doesn't allow inline <style>. Colours come from the master
+ * palette, and the theme is part of the cache key, so changing it redraws them. */
 import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { join } from "node:path";
 import { diagramError } from "./wavedrom.ts";
+import { nightTokens } from "../design.ts";
 
 export interface MermaidResult {
   svg: string;
@@ -19,53 +21,59 @@ export interface MermaidResult {
 const require = createRequire(join(process.cwd(), "package.json"));
 const VERSION: string = require("mermaid/package.json").version;
 
-/** Night-sheet palette (src/styles/tokens.css). Mermaid needs literal colours. */
+/** Mixes two #RRGGBB colours: t = 0 gives a, t = 1 gives b. */
+const mix = (a: string, b: string, t: number) =>
+  "#" + [1, 3, 5].map((i) => Math.round(parseInt(a.slice(i, i + 2), 16) * (1 - t) + parseInt(b.slice(i, i + 2), 16) * t).toString(16).padStart(2, "0")).join("");
+
+/** Mermaid needs literal colours, so they're read from the master palette (public/design/tokens.css). */
+const T = nightTokens();
+const tint = (hue: string) => mix(T.sheet, T[hue], 0.2);
 const THEME = {
   darkMode: true,
-  background: "#1A1D23",
+  background: T.sheet,
   fontFamily: "mononoki, ui-monospace, monospace",
   fontSize: "14px",
-  primaryColor: "#23272F",
-  primaryTextColor: "#E8E4DC",
-  primaryBorderColor: "#4D5362",
-  secondaryColor: "#1D2027",
-  secondaryTextColor: "#E8E4DC",
-  secondaryBorderColor: "#353A45",
-  tertiaryColor: "#1A1D23",
-  tertiaryTextColor: "#BAB5AB",
-  tertiaryBorderColor: "#353A45",
-  lineColor: "#8C8880",
-  textColor: "#BAB5AB",
-  mainBkg: "#23272F",
-  nodeBorder: "#4D5362",
-  nodeTextColor: "#E8E4DC",
-  clusterBkg: "#1D2027",
-  clusterBorder: "#353A45",
-  titleColor: "#E8E4DC",
-  edgeLabelBackground: "#1A1D23",
-  noteBkgColor: "#2A2F38",
-  noteTextColor: "#E8E4DC",
-  noteBorderColor: "#EACB76",
-  actorBkg: "#23272F",
-  actorBorder: "#4D5362",
-  actorTextColor: "#E8E4DC",
-  actorLineColor: "#4D5362",
-  signalColor: "#BAB5AB",
-  signalTextColor: "#E8E4DC",
-  labelBoxBkgColor: "#23272F",
-  labelBoxBorderColor: "#4D5362",
-  labelTextColor: "#E8E4DC",
-  loopTextColor: "#BAB5AB",
-  activationBkgColor: "#2A2F38",
-  activationBorderColor: "#A3B8F0",
-  sequenceNumberColor: "#15171C",
-  errorBkgColor: "#3A2D26",
-  errorTextColor: "#EE9585",
+  primaryColor: T.card,
+  primaryTextColor: T.ink,
+  primaryBorderColor: T["ink-4"],
+  secondaryColor: T["sheet-2"],
+  secondaryTextColor: T.ink,
+  secondaryBorderColor: T.rule,
+  tertiaryColor: T.sheet,
+  tertiaryTextColor: T["ink-2"],
+  tertiaryBorderColor: T.rule,
+  lineColor: T["ink-3"],
+  textColor: T["ink-2"],
+  mainBkg: T.card,
+  nodeBorder: T["ink-4"],
+  nodeTextColor: T.ink,
+  clusterBkg: T["sheet-2"],
+  clusterBorder: T.rule,
+  titleColor: T.ink,
+  edgeLabelBackground: T.sheet,
+  noteBkgColor: T["card-hover"],
+  noteTextColor: T.ink,
+  noteBorderColor: T.warn,
+  actorBkg: T.card,
+  actorBorder: T["ink-4"],
+  actorTextColor: T.ink,
+  actorLineColor: T["ink-4"],
+  signalColor: T["ink-2"],
+  signalTextColor: T.ink,
+  labelBoxBkgColor: T.card,
+  labelBoxBorderColor: T["ink-4"],
+  labelTextColor: T.ink,
+  loopTextColor: T["ink-2"],
+  activationBkgColor: T["card-hover"],
+  activationBorderColor: T.accent,
+  sequenceNumberColor: T.bg,
+  errorBkgColor: tint("danger"),
+  errorTextColor: T.danger,
   // pastel hues for pie slices, git branches, journeys…
-  pie1: "#92B1EE", pie2: "#9FD4AB", pie3: "#F0B68E", pie4: "#C4A9F2", pie5: "#EACB76", pie6: "#7DCBC4", pie7: "#EBA3C6", pie8: "#F0A391",
-  pieStrokeColor: "#1A1D23", pieOuterStrokeColor: "#353A45", pieTitleTextColor: "#E8E4DC", pieSectionTextColor: "#15171C", pieLegendTextColor: "#BAB5AB",
-  git0: "#92B1EE", git1: "#9FD4AB", git2: "#F0B68E", git3: "#C4A9F2", git4: "#EACB76", git5: "#7DCBC4", git6: "#EBA3C6", git7: "#F0A391",
-  cScale0: "#2B3550", cScale1: "#2A3B30", cScale2: "#3A2D26", cScale3: "#33294A", cScale4: "#3A3423", cScale5: "#21393A",
+  pie1: T.c0, pie2: T.c1, pie3: T.c2, pie4: T.c3, pie5: T.c4, pie6: T.c5, pie7: T.c6, pie8: T.c7,
+  pieStrokeColor: T.sheet, pieOuterStrokeColor: T.rule, pieTitleTextColor: T.ink, pieSectionTextColor: T.bg, pieLegendTextColor: T["ink-2"],
+  git0: T.c0, git1: T.c1, git2: T.c2, git3: T.c3, git4: T.c4, git5: T.c5, git6: T.c6, git7: T.c7,
+  cScale0: tint("c0"), cScale1: tint("c1"), cScale2: tint("c2"), cScale3: tint("c3"), cScale4: tint("c4"), cScale5: tint("c5"),
 };
 const CONFIG = { startOnLoad: false, securityLevel: "strict", theme: "base", themeVariables: THEME, htmlLabels: false, flowchart: { htmlLabels: false, curve: "basis" }, fontFamily: THEME.fontFamily };
 

@@ -255,6 +255,26 @@ try {
       assert.match(await page.evaluate(() => navigator.clipboard.readText()), /^module counter/);
     }
     ok("kitchen sink: math, code (12 languages), Mermaid, WaveDrom, callouts, cards, figures, tables, footnotes, copy button");
+
+    // WaveDrom's wave segments are <use> copies; if their styling doesn't reach them they
+    // render as solid black (that happened in Firefox). Count near-black pixels.
+    const wd = (await page.locator("figure.wavedrom").first().screenshot()).toString("base64");
+    const probe = await browser.newPage();
+    const dark = await probe.evaluate(async (b64) => {
+      const img = new Image();
+      img.src = "data:image/png;base64," + b64;
+      await img.decode();
+      const c = Object.assign(document.createElement("canvas"), { width: img.width, height: img.height });
+      const g = c.getContext("2d");
+      g.drawImage(img, 0, 0);
+      const d = g.getImageData(0, 0, c.width, c.height).data;
+      let n = 0;
+      for (let i = 0; i < d.length; i += 4) if (Math.max(d[i], d[i + 1], d[i + 2]) < 8) n++;
+      return n / (d.length / 4);
+    }, wd);
+    await probe.close();
+    assert.ok(dark < 0.002, `WaveDrom diagram is ${(dark * 100).toFixed(1)}% near-black pixels (its shapes lost their styling)`);
+    ok(`WaveDrom: wave shapes are styled, no black fills (${(dark * 100).toFixed(2)}% near-black)`);
     await page.screenshot({ path: path.join(SHOTS, "kitchen-sink.png"), fullPage: true });
     for (const [url, name] of [["/projects/", "category"], ["/projects/fpga-soft-cpu/", "project"], ["/nope/", "404"]]) {
       await page.goto(base + url);
