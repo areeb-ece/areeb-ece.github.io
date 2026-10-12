@@ -17,10 +17,12 @@ const page = site.tree.bySlug.get(Astro.props.slug) as Page;
 const r = site.rendered.get(page.slug)!;
 const crumbs = [...ancestors(page), page];
 const img = site.banner(page);
+const hasMermaid = r.blocks.some((b) => b.html.includes('class="diagram mermaid"'));
 const date = page.fm.date ? new Date(page.fm.date + "T12:00:00Z") : null;
 ---
 <Base title={page.fm.title} description={page.fm.description} page={page} font={page.fm.font} typing={page.fm.animate ? "page" : "none"}>
   {r.hasMath && <KatexStyles slot="head" />}
+  {hasMermaid && <link slot="head" rel="stylesheet" href="/diagrams.css" />}
   <article class="page">
     <div class="banner-strip b" data-kind="media" data-src={img ? `![${page.fm.bannerAlt ?? ""}](${page.fm.banner ?? "./" + page.banner!.split("/").pop()})` : ""} set:html={bannerHtml(page, img, page.fm.bannerAlt ?? "", "banner")} />
     <header class="ph">

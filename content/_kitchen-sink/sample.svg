@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 160" width="480" height="160">
+  <!-- Test image for the kitchen-sink page. -->
+  <rect width="480" height="160" rx="10" fill="#1D2027"/>
+  <path d="M20 120 C 100 20, 160 20, 240 80 S 380 140, 460 40" fill="none" stroke="#A3B8F0" stroke-width="3"/>
+  <circle cx="240" cy="80" r="6" fill="#F0B68E"/>
+</svg>

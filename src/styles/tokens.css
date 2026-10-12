@@ -11,7 +11,7 @@
   --card-hover: #2A2F38;
   --ink: #E8E4DC;
   --ink-2: #BAB5AB;
-  --ink-3: #8C8880;
+  --ink-3: #98948C;   /* one step lighter than the sibling sites' #8C8880, so small labels keep WCAG AA over the night sky */
   --ink-4: #66635D;   /* decorative marks only: below AA for text */
   --rule: #353A45;
   --rule-2: #2A2E37;

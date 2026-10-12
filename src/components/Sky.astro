@@ -1,0 +1,16 @@
+---
+import { SKY } from "../lib/stars.ts";
+// The background: the aurora haze, then the star layers. Sizes and speeds come from
+// src/lib/stars.ts and reach the CSS as custom properties.
+---
+<div class="sky" aria-hidden="true">
+  <div class="haze"></div>
+  {SKY.map((l) => (
+    <div class="sky-layer" data-parallax={l.parallax} data-tile={l.tile}>
+      <div class="sky-drift" style={`--tile:${l.tile}px;--drift:${l.drift}s;background-image:url(/sky/${l.name}.svg)`}></div>
+    </div>
+  ))}
+</div>
+<script>
+  import "../client/sky.js";
+</script>
