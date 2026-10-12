@@ -1,0 +1,66 @@
+name: deploy
+# Pull requests: unit tests, build and browser check, nothing deployed.
+# Pushes to main: the same, then publish dist/ to GitHub Pages. If any test fails,
+# nothing deploys. (Pages Source must be set to "GitHub Actions" in the repo settings.)
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.ref }}
+  # never cancel a deploy half-way; superseded PR runs can go
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  ASTRO_TELEMETRY_DISABLED: 1
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # Playwright is pinned in package.json (1.56.1), as in otucalendar's CI. It drives
+      # the browser check and draws Mermaid diagrams during the build.
+      - run: npx playwright install --with-deps chromium
+      - uses: actions/cache@v6
+        with:
+          path: node_modules/.cache/site-diagrams
+          key: diagrams-${{ hashFiles('package-lock.json') }}-${{ hashFiles('content/**/*.md') }}
+          restore-keys: diagrams-${{ hashFiles('package-lock.json') }}-
+      - run: npm test
+      - run: npm run build
+      - run: npm run test:browser
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: screenshots
+          path: test-results/screenshots/
+          if-no-files-found: ignore
+      - uses: actions/upload-pages-artifact@v5
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        with:
+          path: dist
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

@@ -25,6 +25,7 @@ else if (root.dataset.typing !== "none") {
 
 function start() {
   root.classList.add("typing-started");
+  performance.mark("typing:start");
   const blocks = [...document.querySelectorAll(".main .b")];
   if (!blocks.length) return done();
   const isHome = root.dataset.typing === "home";
