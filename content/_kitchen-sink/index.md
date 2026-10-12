@@ -58,7 +58,7 @@ An image without a caption, inline: ![small curve](./sample.svg)
 
 ## Math
 
-Inline math like $V = IR$ or $\omega_0 = 1/\sqrt{LC}$ sits in the text.
+Inline math like $V = IR$, $\omega_0 = 1/\sqrt{LC}$ or $f_{\max} \approx 1/t_{pd}$ sits in the text.
 
 $$
 H(z) = \frac{\sum_{k=0}^{M} b_k z^{-k}}{1 + \sum_{k=1}^{N} a_k z^{-k}}

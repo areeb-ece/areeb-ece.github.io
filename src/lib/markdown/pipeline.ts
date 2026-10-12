@@ -184,6 +184,7 @@ export function renderMarkdown(body: string, deps: RenderDeps): Rendered {
     const tmp: HRoot = { type: "root", children: groups.map((g) => ({ type: "element", tagName: "div", properties: {}, children: g.nodes }) as Element) };
     unified().use(rehypeKatex, { throwOnError: false, errorColor: "currentColor", strict: "ignore", output: "htmlAndMathml" }).runSync(tmp);
     markMathErrors(tmp);
+    fixMathml(tmp);
     tmp.children.forEach((w, i) => (groups[i].nodes = (w as Element).children as HNode[]));
   }
 
@@ -201,6 +202,27 @@ function hasMathNode(n: any): boolean {
 }
 
 /** Adds the KaTeX error message as visible text so the problem is obvious on the page. */
+/** How many children MathML allows these elements (the rest of the script goes in an <mrow>). */
+const MATHML_ARITY: Record<string, number> = { msub: 2, msup: 2, mover: 2, munder: 2, msubsup: 3, munderover: 3, mfrac: 2, mroot: 2 };
+
+/**
+ * KaTeX sometimes puts more children in a script element than MathML allows: `f_{\max}`
+ * becomes <msub><mi>f</mi><mi>max</mi><mo>⁡</mo></msub>. Firefox rejects that (and its
+ * screen-reader math with it), so the extra children are wrapped into the last slot.
+ */
+export function fixMathml(node: HRoot | Element) {
+  for (const c of node.children) {
+    if (c.type !== "element") continue;
+    fixMathml(c);
+    const arity = MATHML_ARITY[c.tagName];
+    if (!arity) continue;
+    const kids = c.children.filter((k) => k.type === "element") as Element[];
+    if (kids.length <= arity) continue;
+    const wrapped: Element = { type: "element", tagName: "mrow", properties: {}, children: kids.slice(arity - 1) };
+    c.children = [...kids.slice(0, arity - 1), wrapped];
+  }
+}
+
 function markMathErrors(node: HRoot | Element) {
   for (const c of node.children) {
     if (c.type !== "element") continue;

@@ -51,9 +51,36 @@ jobs:
         with:
           path: dist
 
+  # The same browser check in Firefox, so the site is tested in both engines.
+  firefox:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium firefox
+      - uses: actions/cache@v6
+        with:
+          path: node_modules/.cache/site-diagrams
+          key: diagrams-${{ hashFiles('package-lock.json') }}-${{ hashFiles('content/**/*.md') }}
+          restore-keys: diagrams-${{ hashFiles('package-lock.json') }}-
+      - run: npm run build
+      - run: npm run test:browser
+        env:
+          BROWSER: firefox
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: screenshots-firefox
+          path: test-results/screenshots/firefox/
+          if-no-files-found: ignore
+
   deploy:
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
-    needs: test
+    needs: [test, firefox]
     runs-on: ubuntu-latest
     permissions:
       pages: write
