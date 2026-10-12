@@ -2,7 +2,7 @@ import { ContentError } from "./errors.ts";
 import { parseFrontmatter, type Frontmatter } from "./frontmatter.ts";
 
 /** Paths the site itself serves; a top-level page with one of these names would collide. */
-export const BUILT_IN_SLUGS = ["fonts", "icons", "sky", "design", "js", "_astro", "404", "diagrams.css", "fonts.css"];
+export const BUILT_IN_SLUGS = ["fonts", "icons", "design", "js", "_astro", "404", "diagrams.css", "fonts.css"];
 
 export const BANNER_EXTS = ["jpg", "jpeg", "png", "webp", "avif"];
 

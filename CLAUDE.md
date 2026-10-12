@@ -20,7 +20,8 @@ if a feature can only be changed by editing code, it isn't finished. Update
 - **Diagrams:**
   - Mermaid is rendered at **build time** in headless Chromium via Playwright
     (`src/lib/markdown/mermaid.ts`), cached in `node_modules/.cache/site-diagrams/` by a
-    hash of source + Mermaid version + theme.
+    hash of source + Mermaid version + theme. Its literal night colours are then rewritten
+    as CSS variables (`colorsToVars` in `src/lib/design.ts`) so diagrams follow the theme.
   - WaveDrom renders in Node (`src/lib/markdown/wavedrom.ts`).
 - **TypeScript** for build code. It runs under Node's type stripping in tests and
   scripts, so use **erasable syntax only** (no enums, namespaces or parameter
@@ -50,19 +51,20 @@ download.
 site.config.yaml        home title/intro (Markdown), links, wordmark, fonts registry, reservedSlugs
 content/                pages: <path>/index.md = /<path>/; home.md = extra home content; images live beside pages
 public/                 fonts (mononoki + OFL), icons (placeholders), favicon, js/boot.js (pre-paint, not bundled)
+public/design/          SHARED WITH ALL THREE SITES, served at /design/, not bundled:
+                          tokens.css (master palette = the themes), theme.js (pre-paint: applies saved
+                          settings), ui.js + ui.css (gear button, settings panel, night sky + its defaults)
 src/lib/config.ts       site.config.yaml schema (astro/zod) → readable errors
 src/lib/frontmatter.ts  frontmatter schema; errors name the file and field
 src/lib/tree.ts         content/ → page tree: order, hidden, draft, banners, slug rules, reserved slugs
 src/lib/site.ts         Astro-only loader (import.meta.glob): renders every page once per build
 src/lib/card.ts         card + banner HTML (also seeded fallback gradient)
-src/lib/stars.ts        seeded star tiles + layer parameters (drift, parallax)
 src/lib/markdown/       pipeline, shiki, mermaid, wavedrom, relaxed-json
-src/pages/              index, [...slug], 404, fonts.css.ts, diagrams.css.ts, sky/[layer].svg.ts
+src/pages/              index, [...slug], 404, fonts.css.ts, diagrams.css.ts
 src/components/         Sidebar/TreeNodes (ARIA tree), Blocks, ChildList, ContactPanel, Sky, KatexStyles
-src/client/             typing.js + timing.js (ALL timing constants), sidebar.js, sky.js, copy.js, store.js
-src/styles/             base, layout, page, prose, code, typing, sky (colours come from public/design/tokens.css)
-public/design/tokens.css  THE MASTER PALETTE shared with PrereqFlow and OTU Calendar
-src/lib/design.ts       reads the master palette for build-time colours (Mermaid, stars)
+src/client/             typing.js + timing.js (ALL timing constants), sidebar.js, copy.js, store.js
+src/styles/             base, layout, page, prose, code, typing (colours come from public/design/tokens.css)
+src/lib/design.ts       reads the master palette: themes (for tests), night colours + colorsToVars (Mermaid)
 tests/                  *.test.ts (node --test), fixtures/, serve.js, browser-check.js
 scripts/new-page.ts     the `new` command
 ```
@@ -72,9 +74,16 @@ scripts/new-page.ts     the `new` command
 - Every top-level Markdown block becomes `<div class="b" data-src="…raw markdown…">`. The
   source is sliced from the file using mdast position offsets, and blocks are grouped
   *before* KaTeX runs (KaTeX drops positions). `typing.js` reads `data-src`.
+- `public/design/theme.js` runs first and applies the visitor's settings from
+  `localStorage["design.settings"]` (shared by all three sites, same origin): `data-theme`,
+  `data-scheme` (dark/light, from the theme's color-scheme), `data-motion="off"`, and
+  inline `--accent`/`--r*` overrides. It exposes `window.SiteDesign`; `ui.js` adds
+  `set`, `reset`, `onChange`, `themes`, `open`. The theme list is read from the labelled
+  `[data-theme]` blocks of tokens.css at runtime, so a new block is a new theme.
 - `public/js/boot.js` adds `html.typing` (blocks visually hidden, still in the
   accessibility tree) only when JS runs, `data-typing` isn't `none`, reduced motion is
-  off, and (for home) `sessionStorage` says the title hasn't played this visit.
+  off, the visitor hasn't turned typing or motion off in settings, and (for home)
+  `sessionStorage` says the title hasn't played this visit.
 - A content page's typing budget is ≤ 3 s whatever its length. The schedule is scaled
   down to fit (`contentSchedule`), and the unit tests check that.
 - Build errors are `ContentError("file:line", message)` written for Areeb, saying how to
@@ -83,17 +92,25 @@ scripts/new-page.ts     the `new` command
 ## Hard rules
 
 - **One master palette for all three sites.** `public/design/tokens.css` (served at
-  `/design/tokens.css`) holds every shared colour, radius and shadow, night and paper.
+  `/design/tokens.css`) holds every shared colour, radius and shadow, one block per theme
+  (night first, the default). `tests/themes.test.ts` checks every theme for missing
+  tokens and AA contrast.
   - The portfolio links it first (`src/layouts/Base.astro`).
-  - `areeb-ece/prereqflow` and `areeb-ece/otucalendar` link it after their own
-    `css/style.css`, whose token values are only an offline fallback.
-  - Mermaid's theme and the star colours are read from it at build time (`src/lib/design.ts`).
+  - `areeb-ece/prereqflow` and `areeb-ece/otucalendar` link it (and `ui.css`, `theme.js`,
+    `ui.js`) after their own `css/style.css`, whose night/paper values and light/dark
+    button (`js/theme.js`, `#btnTheme`) are only an offline fallback.
+  - Mermaid's theme is read from it at build time (`src/lib/design.ts`); star colours are
+    CSS (`--star*`, falling back to `--ink`/`--c2`/`--c0`).
+  - Anything in `public/design/` must work in all three sites: no `style="…"` attributes
+    in markup (OTU Calendar's CSP has no `style-src-attr`; set styles through
+    `el.style.setProperty`), `sd-` class prefixes, no dependencies. Their browser checks
+    can load it with `DESIGN_DIR=../areeb-ece.github.io/public/design`.
   - Change colours there, never in component CSS. When you change it, also update the
     fallback copies in the two sibling repos so offline use matches.
 - **Sibling repos: only with Areeb's say-so.** Don't edit, branch or open PRs on
   `areeb-ece/prereqflow` or `areeb-ece/otucalendar` unless he asks (he did, on
-  2026-10-12, for the shared palette). Their CSS remains the source for the design:
-  otucalendar for components, prereqflow for the `.card` sheen, the aurora and the `--h*` hues.
+  2026-10-12, for the shared palette and then for the shared themes, settings and sky).
+  Their CSS remains the source for the design: otucalendar for components, prereqflow for the `.card` sheen, the aurora and the `--h*` hues.
 - **Their paths are reserved.** `/prereqflow/` and `/otucalendar/` are served by those
   repos' Pages sites. `reservedSlugs` in `site.config.yaml` blocks them; keep it that
   way.
@@ -112,11 +129,11 @@ scripts/new-page.ts     the `new` command
 - **No personal contact details** beyond the `TODO` placeholders in `site.config.yaml`.
 - **Don't invent project facts.** Tool pages use only what their READMEs say. Example
   content is labelled as such.
-- **v1 scope:** night theme only (light tokens exist, no toggle) and desktop-first (no
-  horizontal scroll, the sidebar collapses to a rail below 760 px).
-- **Contrast budget.** Star brightness (`SKY` in `src/lib/stars.ts`) and the haze are
-  capped so `--ink-3` (from the master palette) keeps 4.5:1 over
-  the brightest possible sky. The browser check measures this. Re-run it after touching
+- **Desktop-first:** no horizontal scroll; the sidebar collapses to a rail below 760 px.
+  Themes come from the gear menu; night is the default.
+- **Contrast budget.** The default star brightness (`LAYERS` in `public/design/ui.js`)
+  and the haze are capped so the night theme's `--ink-3` keeps 4.5:1 over the brightest
+  possible sky. The browser check measures this. Re-run it after touching
   either.
 - **Performance budget:** client JS ≤ 15 KB gzipped (checked), and no long tasks while
   typing.

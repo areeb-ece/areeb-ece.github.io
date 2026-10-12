@@ -18,7 +18,7 @@ doesn't work as described, that's a bug, not something you're doing wrong.
 - [Cards](#cards)
 - [The home page](#the-home-page)
 - [Fonts](#fonts)
-- [Colours (all three sites)](#colours-all-three-sites)
+- [Colours, themes and the settings button (all three sites)](#colours-themes-and-the-settings-button-all-three-sites)
 - [Markdown](#markdown)
 - [The typing animation](#the-typing-animation)
 - [Previewing on your computer](#previewing-on-your-computer)
@@ -96,7 +96,7 @@ content/
   frontmatter is what people see.
 - **Reserved names:** `prereqflow` and `otucalendar` can't be top-level folders, because
   those addresses already belong to those sites. They're listed under `reservedSlugs`
-  in `site.config.yaml`. `fonts`, `icons`, `sky`, `design` and `js` are used by the site itself.
+  in `site.config.yaml`. `fonts`, `icons`, `design` and `js` are used by the site itself.
 
 ### The quick way (on your computer)
 
@@ -268,7 +268,7 @@ blocks, and `font: inter` in a page's frontmatter sets it for that page.
 
 ---
 
-## Colours (all three sites)
+## Colours, themes and the settings button (all three sites)
 
 Every colour lives in one file: **`public/design/tokens.css`**, the master palette. This
 site, PrereqFlow and OTU Calendar all load it, so changing a value there and pushing to
@@ -279,13 +279,32 @@ site, PrereqFlow and OTU Calendar all load it, so changing a value there and pus
   only for lines and dots, never text.
 - `--accent`: links, the cursor and highlights. `--h0`…`--h5` and `--c0`…`--c7` are the
   pastel hues.
-- The first block is the night sheet (what this site uses). The second is the paper
-  sheet, used by the light-theme button in PrereqFlow and OTU Calendar.
 
-Keep text readable: if you darken the backgrounds or dim `--ink-3`, run
-`npm run check`. The browser check measures `--ink-3` against the night sky and fails if
-it drops below the WCAG AA contrast level. PrereqFlow and OTU Calendar keep a copy of these
-values in their own `css/style.css`, used only when they're opened offline.
+**Themes.** Each block in the file is one theme: Night (the default), Paper, Void (pure
+black and white), Console (green terminal), Amber, Arctic, Ocean, Forest, Retro, Solar
+dark, Synthwave, Ink (pure white and black), Sepia, Solar light and Rosé. Visitors pick
+one with the **gear icon** (bottom of the sidebar here, top right in PrereqFlow and OTU
+Calendar), which also sets a custom accent colour, square or round corners, motion, the
+typing effect and the night sky: number of stars, size, brightness, blur, colour, how
+many are tinted, drift speed and direction, scroll parallax and the glow. Their choice is
+saved in their browser and used on all three sites.
+
+- **Add a theme:** copy a block, change the name in both selectors (lowercase with
+  hyphens: `:root[data-theme="my-theme"], [data-theme="my-theme"] {`), set
+  `--theme-label: "My theme";` and the colours, and keep `color-scheme: dark;` or
+  `light;` to match. It appears in the gear menu in the order of the file.
+- **Remove or rename a theme:** delete or edit its block. Anyone who had picked it gets
+  Night.
+- **Star colours:** a theme can set `--star`, `--star-warm` and `--star-cool`; otherwise
+  stars use `--ink`, `--c2` and `--c0`.
+- **The default sky** (star counts, sizes, brightness and speeds before anyone changes
+  them) is the `LAYERS` list near the top of `public/design/ui.js`, one line per layer.
+
+Keep text readable: `npm test` checks that every theme defines every colour and that its
+text (`--ink-3` on `--card` and the backgrounds, the accent, the highlight) keeps WCAG
+AA contrast, and names the line to fix if not. The browser check also measures `--ink-3`
+against the default night sky. PrereqFlow and OTU Calendar keep a copy of the Night and
+Paper values in their own `css/style.css`, used only when they're opened offline.
 
 ---
 
@@ -472,7 +491,8 @@ block. The home page types its title once per visit. Content pages type every ti
 always finish within 3 seconds however long they are. Clicking, pressing a key or
 scrolling finishes it at once.
 
-- **Turn it off for one page:** `animate: false` in the frontmatter.
+- **Turn it off for one page:** `animate: false` in the frontmatter. Visitors can also
+  switch it off for themselves in the gear menu.
 - **Tune it:** every speed and timing is in one object at the top of
   `src/client/timing.js`, with a comment on each value: the cursor blink, the title
   speed, the pauses after punctuation, the content speed range, the time budget, the

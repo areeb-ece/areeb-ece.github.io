@@ -97,11 +97,14 @@ try {
         const why = await page.evaluate(() => ({ classes: document.documentElement.className, typing: document.documentElement.dataset.typing, reduce: matchMedia("(prefers-reduced-motion: reduce)").matches, marks: performance.getEntriesByType("mark").map((m) => m.name) }));
         assert.fail(`the home title never finished typing: ${JSON.stringify(why)}`);
       }
+      // Checked in the same task as the sample, or the title could finish in between.
       const s = await page.evaluate(() => ({
+        done: performance.getEntriesByType("mark").some((m) => m.name === "typing:title-done"),
         shown: [...document.querySelectorAll(".main .b")].filter((b) => b.classList.contains("shown") || b.getBoundingClientRect().width > 1).length,
         typed: document.querySelector("pre.typing")?.textContent ?? "",
         cursor: !!document.querySelector(".main .cursor"),
       }));
+      if (s.done) break;
       assert.equal(s.shown, 0, "nothing besides the cursor (and the title being typed) shows before the title is finished");
       assert.ok(s.cursor, "the cursor is on screen");
       assert.ok(title.startsWith(s.typed), `only the title is being typed (saw "${s.typed}")`);
@@ -293,6 +296,7 @@ try {
     const ctx = await context({ reducedMotion: "reduce" });
     const page = await ctx.newPage();
     await page.goto(base + "/404.html");
+    await page.waitForSelector(".sky-layer:nth-child(4)", { state: "attached" }); // the haze, then three star layers
     const ink3 = await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue("--ink-3").trim());
     const shot = async (show) => {
       await page.evaluate((show) => {
@@ -331,6 +335,52 @@ try {
     assert.ok(r.stars.every((s) => s > 0.001), "every star layer is actually visible");
     ok(`contrast: --ink-3 stays ${r.ratio.toFixed(2)}:1 over the brightest possible sky (haze ${r.haze.toFixed(4)} + stars ${r.stars.map((s) => s.toFixed(4)).join(" + ")})`);
     await analysis.close();
+    await ctx.close();
+  }
+
+  // ── the settings panel (public/design/ui.js) ──────────────────────────
+  {
+    const ctx = await context({ reducedMotion: "reduce" });
+    const page = await ctx.newPage();
+    await page.goto(base + "/projects/");
+    const stars = () => page.$$eval(".sky circle", (c) => c.length);
+    const before = await stars();
+    assert.ok(before > 0, "stars are drawn");
+    await page.click(".side-foot #designSettings");
+    assert.ok(await page.isVisible(".sd-panel"), "the gear opens the panel");
+    const listed = await page.$$eval("[data-theme-pick]", (b) => b.map((e) => e.dataset.themePick));
+    const fromTokens = [...fs.readFileSync(path.join(ROOT, "public/design/tokens.css"), "utf8").matchAll(/^:root(?:, |\[)data-theme="([\w-]+)"|^:root, \[data-theme="([\w-]+)"/gm)].map((m) => m[1] ?? m[2]);
+    assert.deepEqual(listed, ["auto", ...fromTokens], "every theme in tokens.css is offered, in order");
+    await page.click('[data-theme-pick="console"]');
+    assert.equal(await page.getAttribute("html", "data-theme"), "console");
+    assert.equal(await page.evaluate(() => getComputedStyle(document.body).backgroundColor), "rgb(0, 0, 0)");
+    await page.fill('[data-range="density"]', "2");
+    await page.waitForFunction((n) => document.querySelectorAll(".sky circle").length > n, before);
+    await page.click('[data-check="typing"]');
+    await page.keyboard.press("Escape");
+    assert.ok(!(await page.isVisible(".sd-panel")), "Escape closes the panel");
+
+    // Saved for the next visit, applied before the first paint, and shared by every page.
+    await page.goto(base + "/projects/fpga-soft-cpu/", { waitUntil: "commit" });
+    await page.waitForSelector("body");
+    assert.equal(await page.getAttribute("html", "data-theme"), "console", "theme applied before the page renders");
+    const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("design.settings")));
+    assert.equal(saved.theme, "console");
+    assert.equal(saved.sky.density, 2);
+    assert.equal(saved.typing, false);
+    await page.reload();
+    assert.equal(await page.evaluate(() => document.documentElement.classList.contains("typing")), false, "typing effect off");
+
+    // Stars off, then reset everything.
+    await page.click("#designSettings");
+    await page.click('[data-sky-check="stars"]');
+    assert.equal(await stars(), 0, "stars can be switched off");
+    await page.click("[data-reset]");
+    assert.equal(await page.getAttribute("html", "data-theme"), "dark");
+    assert.equal(await stars(), before, "reset brings the default sky back");
+    assert.equal(await page.evaluate(() => localStorage.getItem("design.settings")), null);
+    await page.screenshot({ path: path.join(SHOTS, "settings.png") });
+    ok(`settings: the gear lists all ${fromTokens.length} themes; theme, sky and typing changes apply at once, persist and reset`);
     await ctx.close();
   }
 

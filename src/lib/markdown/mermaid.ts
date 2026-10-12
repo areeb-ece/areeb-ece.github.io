@@ -4,14 +4,15 @@
  * same headless Chromium the browser tests use (Playwright). Every diagram is cached
  * by a hash of its source, the Mermaid version and the theme, so only new or changed
  * diagrams need the browser. Each SVG's <style> block is moved out into /diagrams.css,
- * because the page's CSP doesn't allow inline <style>. Colours come from the master
- * palette, and the theme is part of the cache key, so changing it redraws them. */
+ * because the page's CSP doesn't allow inline <style>. Mermaid is given the night
+ * sheet's literal colours (from the master palette, part of the cache key), and they're
+ * then rewritten as CSS variables, so the diagrams follow the visitor's theme. */
 import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { join } from "node:path";
 import { diagramError } from "./wavedrom.ts";
-import { nightTokens } from "../design.ts";
+import { colorsToVars, mix, nightTokens } from "../design.ts";
 
 export interface MermaidResult {
   svg: string;
@@ -21,13 +22,15 @@ export interface MermaidResult {
 const require = createRequire(join(process.cwd(), "package.json"));
 const VERSION: string = require("mermaid/package.json").version;
 
-/** Mixes two #RRGGBB colours: t = 0 gives a, t = 1 gives b. */
-const mix = (a: string, b: string, t: number) =>
-  "#" + [1, 3, 5].map((i) => Math.round(parseInt(a.slice(i, i + 2), 16) * (1 - t) + parseInt(b.slice(i, i + 2), 16) * t).toString(16).padStart(2, "0")).join("");
-
 /** Mermaid needs literal colours, so they're read from the master palette (public/design/tokens.css). */
 const T = nightTokens();
+const TINTS: [string, number][] = ["c0", "c1", "c2", "c3", "c4", "c5", "danger"].map((h) => [h, 0.2]);
 const tint = (hue: string) => mix(T.sheet, T[hue], 0.2);
+// In the SVG only style attributes can take var(); fill="…" attributes keep their colour.
+const themed = (r: MermaidResult): MermaidResult => ({
+  svg: r.svg.replace(/\sstyle="([^"]*)"/g, (_, s) => ` style="${colorsToVars(s, T, TINTS)}"`),
+  css: colorsToVars(r.css, T, TINTS),
+});
 const THEME = {
   darkMode: true,
   background: T.sheet,
@@ -89,7 +92,7 @@ export async function renderMermaidAll(sources: string[]): Promise<Map<string, M
   for (const src of new Set(sources)) {
     const key = mermaidKey(src);
     const file = join(CACHE, `${key}.json`);
-    if (existsSync(file)) out.set(key, JSON.parse(readFileSync(file, "utf8")));
+    if (existsSync(file)) out.set(key, themed(JSON.parse(readFileSync(file, "utf8"))));
     else todo.push({ key, src });
   }
   if (!todo.length) return out;
@@ -151,7 +154,7 @@ export async function renderMermaidAll(sources: string[]): Promise<Map<string, M
         result = { svg, css };
       }
       writeFileSync(join(CACHE, `${r.key}.json`), JSON.stringify(result));
-      out.set(r.key, result);
+      out.set(r.key, themed(result));
     }
   } finally {
     await browser.close();
