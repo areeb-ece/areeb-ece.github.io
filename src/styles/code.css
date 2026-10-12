@@ -35,32 +35,31 @@ figure.diagram { margin: 0; padding: 18px; border: 1px solid var(--rule-2); bord
 figure.diagram > svg { display: inline-block; height: auto; max-width: 100%; }
 figure.mermaid svg { font-family: var(--f-code); }
 
-/* WaveDrom: its skin's classes, recoloured with the palette (the skin's own <style> is removed at build time). */
-figure.wavedrom > svg { max-width: none; }
-.wavedrom text { font-family: var(--f-code); font-size: 11px; fill: var(--ink-2); }
+/* WaveDrom: the skin's shapes are styled inline from these variables (see
+   src/lib/markdown/wavedrom.ts), so they also reach the <use> copies in Firefox. */
+figure.wavedrom {
+  --wd-line: var(--ink-2);
+  --wd-faint: var(--ink-4);
+  --wd-grid: var(--rule);
+  --wd-bg: transparent;
+  --wd-accent: var(--accent);
+  --wd-data: color-mix(in srgb, var(--accent) 12%, transparent);
+  --wd-3: color-mix(in srgb, var(--h3) 26%, transparent);
+  --wd-4: color-mix(in srgb, var(--c2) 26%, transparent);
+  --wd-5: color-mix(in srgb, var(--c0) 26%, transparent);
+  --wd-6: color-mix(in srgb, var(--h4) 26%, transparent);
+  --wd-7: color-mix(in srgb, var(--h0) 26%, transparent);
+  --wd-8: color-mix(in srgb, var(--h1) 26%, transparent);
+  --wd-9: color-mix(in srgb, var(--h2) 26%, transparent);
+}
+figure.wavedrom > svg { max-width: 100%; height: auto; }
+.wavedrom text { font-family: var(--f-code); font-size: 11px; fill: var(--ink); }
 .wavedrom :is(.h1, .h2, .h3, .h4, .h5, .h6) { font-weight: 700; fill: var(--ink); }
 .wavedrom .h1 { font-size: 22px; } .wavedrom .h2 { font-size: 18px; } .wavedrom .h3 { font-size: 15px; }
 .wavedrom .h4 { font-size: 13px; } .wavedrom .h5 { font-size: 11px; } .wavedrom .h6 { font-size: 9px; }
+.wavedrom .info { fill: var(--ink-2); } /* lane names */
 .wavedrom .muted { fill: var(--ink-3); }
-.wavedrom .warning { fill: var(--warn); } .wavedrom .error { fill: var(--danger); }
-.wavedrom .info { fill: var(--accent); } .wavedrom .success { fill: var(--ok); }
-.wavedrom :is(.s1, .s2, .s3, .s4, .s16) { fill: none; stroke-linecap: round; }
-.wavedrom .s1 { stroke: var(--ink-2); stroke-width: 1.2; }
-.wavedrom .s2 { stroke: var(--ink-3); stroke-width: .6; }
-.wavedrom .s3 { stroke: var(--ink-3); stroke-width: 1; stroke-dasharray: 1, 3; }
-.wavedrom .s4 { stroke: var(--ink-2); stroke-width: 1; }
-.wavedrom .s5 { fill: var(--sheet); stroke: none; }
-.wavedrom .s6 { fill: var(--ink-2); stroke: none; }
-.wavedrom .s7 { fill: var(--sheet); stroke: none; }
-.wavedrom .s8 { fill: color-mix(in srgb, var(--h3) 30%, var(--sheet)); stroke: none; }
-.wavedrom .s9 { fill: color-mix(in srgb, var(--c2) 30%, var(--sheet)); stroke: none; }
-.wavedrom .s10 { fill: color-mix(in srgb, var(--c0) 30%, var(--sheet)); stroke: none; }
-.wavedrom .s11 { fill: color-mix(in srgb, var(--h4) 30%, var(--sheet)); stroke: none; }
-.wavedrom .s12 { fill: color-mix(in srgb, var(--h0) 30%, var(--sheet)); stroke: none; }
-.wavedrom .s13 { fill: color-mix(in srgb, var(--h1) 30%, var(--sheet)); stroke: none; }
-.wavedrom .s14 { fill: color-mix(in srgb, var(--h2) 30%, var(--sheet)); stroke: none; }
-.wavedrom .s15 { fill: var(--accent); stroke: none; }
-.wavedrom .s16 { stroke: var(--accent); stroke-width: 1; }
+.wavedrom .warning { fill: var(--warn); } .wavedrom .error { fill: var(--danger); } .wavedrom .success { fill: var(--ok); }
 
 .diagram-error, .math-error { display: grid; gap: 6px; text-align: left; padding: 10px 14px; border: 1px solid color-mix(in srgb, var(--danger) 45%, transparent); border-left: 3px solid var(--danger); border-radius: 0 var(--r-sm) var(--r-sm) 0; background: color-mix(in srgb, var(--danger) 7%, var(--bg)); color: var(--ink-2); }
 .diagram-error .lbl, .math-error::before { color: var(--danger); }

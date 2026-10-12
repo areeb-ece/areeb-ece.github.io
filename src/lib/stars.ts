@@ -1,4 +1,5 @@
 import { rng } from "./html.ts";
+import { nightTokens } from "./design.ts";
 
 /* The night sky: three tiling layers of stars, generated once at build time from a
  * fixed seed, so the sky is the same on every build and costs nothing per frame. */
@@ -22,15 +23,16 @@ export interface SkyLayer {
 }
 
 export const SKY: SkyLayer[] = [
-  { name: "far", tile: 360, count: 46, radius: [0.45, 0.8], blur: 0.5, opacity: [0.021, 0.04], tint: 0.12, seed: 11, drift: 520, parallax: 0.03 },
-  { name: "mid", tile: 420, count: 20, radius: [0.7, 1.1], blur: 1, opacity: [0.062, 0.112], tint: 0.2, seed: 23, drift: 360, parallax: 0.07 },
-  { name: "near", tile: 480, count: 8, radius: [1, 1.4], blur: 1.5, opacity: [0.066, 0.114], tint: 0.3, seed: 37, drift: 240, parallax: 0.12 },
+  { name: "far", tile: 360, count: 46, radius: [0.45, 0.8], blur: 0.5, opacity: [0.038, 0.072], tint: 0.12, seed: 11, drift: 520, parallax: 0.03 },
+  { name: "mid", tile: 420, count: 20, radius: [0.7, 1.1], blur: 1, opacity: [0.11, 0.2], tint: 0.2, seed: 23, drift: 360, parallax: 0.07 },
+  { name: "near", tile: 480, count: 8, radius: [1, 1.4], blur: 1.5, opacity: [0.12, 0.205], tint: 0.3, seed: 37, drift: 240, parallax: 0.12 },
 ];
 
-// Night-sheet ink, and the faint warm (--c2) and cool (--c0) tints.
-const WHITE = "#E8E4DC";
-const WARM = "#F0B68E";
-const COOL = "#92B1EE";
+// Star colours from the master palette: ink, plus faint warm (--c2) and cool (--c0) tints.
+const T = nightTokens();
+const WHITE = T.ink;
+const WARM = T.c2;
+const COOL = T.c0;
 
 export function starTile(layer: SkyLayer): string {
   const r = rng(layer.seed);

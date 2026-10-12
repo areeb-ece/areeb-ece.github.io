@@ -60,7 +60,9 @@ src/lib/markdown/       pipeline, shiki, mermaid, wavedrom, relaxed-json
 src/pages/              index, [...slug], 404, fonts.css.ts, diagrams.css.ts, sky/[layer].svg.ts
 src/components/         Sidebar/TreeNodes (ARIA tree), Blocks, ChildList, ContactPanel, Sky, KatexStyles
 src/client/             typing.js + timing.js (ALL timing constants), sidebar.js, sky.js, copy.js, store.js
-src/styles/             tokens (night + unused light), base, layout, page, prose, code, typing, sky
+src/styles/             base, layout, page, prose, code, typing, sky (colours come from public/design/tokens.css)
+public/design/tokens.css  THE MASTER PALETTE shared with PrereqFlow and OTU Calendar
+src/lib/design.ts       reads the master palette for build-time colours (Mermaid, stars)
 tests/                  *.test.ts (node --test), fixtures/, serve.js, browser-check.js
 scripts/new-page.ts     the `new` command
 ```
@@ -80,11 +82,18 @@ scripts/new-page.ts     the `new` command
 
 ## Hard rules
 
-- **Design references are read-only.** `areeb-ece/prereqflow` and
-  `areeb-ece/otucalendar` are sibling sites: never edit, commit to, branch, or open
-  issues or PRs on them.
-  - otucalendar's `css/style.css` is the primary source for tokens and components.
-  - prereqflow gave the `.card` sheen, the aurora and the `--h*` hues.
+- **One master palette for all three sites.** `public/design/tokens.css` (served at
+  `/design/tokens.css`) holds every shared colour, radius and shadow, night and paper.
+  - The portfolio links it first (`src/layouts/Base.astro`).
+  - `areeb-ece/prereqflow` and `areeb-ece/otucalendar` link it after their own
+    `css/style.css`, whose token values are only an offline fallback.
+  - Mermaid's theme and the star colours are read from it at build time (`src/lib/design.ts`).
+  - Change colours there, never in component CSS. When you change it, also update the
+    fallback copies in the two sibling repos so offline use matches.
+- **Sibling repos: only with Areeb's say-so.** Don't edit, branch or open PRs on
+  `areeb-ece/prereqflow` or `areeb-ece/otucalendar` unless he asks (he did, on
+  2026-10-12, for the shared palette). Their CSS remains the source for the design:
+  otucalendar for components, prereqflow for the `.card` sheen, the aurora and the `--h*` hues.
 - **Their paths are reserved.** `/prereqflow/` and `/otucalendar/` are served by those
   repos' Pages sites. `reservedSlugs` in `site.config.yaml` blocks them; keep it that
   way.
@@ -106,7 +115,7 @@ scripts/new-page.ts     the `new` command
 - **v1 scope:** night theme only (light tokens exist, no toggle) and desktop-first (no
   horizontal scroll, the sidebar collapses to a rail below 760 px).
 - **Contrast budget.** Star brightness (`SKY` in `src/lib/stars.ts`) and the haze are
-  capped so `--ink-3` (#98948C, one step lighter than the sibling sites) keeps 4.5:1 over
+  capped so `--ink-3` (from the master palette) keeps 4.5:1 over
   the brightest possible sky. The browser check measures this. Re-run it after touching
   either.
 - **Performance budget:** client JS ≤ 15 KB gzipped (checked), and no long tasks while

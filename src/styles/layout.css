@@ -1,4 +1,7 @@
-/* Shell: sidebar + main column. */
+/* Shell: sidebar + main column. Colours come from the master palette,
+   public/design/tokens.css (linked first in src/layouts/Base.astro). */
+
+:root { --measure: 72ch; --side-w: 264px; --rail-w: 48px; }
 
 .shell { position: relative; z-index: 1; display: grid; grid-template-columns: var(--side-w) minmax(0, 1fr); min-height: 100vh; transition: grid-template-columns .25s cubic-bezier(.2, .8, .2, 1); }
 .rail .shell { grid-template-columns: var(--rail-w) minmax(0, 1fr); }
