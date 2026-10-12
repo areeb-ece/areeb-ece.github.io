@@ -34,7 +34,8 @@
 .prose hr { border: 0; border-top: 1px solid var(--rule-2); margin: 2em 0; }
 
 .prose table { display: block; overflow-x: auto; width: max-content; max-width: 100%; border-collapse: collapse; font-size: 13px; line-height: 1.5; font-variant-numeric: tabular-nums; }
-.prose th { font: 400 10.5px/1.3 var(--f); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); text-align: left; padding: 8px 14px 8px 0; border-bottom: 1px solid var(--rule); }
+.prose th { font: 400 10.5px/1.3 var(--f); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); padding: 8px 14px 8px 0; border-bottom: 1px solid var(--rule); }
+.prose th:not([align]) { text-align: left; }
 .prose td { padding: 7px 14px 7px 0; border-bottom: 1px solid var(--rule-2); color: var(--ink-2); vertical-align: top; }
 .prose :is(th, td):last-child { padding-right: 0; }
 

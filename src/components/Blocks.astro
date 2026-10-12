@@ -6,3 +6,6 @@ const { blocks, class: cls = "prose" } = Astro.props;
 <div class={cls}>
   {blocks.map((b) => <div class="b" data-kind={b.kind} data-src={b.src} set:html={b.html} />)}
 </div>
+<script>
+  import "../client/copy.js";
+</script>

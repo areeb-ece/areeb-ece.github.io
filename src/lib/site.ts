@@ -5,7 +5,10 @@ import configRaw from "../../site.config.yaml?raw";
 import { parseConfig, type SiteConfig } from "./config.ts";
 import { buildTree, type Page, type Tree } from "./tree.ts";
 import { cardHtml, type ImageInfo } from "./card.ts";
-import { renderMarkdown, type Rendered, type RenderDeps } from "./markdown/pipeline.ts";
+import { parseMarkdown, renderMarkdown, type Rendered, type RenderDeps } from "./markdown/pipeline.ts";
+import { codeBlock, loadHighlighter } from "./markdown/shiki.ts";
+import { mermaidKey, renderMermaidAll } from "./markdown/mermaid.ts";
+import { renderWavedrom } from "./markdown/wavedrom.ts";
 import { ContentError } from "./errors.ts";
 import { svgSize } from "./svg.ts";
 
@@ -25,6 +28,8 @@ export interface Site {
   intro: Rendered;
   image(path: string): ImageInfo | undefined;
   banner(page: Page): ImageInfo | null;
+  /** CSS lifted out of the Mermaid SVGs, served as /diagrams.css. */
+  diagramCss: string;
 }
 
 let cached: Promise<Site> | null = null;
@@ -52,6 +57,13 @@ async function build(): Promise<Site> {
   const image = (path: string) => images.get(path);
   const banner = (page: Page) => (page.banner ? images.get(page.banner)! : null);
 
+  // Code and diagrams: load the highlighter and draw every Mermaid diagram in one go.
+  await loadHighlighter();
+  const bodies = [...pages.map((p) => p.body), tree.home?.body ?? ""];
+  const mermaidSources = bodies.flatMap((b) => fences(parseMarkdown(b), "mermaid"));
+  const mermaid = await renderMermaidAll(mermaidSources);
+  const diagramCss = [...mermaid.values()].map((m) => m.css).filter(Boolean).join("\n");
+
   const deps = (file: string, dir: string, url: string): RenderDeps => ({
     file,
     dir,
@@ -59,6 +71,8 @@ async function build(): Promise<Site> {
     findPage: (slug) => tree.bySlug.get(slug),
     image,
     card: (p) => cardHtml(p, banner(p)),
+    code: (code, lang, meta) => codeBlock(code, lang, meta, (msg) => console.warn(`[site] ${file}: ${msg}`)),
+    diagram: (kind, code) => (kind === "mermaid" ? mermaid.get(mermaidKey(code))!.svg : renderWavedrom(code)),
   });
 
   const rendered = new Map<string, Rendered>();
@@ -66,5 +80,10 @@ async function build(): Promise<Site> {
   const home = tree.home ? renderMarkdown(tree.home.body, deps(tree.home.file, "content", "/")) : null;
   const intro = renderMarkdown(config.intro, deps("site.config.yaml (intro)", "content", "/"));
 
-  return { config, tree, pages, rendered, home, intro, image, banner };
+  return { config, tree, pages, rendered, home, intro, image, banner, diagramCss };
+}
+
+function fences(node: any, lang: string): string[] {
+  if (node.type === "code" && node.lang?.toLowerCase() === lang) return [node.value];
+  return (node.children ?? []).flatMap((c: any) => fences(c, lang));
 }
