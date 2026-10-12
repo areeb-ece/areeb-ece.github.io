@@ -1,0 +1,24 @@
+---
+import { loadSite } from "../lib/site.ts";
+import { ancestors, type Page } from "../lib/tree.ts";
+import TreeNodes from "./TreeNodes.astro";
+
+interface Props { current: Page | null }
+const { current } = Astro.props;
+const { config, tree } = await loadSite();
+const open = new Set(current ? [...ancestors(current), current].map((p) => p.slug) : []);
+---
+<aside class="side" id="side" aria-label="Site navigation">
+  <div class="side-head">
+    <a class="wordmark" href="/" aria-label="Home"><b>{config.wordmark.left}<span>/</span>{config.wordmark.right}</b></a>
+    <button class="rail-btn" id="railBtn" type="button" aria-controls="sideTree" aria-expanded="true" title="Collapse the sidebar">
+      <span class="sr-only">Collapse sidebar</span>
+    </button>
+  </div>
+  <nav class="side-nav" id="sideTree" aria-label="Pages">
+    <TreeNodes pages={tree.roots} current={current?.slug ?? null} open={open} root />
+  </nav>
+</aside>
+<script>
+  import "../client/sidebar.js";
+</script>

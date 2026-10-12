@@ -1,0 +1,37 @@
+# Site-wide settings. Everything about the home page and the site chrome lives here.
+# See CONTENT_GUIDE.md for what each field does.
+
+# The name at the top of the sidebar, rendered like OTU/CALENDAR.
+wordmark: { left: AREEB, right: ECE }
+
+# Big heading on the home page. It types itself out on your first visit.
+title: "Hi, I'm areeb."
+
+# Text under the title. Markdown works: **bold**, [links](https://example.com), `code`.
+intro: >-
+  I'm a 2nd year electrical engineering student. My interests are in
+  **digital logic and FPGA design**, **computer hardware**, and **audio DSP**.
+
+# One-line summary for search engines and link previews of the home page.
+description: Projects and small tools by areeb, an electrical engineering student at Ontario Tech University.
+
+# Contact panel on the home page. Add, remove or reorder freely.
+# icon is a path to an SVG in public/ (e.g. public/icons/github.svg → /icons/github.svg).
+links:
+  - { label: LinkedIn, href: "https://www.linkedin.com/in/TODO", icon: /icons/linkedin.svg }
+  - { label: Email,    href: "mailto:TODO@example.com",         icon: /icons/email.svg }
+
+# Fonts. To add one: drop the .woff2 files into public/fonts/ and add an entry under
+# registry. Use it everywhere with `default`, for code with `code`, or on a single
+# page with `font: <name>` in that page's frontmatter.
+fonts:
+  default: mononoki
+  code: mononoki
+  registry:
+    mononoki:
+      files: { 400: /fonts/mononoki-Regular.woff2, 700: /fonts/mononoki-Bold.woff2 }
+      fallback: 'ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace'
+
+# Top-level folder names the portfolio must never use, because another site
+# already lives at that address (areeb-ece.github.io/prereqflow/ and /otucalendar/).
+reservedSlugs: [prereqflow, otucalendar]

@@ -1,0 +1,50 @@
+/* Base elements and small components, ported from OTU Calendar's sheet. */
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; }
+html, body { margin: 0; min-height: 100%; }
+body { background: var(--bg); color: var(--ink); font: 400 14px/1.6 var(--f); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+::selection { background: var(--accent); color: var(--accent-ink); }
+code, kbd, samp, pre, .mono { font-family: var(--f-code); font-variant-numeric: tabular-nums; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 3px; }
+img, svg { max-width: 100%; }
+.lbl { font: 400 10.5px/1.3 var(--f); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+.sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+
+.wordmark { display: inline-flex; align-items: baseline; gap: 10px; white-space: nowrap; color: var(--ink); }
+.wordmark:hover { text-decoration: none; }
+.wordmark b { font: 700 15px/1.1 var(--f); letter-spacing: .18em; }
+.wordmark b span { color: var(--accent); font-weight: 400; }
+
+.btn { height: 32px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 0 12px; border: 1px solid var(--rule); border-radius: var(--r-sm); background: var(--sheet-2); cursor: pointer; white-space: nowrap; font: 400 12.5px var(--f); color: var(--ink); transition: background-color .18s, border-color .18s, color .18s, transform .18s; }
+.btn:hover { border-color: var(--ink-4); background: var(--card-hover); text-decoration: none; }
+.btn:active { transform: translateY(1px); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 700; }
+.btn.primary:hover { filter: brightness(1.06); }
+.btn.ghost { border-color: transparent; background: transparent; color: var(--ink-2); }
+.btn.ghost:hover { border-color: var(--rule); color: var(--ink); }
+.btn.icon { width: 32px; padding: 0; }
+
+.seg { display: inline-flex; border: 1px solid var(--rule); border-radius: var(--r-sm); height: 32px; padding: 2px; background: var(--bg); gap: 2px; }
+.seg button { border: 0; border-radius: 5px; background: transparent; padding: 0 10px; cursor: pointer; color: var(--ink-3); font: 400 12.5px var(--f); transition: background-color .2s, color .2s; white-space: nowrap; }
+.seg button[aria-checked="true"] { background: var(--accent); color: var(--accent-ink); font-weight: 700; }
+.seg button:hover:not([aria-checked="true"]) { color: var(--ink); background: var(--sheet-2); }
+
+.note { border-left: 3px solid var(--accent); border-radius: 0 var(--r-sm) var(--r-sm) 0; padding: 10px 14px; color: var(--ink-2); background: color-mix(in srgb, var(--accent) 7%, var(--bg)); margin: 0; }
+.note.warn { border-left-color: var(--warn); background: color-mix(in srgb, var(--warn) 8%, var(--bg)); }
+.note > :first-child { margin-top: 0; }
+.note > :last-child { margin-bottom: 0; }
+.note .note-title { font: 700 10.5px/1.3 var(--f); letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+.note.warn .note-title { color: var(--warn); }
+
+:not(pre) > code { font-size: .9em; background: var(--bg); border: 1px solid var(--rule-2); border-radius: 5px; padding: 1px 5px; color: var(--ink); overflow-wrap: anywhere; }
+kbd { font-size: .85em; background: var(--bg); border: 1px solid var(--rule); border-bottom-width: 2px; border-radius: 5px; padding: 0 5px; white-space: nowrap; }
+pre.code { margin: 0; padding: 12px 14px; overflow: auto; border: 1px solid var(--rule-2); border-radius: var(--r); background: var(--bg); font: 12.5px/1.6 var(--f-code); color: var(--ink-2); white-space: pre; tab-size: 4; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+}

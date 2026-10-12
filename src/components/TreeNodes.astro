@@ -1,0 +1,30 @@
+---
+import { listed, type Page } from "../lib/tree.ts";
+
+interface Props { pages: Page[]; current: string | null; open: Set<string>; root?: boolean }
+const { pages, current, open, root = false } = Astro.props;
+const items = listed(pages);
+---
+<ul role={root ? "tree" : "group"} class={root ? "tree" : undefined} aria-label={root ? "Pages" : undefined}>
+  {items.map((p) => {
+    const kids = listed(p.children);
+    const expanded = kids.length ? (open.has(p.slug) ? "true" : "false") : undefined;
+    return (
+      <li role="none">
+        <a
+          role="treeitem"
+          href={p.url}
+          data-slug={p.slug}
+          aria-expanded={expanded}
+          aria-current={p.slug === current ? "page" : undefined}
+          tabindex="-1"
+        >
+          {kids.length ? <span class="chev" aria-hidden="true"></span> : <span class="dot" aria-hidden="true"></span>}
+          <span class="t">{p.fm.title}</span>
+          {p.fm.draft && <span class="draft-tag">draft</span>}
+        </a>
+        {kids.length > 0 && <Astro.self pages={kids} current={current} open={open} />}
+      </li>
+    );
+  })}
+</ul>

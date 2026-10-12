@@ -1,0 +1,20 @@
+---
+import Base from "../layouts/Base.astro";
+import Blocks from "../components/Blocks.astro";
+import ContactPanel from "../components/ContactPanel.astro";
+import { loadSite } from "../lib/site.ts";
+
+const { config, intro, home } = await loadSite();
+---
+<Base title={config.title} typing="home">
+  <div class="home">
+    <header class="hero">
+      <div class="hero-main">
+        <h1 class="hero-title b" data-kind="title" data-src={config.title}>{config.title}</h1>
+        <Blocks blocks={intro.blocks} class="hero-intro" />
+      </div>
+      <ContactPanel />
+    </header>
+    {home && home.blocks.length > 0 && <Blocks blocks={home.blocks} />}
+  </div>
+</Base>
