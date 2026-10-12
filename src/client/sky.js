@@ -18,6 +18,7 @@ function onScroll() {
 }
 if (layers.length) {
   addEventListener("scroll", onScroll, { passive: true });
-  if (!reduce.matches) update();
+  // First position in a frame, not while the script loads (reading scrollY forces layout).
+  if (!reduce.matches) requestAnimationFrame(update);
   document.addEventListener("visibilitychange", () => root.classList.toggle("sky-paused", document.hidden));
 }

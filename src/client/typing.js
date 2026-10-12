@@ -25,7 +25,6 @@ else if (root.dataset.typing !== "none") {
 
 function start() {
   root.classList.add("typing-started");
-  performance.mark("typing:start");
   const blocks = [...document.querySelectorAll(".main .b")];
   if (!blocks.length) return done();
   const isHome = root.dataset.typing === "home";
@@ -65,8 +64,10 @@ function start() {
   }
 
   // Any click, key press or scroll finishes the animation at once.
-  const startY = window.scrollY;
-  const onScroll = () => Math.abs(window.scrollY - startY) > 2 && finish();
+  // Reading scrollY forces a layout, so it's taken in the first frame, not while the
+  // script loads (that would turn the page's first layout into one long task).
+  let startY = null;
+  const onScroll = () => startY !== null && Math.abs(window.scrollY - startY) > 2 && finish();
   const skipEvents = ["pointerdown", "keydown", "wheel", "touchstart"];
   skipEvents.forEach((e) => window.addEventListener(e, finish, { passive: true, capture: true }));
   window.addEventListener("scroll", onScroll, { passive: true });
@@ -156,10 +157,38 @@ function start() {
       done(blocks[blocks.length - 1], cursor);
     }
   }
-  raf = requestAnimationFrame((now) => {
-    t0 = now;
-    frame(now);
+  // Start the clock once the page has been painted for the first time, so the
+  // browser's initial layout of the page doesn't eat into the typing budget.
+  afterFirstPaint(() => {
+    if (finished) return;
+    raf = requestAnimationFrame((now) => {
+      t0 = now;
+      startY = window.scrollY;
+      performance.mark("typing:start");
+      frame(now);
+    });
   });
+}
+
+/** Runs `go` after the browser's first paint (Paint Timing API), or after two frames where that isn't available. */
+function afterFirstPaint(go) {
+  if (performance.getEntriesByType?.("paint").length) return go();
+  let started = false;
+  const once = () => {
+    if (started) return;
+    started = true;
+    go();
+  };
+  try {
+    const po = new PerformanceObserver(() => {
+      po.disconnect();
+      once();
+    });
+    po.observe({ type: "paint" });
+    setTimeout(once, 500); // never wait on it for long
+  } catch {
+    requestAnimationFrame(() => requestAnimationFrame(once));
+  }
 }
 
 /** How many characters of [from, to) are due by time t (times are increasing). */
