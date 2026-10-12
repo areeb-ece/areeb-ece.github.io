@@ -33,7 +33,8 @@ if a feature can only be changed by editing code, it isn't finished. Update
 npm run dev            # dev server (http://localhost:4321); drafts visible
 npm test               # node --test "tests/*.test.ts" (unit tests, no browser)
 npm run build          # astro build → dist/ (needs Chromium for Mermaid: npx playwright install chromium)
-npm run test:browser   # tests/browser-check.js against dist/ (Playwright)
+npm run test:browser   # tests/browser-check.js against dist/ (Playwright, Chromium)
+BROWSER=firefox npm run test:browser   # same check in Firefox (CI runs both; Firefox can't be downloaded in cloud containers)
 npm run check          # all three, as CI runs them
 npm run new -- section/page-name "Title"
 ```

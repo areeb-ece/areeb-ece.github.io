@@ -38,10 +38,11 @@ npm run new -- projects/my-new-thing "My New Thing"   # new page with commented 
 npm test                                              # unit tests (node --test)
 npm run build                                         # static site in dist/
 npm run test:browser                                  # end-to-end check of dist/ in Chromium
+BROWSER=firefox npm run test:browser                  # the same check in Firefox (npx playwright install firefox)
 npm run check                                         # all three, the way CI runs them
 ```
 
-Pushing to `main` runs the tests and the browser check, builds the site and publishes
+Pushing to `main` runs the tests and the browser check (in Chromium and Firefox), builds the site and publishes
 it to GitHub Pages (`.github/workflows/deploy.yml`). Pull requests run the same checks
 without deploying. If a test fails, nothing is published.
 

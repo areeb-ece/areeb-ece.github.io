@@ -1,5 +1,6 @@
-/* End-to-end check of the built site in a real browser (Chromium via Playwright).
- * Run after `npm run build`:  npm run test:browser
+/* End-to-end check of the built site in a real browser (Playwright).
+ * Run after `npm run build`:  npm run test:browser   (Chromium)
+ *                             BROWSER=firefox npm run test:browser
  * Serves dist/ locally and checks the typing animation, reduced motion, the sidebar,
  * the kitchen sink, the CSP, contrast over the night sky and the JS budget. Screenshots
  * go to test-results/screenshots/ (uploaded as a CI artifact). */
@@ -7,7 +8,7 @@ import fs from "node:fs";
 import path from "node:path";
 import zlib from "node:zlib";
 import assert from "node:assert/strict";
-import { chromium } from "playwright";
+import { chromium, firefox } from "playwright";
 import { serve } from "./serve.js";
 import { TIMING } from "../src/client/timing.js";
 import { buildTree, listed } from "../src/lib/tree.ts";
@@ -15,10 +16,14 @@ import { parseConfig } from "../src/lib/config.ts";
 
 const ROOT = path.join(import.meta.dirname, "..");
 const DIST = path.join(ROOT, "dist");
-const SHOTS = path.join(ROOT, "test-results", "screenshots");
+const BROWSER = process.env.BROWSER || "chromium";
+const ENGINES = { chromium, firefox };
+if (!ENGINES[BROWSER]) throw new Error(`BROWSER must be one of: ${Object.keys(ENGINES).join(", ")}`);
+const IS_CHROMIUM = BROWSER === "chromium";
+const SHOTS = path.join(ROOT, "test-results", "screenshots", IS_CHROMIUM ? "" : BROWSER);
 const VIEW = { width: 1440, height: 900 };
 const results = [];
-const ok = (msg) => (results.push(msg), console.log(`ok ${msg}`));
+const ok = (msg) => (results.push(msg), console.log(`ok [${BROWSER}] ${msg}`));
 
 function walk(dir) {
   return fs.readdirSync(dir).flatMap((n) => {
@@ -53,7 +58,7 @@ const pages = htmlFiles
 const contentPages = pages.filter((u) => u !== "/");
 
 const { server, base } = await serve(DIST);
-const browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {});
+const browser = await ENGINES[BROWSER].launch(IS_CHROMIUM && process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {});
 const problems = [];
 
 /** A fresh context that records console errors, page errors and CSP violations. */
@@ -86,7 +91,12 @@ try {
     const title = await page.getAttribute(".hero-title", "data-src");
     // Sample the page until the title is done: nothing but the cursor may be visible.
     let samples = 0;
+    const deadline = Date.now() + 8000;
     while (!(await marks(page))["typing:title-done"]) {
+      if (Date.now() > deadline) {
+        const why = await page.evaluate(() => ({ classes: document.documentElement.className, typing: document.documentElement.dataset.typing, reduce: matchMedia("(prefers-reduced-motion: reduce)").matches, marks: performance.getEntriesByType("mark").map((m) => m.name) }));
+        assert.fail(`the home title never finished typing: ${JSON.stringify(why)}`);
+      }
       const s = await page.evaluate(() => ({
         shown: [...document.querySelectorAll(".main .b")].filter((b) => b.classList.contains("shown") || b.getBoundingClientRect().width > 1).length,
         typed: document.querySelector("pre.typing")?.textContent ?? "",
@@ -140,13 +150,15 @@ try {
     }
     ok(`content: ${contentPages.length} pages each finished typing within 3.1 s (slowest ${slowest.toFixed(0)} ms)`);
 
-    // no long tasks while typing the heaviest page
-    await page.goto(base + "/_kitchen-sink/");
-    await waitDone(page);
-    const m = await marks(page);
-    const long = (await page.evaluate(() => window.__longTasks)).filter((t) => t.start >= m["typing:start"] && t.start <= m["typing:done"]);
-    assert.deepEqual(long, [], "no long tasks during the animation");
-    ok("performance: no long tasks (> 50 ms) while the kitchen sink types");
+    // no long tasks while typing the heaviest page (the Long Tasks API is Chromium-only)
+    if (IS_CHROMIUM) {
+      await page.goto(base + "/_kitchen-sink/");
+      await waitDone(page);
+      const m = await marks(page);
+      const long = (await page.evaluate(() => window.__longTasks)).filter((t) => t.start >= m["typing:start"] && t.start <= m["typing:done"]);
+      assert.deepEqual(long, [], "no long tasks during the animation");
+      ok("performance: no long tasks (> 50 ms) while the kitchen sink types");
+    }
 
     // skipping
     await page.goto(base + "/projects/fpga-soft-cpu/");
@@ -226,7 +238,7 @@ try {
 
   // ── kitchen sink renders everything ───────────────────────────────────
   {
-    const ctx = await context({ reducedMotion: "reduce", permissions: ["clipboard-read", "clipboard-write"] });
+    const ctx = await context(IS_CHROMIUM ? { reducedMotion: "reduce", permissions: ["clipboard-read", "clipboard-write"] } : { reducedMotion: "reduce" });
     const page = await ctx.newPage();
     await page.goto(base + "/_kitchen-sink/");
     await page.waitForLoadState("networkidle");
@@ -236,8 +248,12 @@ try {
     const langs = await page.$$eval("figure.code", (fs) => fs.map((f) => f.dataset.lang));
     for (const l of ["verilog", "systemverilog", "vhdl", "c", "cpp", "python", "matlab", "asm", "tcl", "bash", "json", "yaml"]) assert.ok(langs.includes(l), `code block for ${l}`);
     assert.ok(await page.evaluate(() => document.fonts.check("16px KaTeX_Main")), "KaTeX fonts load from the site");
-    await page.click("figure.code .copy");
-    assert.match(await page.evaluate(() => navigator.clipboard.readText()), /^module counter/);
+    assert.ok(await page.isVisible("figure.code .copy"), "copy buttons are shown");
+    if (IS_CHROMIUM) {
+      // Playwright can only grant clipboard access in Chromium.
+      await page.click("figure.code .copy");
+      assert.match(await page.evaluate(() => navigator.clipboard.readText()), /^module counter/);
+    }
     ok("kitchen sink: math, code (12 languages), Mermaid, WaveDrom, callouts, cards, figures, tables, footnotes, copy button");
     await page.screenshot({ path: path.join(SHOTS, "kitchen-sink.png"), fullPage: true });
     for (const [url, name] of [["/projects/", "category"], ["/projects/fpga-soft-cpu/", "project"], ["/nope/", "404"]]) {
