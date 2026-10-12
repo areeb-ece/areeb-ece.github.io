@@ -1,0 +1,33 @@
+---
+import { loadSite } from "../lib/site.ts";
+import { cardHtml } from "../lib/card.ts";
+import { listed, type Page } from "../lib/tree.ts";
+
+interface Props { page: Page }
+const { page } = Astro.props;
+const { banner } = await loadSite();
+const kids = listed(page.children);
+const mode = page.fm.children;
+// What the typing animation shows before the list appears: the equivalent Markdown.
+const src =
+  mode === "cards"
+    ? [":::cards", ...kids.map((k) => `::card{to="${k.url.slice(0, -1)}"}`), ":::"].join("\n")
+    : kids.map((k) => `- [${k.fm.title}](${k.url})`).join("\n");
+---
+{mode !== "none" && kids.length > 0 && (
+  <section class="children" aria-label="Pages in this section">
+    {mode === "cards" ? (
+      <div class="b" data-kind="media" data-src={src}>
+        <div class="cards" set:html={kids.map((k) => cardHtml(k, banner(k))).join("")} />
+      </div>
+    ) : (
+      <div class="b" data-kind="text" data-src={src}>
+        <ul class="child-list">
+          {kids.map((k) => (
+            <li><a href={k.url}>{k.fm.title}</a>{k.fm.description && <span> · {k.fm.description}</span>}</li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </section>
+)}

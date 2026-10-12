@@ -1,0 +1,54 @@
+---
+import { loadSite } from "../lib/site.ts";
+import Sidebar from "../components/Sidebar.astro";
+import type { Page } from "../lib/tree.ts";
+import "../styles/site.css";
+
+interface Props {
+  title: string;
+  description?: string;
+  /** The page being shown, for highlighting it in the sidebar. */
+  page?: Page | null;
+  font?: string;
+  /** "home" | "page" | "none": which typing sequence runs. */
+  typing?: "home" | "page" | "none";
+}
+
+const { title, description, page = null, font, typing = "none" } = Astro.props;
+const site = await loadSite();
+const { config } = site;
+const fontName = font ?? config.fonts.default;
+const preload = Object.values(config.fonts.registry[fontName].files);
+const isHome = typing === "home";
+const fullTitle = isHome ? `${config.wordmark.left}/${config.wordmark.right}` : `${title} · ${config.wordmark.left}/${config.wordmark.right}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+// Scripts only from this site; style attributes are allowed because KaTeX and the
+// code highlighter position and colour things with them. Nothing is fetched at runtime.
+const csp = "default-src 'none'; script-src 'self'; style-src 'self'; style-src-attr 'unsafe-inline'; font-src 'self'; img-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; frame-src 'none'; manifest-src 'none'";
+---
+<!doctype html>
+<html lang="en" data-theme="dark" data-font={fontName} data-typing={typing}>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+{import.meta.env.PROD && <meta http-equiv="Content-Security-Policy" content={csp}>}
+<meta name="referrer" content="no-referrer">
+<title>{fullTitle}</title>
+<meta name="description" content={description || config.description}>
+<meta name="author" content="areeb">
+<link rel="canonical" href={canonical}>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+{preload.map((href) => <link rel="preload" href={href} as="font" type="font/woff2" crossorigin>)}
+<link rel="stylesheet" href="/fonts.css">
+<script is:inline src="/js/boot.js"></script>
+<slot name="head" />
+</head>
+<body>
+<div class="shell" id="shell">
+  <Sidebar current={page} />
+  <main class="main" id="main">
+    <slot />
+  </main>
+</div>
+</body>
+</html>

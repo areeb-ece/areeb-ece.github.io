@@ -1,0 +1,23 @@
+---
+import { loadSite } from "../lib/site.ts";
+import { iconSvg } from "../lib/icons.ts";
+
+const { config } = await loadSite();
+const src = config.links.map((l) => `- [${l.label}](${l.href})`).join("\n");
+const external = (href: string) => /^https?:/i.test(href);
+---
+{config.links.length > 0 && (
+  <aside class="contact b" data-kind="media" data-src={src} aria-label="Contact">
+    <span class="lbl">contact</span>
+    <ul>
+      {config.links.map((l) => (
+        <li>
+          <a href={l.href} rel={external(l.href) ? "noopener noreferrer" : undefined} target={external(l.href) ? "_blank" : undefined}>
+            <span class="ico" set:html={iconSvg(l.icon)} />
+            <span>{l.label}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </aside>
+)}
