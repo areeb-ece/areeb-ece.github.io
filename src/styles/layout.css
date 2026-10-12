@@ -16,7 +16,13 @@
 .rail .rail-btn::before { transform: translateX(-1.5px) rotate(-135deg); }
 .side-nav { flex: 1; min-height: 0; overflow: auto; padding: 12px 8px 24px; scrollbar-width: thin; }
 
+.side-foot { flex: none; display: flex; align-items: center; padding: 10px 12px 12px 18px; border-top: 1px solid var(--rule-2); }
+.side-foot:empty { display: none; }
+.side-foot .sd-gear { width: 28px; height: 28px; border-color: transparent; background: transparent; color: var(--ink-3); }
+.side-foot .sd-gear:hover, .side-foot .sd-gear[aria-expanded="true"] { border-color: var(--rule); background: var(--sheet-2); color: var(--ink); }
+
 .rail .side-head { padding: 15px 9px; justify-content: center; }
+.rail .side-foot { padding: 10px 9px; justify-content: center; }
 .rail .side-head .wordmark, .rail .side-nav { display: none; }
 
 /* tree */

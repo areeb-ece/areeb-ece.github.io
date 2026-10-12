@@ -40,10 +40,14 @@ const csp = "default-src 'none'; script-src 'self'; style-src 'self'; style-src-
 <link rel="canonical" href={canonical}>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 {preload.map((href) => <link rel="preload" href={href} as="font" type="font/woff2" crossorigin>)}
-<!-- The master palette, shared with PrereqFlow and OTU Calendar: public/design/tokens.css -->
+<!-- Shared with PrereqFlow and OTU Calendar (public/design/): the master palette and its
+     themes, the settings panel and the night sky, and the visitor's saved settings. -->
 <link rel="stylesheet" href="/design/tokens.css">
+<link rel="stylesheet" href="/design/ui.css">
 <link rel="stylesheet" href="/fonts.css">
+<script is:inline src="/design/theme.js"></script>
 <script is:inline src="/js/boot.js"></script>
+<script is:inline src="/design/ui.js" defer></script>
 <slot name="head" />
 </head>
 <body>

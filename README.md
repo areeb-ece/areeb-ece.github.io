@@ -55,11 +55,13 @@ public/                   copied as-is: fonts (mononoki, OFL), contact icons, fa
 src/lib/                  build code: config + frontmatter schemas, page tree, Markdown pipeline
 src/lib/markdown/         unified pipeline, Shiki theme, KaTeX, Mermaid and WaveDrom renderers
 src/client/               the browser scripts: typing animation (timing.js has every constant),
-                          sidebar tree, night-sky parallax, copy buttons
-public/design/tokens.css  the master palette: colours for this site, PrereqFlow and OTU Calendar
-src/styles/               the PrereqFlow / OTU Calendar sheet: components, prose, code, sky
-src/pages/                routes: home, every content page, 404, generated fonts.css,
-                          diagrams.css and the star tiles
+                          sidebar tree, copy buttons
+public/design/            shared with PrereqFlow and OTU Calendar: tokens.css (the master palette
+                          and its themes), theme.js (applies saved settings before paint), ui.js
+                          + ui.css (the settings button and panel, the night sky)
+src/styles/               the PrereqFlow / OTU Calendar sheet: components, prose, code
+src/pages/                routes: home, every content page, 404, generated fonts.css and
+                          diagrams.css
 scripts/new-page.ts       npm run new
 tests/                    unit tests, fixtures and the Playwright browser check
 ```
@@ -89,23 +91,36 @@ after the cursor blinks alone for a second, once per visit. Any click, key or sc
 finishes it. With JavaScript off, `animate: false` or reduced motion, the page shows
 straight away. Every timing constant is in `src/client/timing.js`.
 
-### One palette for three sites
+### One palette, many themes, three sites
 
-`public/design/tokens.css` is the master palette: every colour, radius and shadow, for
-the night and paper sheets. This site, [PrereqFlow](https://areeb-ece.github.io/prereqflow/)
-and [OTU Calendar](https://areeb-ece.github.io/otucalendar/) all load it from
-`/design/tokens.css` (they share the same address, so their security policies allow it).
-Edit it and push, and all three sites change when this one deploys. Mermaid's colours and
-the star tints are read from it at build time.
+`public/design/tokens.css` is the master palette: every colour, radius and shadow, as a
+set of themes (Night, Paper, Void, Console, Amber, Arctic, Ocean, Forest, Retro, Solar
+dark and light, Synthwave, Ink, Sepia and Rosé). This site,
+[PrereqFlow](https://areeb-ece.github.io/prereqflow/) and
+[OTU Calendar](https://areeb-ece.github.io/otucalendar/) all load it from
+`/design/tokens.css`, along with the rest of `public/design/` (they share the same
+address, so their security policies allow it). Edit it and push, and all three sites
+change when this one deploys. `npm test` checks every theme for missing colours and
+text contrast.
+
+The gear icon on every site opens one settings panel (`public/design/ui.js`): theme
+(or follow the system's light/dark), accent colour, corners, motion, this site's typing
+effect, and the night sky. The settings live in one `localStorage` entry
+(`design.settings`), which the three sites share because they're on one origin, so a
+choice made on any of them applies to all of them, in later visits and in other open
+tabs. `public/design/theme.js` applies it before the first paint. Mermaid diagrams are
+drawn once at build time and their colours rewritten as CSS variables, so they follow the
+theme; code, WaveDrom and KaTeX already use the variables.
 
 ### Background
 
-Three layers of stars, generated from a fixed seed at build time as tiling SVGs, drift
-over several minutes and follow a fraction of the scroll. The aurora glow from PrereqFlow
-and OTU Calendar sits behind them. Only transforms animate, the sky pauses in hidden
-tabs, and it holds still with reduced motion. Star brightness is capped so the dimmest
-text colour keeps WCAG AA contrast over any point of the sky, and the browser check
-measures it.
+Three layers of stars from fixed seeds, drawn as tiling SVG patterns by
+`public/design/ui.js` (so PrereqFlow and OTU Calendar get the same sky behind their
+sheets), drift over several minutes and follow a fraction of the scroll. The aurora glow
+sits behind them. Only transforms animate, the sky pauses in hidden tabs, and it holds
+still with reduced motion or with animations turned off. Star colours come from the
+theme. With the default settings, star brightness is capped so the dimmest text colour
+keeps WCAG AA contrast over any point of the sky, and the browser check measures it.
 
 ## Privacy and security
 
@@ -114,8 +129,10 @@ measures it.
   `style-src-attr 'unsafe-inline'`, because KaTeX and the code highlighter position and
   colour text with `style` attributes. Attributes can't run code, and `<style>` and
   `<script>` stay locked down.
-- **No inline scripts.** `public/js/boot.js` runs before first paint as a file. The
-  other scripts are bundled modules.
+- **No inline scripts.** `public/design/theme.js` and `public/js/boot.js` run before
+  first paint as files. The other scripts are bundled modules, plus the shared
+  `public/design/ui.js`, which builds its markup without `style` attributes so it also
+  works under OTU Calendar's stricter policy.
 - **Nothing external.** mononoki and KaTeX's fonts are self-hosted, there are no CDNs, no
   analytics and no third-party requests. The browser check asserts there are no CSP
   violations.

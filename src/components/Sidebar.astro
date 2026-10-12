@@ -18,6 +18,8 @@ const open = new Set(current ? [...ancestors(current), current].map((p) => p.slu
   <nav class="side-nav" id="sideTree" aria-label="Pages">
     <TreeNodes pages={tree.roots} current={current?.slug ?? null} open={open} root />
   </nav>
+  <!-- /design/ui.js puts the settings button (theme, colours, sky) here. -->
+  <div class="side-foot" data-design-settings></div>
 </aside>
 <script>
   import "../client/sidebar.js";
