@@ -95,3 +95,18 @@ test("headings get ids and anchor links; repeated headings stay unique", () => {
   assert.match(r.blocks[0].html, /<h2 id="timing-power">Timing &#x26; Power<a class="anchor" href="#timing-power"/);
   assert.match(r.blocks[1].html, /id="timing-power-1"/);
 });
+
+test("MathML scripts keep the number of children Firefox requires (f_{\\max})", () => {
+  const html = renderMarkdown("$f_{\\max} \\approx 1/t$ and $x^{\\log n}$", deps()).blocks[0].html;
+  const bad = [...html.matchAll(/<(msub|msup)>([\s\S]*?)<\/\1>/g)].filter(([, , inner]) => {
+    // count top-level child elements
+    let depth = 0, n = 0;
+    for (const t of inner.matchAll(/<(\/?)([a-z]+)[^>]*?(\/?)>/g)) {
+      if (t[1]) depth--;
+      else { if (depth === 0) n++; if (!t[3]) depth++; }
+    }
+    return n !== 2;
+  });
+  assert.deepEqual(bad.map((m) => m[0]), []);
+  assert.match(html, /<msub><mi>f<\/mi><mrow><mi>max<\/mi><mo>/);
+});
