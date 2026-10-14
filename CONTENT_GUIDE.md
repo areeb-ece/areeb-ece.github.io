@@ -78,10 +78,9 @@ content/
   projects/
     index.md                  → /projects/
     banner.jpg
-    fpga-soft-cpu/
-      index.md                → /projects/fpga-soft-cpu/
-      banner.png
-      diagram.svg             images sit next to the page that uses them
+    nand-alu/
+      index.md                → /projects/nand-alu/
+      settle.svg              images sit next to the page that uses them
   tools/
     index.md                  → /tools/
     prereqflow-notes/
@@ -92,7 +91,7 @@ content/
 - **A category** is just a page with sub-folders. Its sub-pages are listed at the bottom
   as cards, and it gets a folder arrow in the sidebar. Nest as deep as you like.
 - **Folder names** become web addresses, so they must be lowercase words with hyphens:
-  `fpga-soft-cpu`, not `FPGA Soft CPU` or `fpga_soft_cpu`. The `title` in the
+  `nand-alu`, not `NAND ALU` or `nand_alu`. The `title` in the
   frontmatter is what people see.
 - **Reserved names:** `prereqflow` and `otucalendar` can't be top-level folders, because
   those addresses already belong to those sites. They're listed under `reservedSlugs`
@@ -173,8 +172,8 @@ If a title contains a colon, wrap it in quotes: `title: "Lab 3: UART"`.
   under roughly 500 KB.
 - `bannerAlt` describes the image for screen readers.
 
-The two banner images in `content/projects/` are labelled placeholders. Replace them,
-or delete them to get the gradient.
+The banner in `content/projects/` is a labelled placeholder. Replace it, or delete it
+to get the gradient.
 
 ---
 
@@ -185,7 +184,7 @@ A card is a big link to another page that shows its banner, title and descriptio
 A single card:
 
 ```md
-::card{to="/projects/fpga-soft-cpu"}
+::card{to="/projects/nand-alu"}
 ```
 
 A row of cards:
@@ -198,7 +197,7 @@ A row of cards:
 :::
 ```
 
-`to` can be a full site path (`/projects/fpga-soft-cpu`) or a path relative to the
+`to` can be a full site path (`/projects/nand-alu`) or a path relative to the
 current page: `./child`, `../sibling` or just `child`. A card that points at a page that
 doesn't exist stops the build and names the file, line and path, so a dead card can
 never go live.

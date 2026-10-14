@@ -164,7 +164,7 @@ try {
     }
 
     // skipping
-    await page.goto(base + "/projects/fpga-soft-cpu/");
+    await page.goto(base + "/projects/nand-alu/");
     await page.waitForFunction(() => document.documentElement.classList.contains("typing-started"));
     await page.mouse.click(900, 600);
     await page.waitForFunction(() => document.documentElement.classList.contains("typed"), null, { timeout: 300 });
@@ -179,7 +179,7 @@ try {
   for (const [label, opts] of [["reduced motion", { reducedMotion: "reduce" }], ["JavaScript off", { javaScriptEnabled: false }]]) {
     const ctx = await context(opts);
     const page = await ctx.newPage();
-    for (const url of ["/", "/projects/fpga-soft-cpu/"]) {
+    for (const url of ["/", "/projects/nand-alu/"]) {
       await page.goto(base + url, { waitUntil: "domcontentloaded" });
       const s = await page.evaluate(() => ({ typing: document.documentElement.classList.contains("typing"), hidden: [...document.querySelectorAll(".main .b")].filter((b) => b.getBoundingClientRect().width <= 1).length, pre: document.querySelectorAll("pre.typing").length }));
       assert.deepEqual(s, { typing: false, hidden: 0, pre: 0 }, `${label} ${url}`);
@@ -205,10 +205,10 @@ try {
 
     const ctx = await context();
     const page = await ctx.newPage();
-    await page.goto(base + "/projects/fpga-soft-cpu/");
+    await page.goto(base + "/projects/nand-alu/");
     await waitDone(page);
     assert.deepEqual(await page.$$eval('[role="tree"] [role="treeitem"]', (els) => els.map((e) => e.dataset.slug)), expected, "sidebar matches content/");
-    assert.equal(await page.getAttribute('[aria-current="page"]', "data-slug"), "projects/fpga-soft-cpu");
+    assert.equal(await page.getAttribute('[aria-current="page"]', "data-slug"), "projects/nand-alu");
     assert.equal(await page.getAttribute('[data-slug="projects"]', "aria-expanded"), "true", "ancestors start expanded");
     ok(`sidebar: tree matches content/ (${expected.length} pages, hidden and drafts left out)`);
 
@@ -279,7 +279,7 @@ try {
     assert.ok(dark < 0.002, `WaveDrom diagram is ${(dark * 100).toFixed(1)}% near-black pixels (its shapes lost their styling)`);
     ok(`WaveDrom: wave shapes are styled, no black fills (${(dark * 100).toFixed(2)}% near-black)`);
     await page.screenshot({ path: path.join(SHOTS, "kitchen-sink.png"), fullPage: true });
-    for (const [url, name] of [["/projects/", "category"], ["/projects/fpga-soft-cpu/", "project"], ["/nope/", "404"]]) {
+    for (const [url, name] of [["/projects/", "category"], ["/projects/nand-alu/", "project"], ["/nope/", "404"]]) {
       await page.goto(base + url);
       await page.screenshot({ path: path.join(SHOTS, `${name}.png`), fullPage: name === "project" });
     }
@@ -361,7 +361,7 @@ try {
     assert.ok(!(await page.isVisible(".sd-panel")), "Escape closes the panel");
 
     // Saved for the next visit, applied before the first paint, and shared by every page.
-    await page.goto(base + "/projects/fpga-soft-cpu/", { waitUntil: "commit" });
+    await page.goto(base + "/projects/nand-alu/", { waitUntil: "commit" });
     await page.waitForSelector("body");
     assert.equal(await page.getAttribute("html", "data-theme"), "console", "theme applied before the page renders");
     const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("design.settings")));

@@ -10,13 +10,13 @@ export const BANNER_EXTS = ["jpg", "jpeg", "png", "webp", "avif"];
 export const SLUG = /^_?[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 export interface Page {
-  /** "projects/fpga-soft-cpu" */
+  /** "projects/nand-alu" */
   slug: string;
-  /** "/projects/fpga-soft-cpu/" */
+  /** "/projects/nand-alu/" */
   url: string;
-  /** "content/projects/fpga-soft-cpu/index.md" (for error messages) */
+  /** "content/projects/nand-alu/index.md" (for error messages) */
   file: string;
-  /** "content/projects/fpga-soft-cpu" */
+  /** "content/projects/nand-alu" */
   dir: string;
   fm: Frontmatter;
   raw: string;
