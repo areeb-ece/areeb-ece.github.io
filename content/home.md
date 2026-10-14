@@ -6,7 +6,7 @@
 ## Selected work
 
 :::cards
-::card{to="/projects/fpga-soft-cpu"}
+::card{to="/projects/nand-alu"}
 ::card{to="/tools/prereqflow-notes"}
 ::card{to="/tools/otucalendar-notes"}
 :::

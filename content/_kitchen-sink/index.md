@@ -206,7 +206,7 @@ A warning with its own title.
 
 A single card:
 
-::card{to="/projects/fpga-soft-cpu"}
+::card{to="/projects/nand-alu"}
 
 A group of cards:
 
