@@ -1,10 +1,10 @@
-/* Shared by areeb-ece.github.io, PrereqFlow and OTU Calendar (served as /design/ui.js).
+/* Shared by areeb-ece.github.io, PrereqFlow, OTU Calendar and Satisfactory Tools (served as /design/ui.js).
    Needs /design/theme.js (loaded first, in <head>) and /design/ui.css.
 
    - The settings button: placed in the page's [data-design-settings] element, or floating
      in the corner if there isn't one. It opens a panel for the theme, accent, corners,
      motion and the night sky. Changes apply at once, are saved in this browser, and reach
-     the other two sites (and other open tabs) through the same localStorage entry.
+     the other sites (and other open tabs) through the same localStorage entry.
    - The night sky: drawn into the page's [data-sky] element. Three tiling layers of
      stars from fixed seeds, so the sky is the same on every visit; colours come from
      CSS (ui.css), so switching theme needs no redraw.
@@ -37,7 +37,7 @@
     try { localStorage.removeItem(D.key); } catch (e) {}
     changed();
   };
-  // Another tab (or another of the three sites) saved new settings.
+  // Another tab (or another of the sites) saved new settings.
   addEventListener("storage", function (e) {
     if (e.key !== D.key && e.key !== null) return;
     S = D.settings = D.read();
@@ -212,7 +212,7 @@
       '<div class="sd-row"><span>Drift direction</span>' + seg("direction", [["w", "←", "west"], ["n", "↑", "north"], ["s", "↓", "south"], ["e", "→", "east"], ["nw", "↖", "north-west"], ["ne", "↗", "north-east"], ["sw", "↙", "south-west"], ["se", "↘", "south-east"]]) + "</div>" +
       '<p class="sd-note">Very bright skies can make the dimmest text harder to read.</p></section>' +
       '<div class="sd-foot"><button class="sd-reset" type="button" data-reset>Reset all</button>' +
-      '<p class="sd-note">Saved in this browser, and shared by areeb-ece.github.io, PrereqFlow and OTU Calendar.</p></div>';
+      '<p class="sd-note">Saved in this browser, and shared by areeb-ece.github.io, PrereqFlow, OTU Calendar and Satisfactory Tools.</p></div>';
     document.body.appendChild(panel);
 
     // Keys typed in the panel are the panel's, not shortcuts for the page underneath.

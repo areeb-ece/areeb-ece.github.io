@@ -51,7 +51,7 @@ download.
 site.config.yaml        home title/intro (Markdown), links, wordmark, fonts registry, reservedSlugs
 content/                pages: <path>/index.md = /<path>/; home.md = extra home content; images live beside pages
 public/                 fonts (mononoki + OFL), icons (placeholders), favicon, js/boot.js (pre-paint, not bundled)
-public/design/          SHARED WITH ALL THREE SITES, served at /design/, not bundled:
+public/design/          SHARED WITH ALL FOUR SITES, served at /design/, not bundled:
                           tokens.css (master palette = the themes), theme.js (pre-paint: applies saved
                           settings), ui.js + ui.css (gear button, settings panel, night sky + its defaults)
 src/lib/config.ts       site.config.yaml schema (astro/zod) → readable errors
@@ -75,7 +75,7 @@ scripts/new-page.ts     the `new` command
   source is sliced from the file using mdast position offsets, and blocks are grouped
   *before* KaTeX runs (KaTeX drops positions). `typing.js` reads `data-src`.
 - `public/design/theme.js` runs first and applies the visitor's settings from
-  `localStorage["design.settings"]` (shared by all three sites, same origin): `data-theme`,
+  `localStorage["design.settings"]` (shared by all four sites, same origin): `data-theme`,
   `data-scheme` (dark/light, from the theme's color-scheme), `data-motion="off"`, and
   inline `--accent`/`--r*` overrides. It exposes `window.SiteDesign`; `ui.js` adds
   `set`, `reset`, `onChange`, `themes`, `open`. The theme list is read from the labelled
@@ -91,7 +91,7 @@ scripts/new-page.ts     the `new` command
 
 ## Hard rules
 
-- **One master palette for all three sites.** `public/design/tokens.css` (served at
+- **One master palette for all four sites.** `public/design/tokens.css` (served at
   `/design/tokens.css`) holds every shared colour, radius and shadow, one block per theme
   (night first, the default). `tests/themes.test.ts` checks every theme for missing
   tokens and AA contrast.
@@ -99,20 +99,21 @@ scripts/new-page.ts     the `new` command
   - `areeb-ece/prereqflow` and `areeb-ece/otucalendar` link it (and `ui.css`, `theme.js`,
     `ui.js`) after their own `css/style.css`, whose night/paper values and light/dark
     button (`js/theme.js`, `#btnTheme`) are only an offline fallback.
+  - `areeb-ece/satisfactorytools` (made on 2026-10-19, on request) links them the same way.
   - Mermaid's theme is read from it at build time (`src/lib/design.ts`); star colours are
     CSS (`--star*`, falling back to `--ink`/`--c2`/`--c0`).
-  - Anything in `public/design/` must work in all three sites: no `style="…"` attributes
+  - Anything in `public/design/` must work in all four sites: no `style="…"` attributes
     in markup (OTU Calendar's CSP has no `style-src-attr`; set styles through
     `el.style.setProperty`), `sd-` class prefixes, no dependencies. Their browser checks
     can load it with `DESIGN_DIR=../areeb-ece.github.io/public/design`.
   - Change colours there, never in component CSS. When you change it, also update the
-    fallback copies in the two sibling repos so offline use matches.
+    fallback copies in the three sibling repos so offline use matches.
 - **Sibling repos: only with Areeb's say-so.** Don't edit, branch or open PRs on
   `areeb-ece/prereqflow` or `areeb-ece/otucalendar` unless he asks (he did, on
   2026-10-12, for the shared palette and then for the shared themes, settings and sky).
   Their CSS remains the source for the design: otucalendar for components, prereqflow for the `.card` sheen, the aurora and the `--h*` hues.
-- **Their paths are reserved.** `/prereqflow/` and `/otucalendar/` are served by those
-  repos' Pages sites. `reservedSlugs` in `site.config.yaml` blocks them; keep it that
+- **Their paths are reserved.** `/prereqflow/`, `/otucalendar/` and `/satisfactorytools/`
+  are served by those repos' Pages sites. `reservedSlugs` in `site.config.yaml` blocks them; keep it that
   way.
 - **CSP stays strict.** The CSP is hand-written in `src/layouts/Base.astro`, production
   only.
