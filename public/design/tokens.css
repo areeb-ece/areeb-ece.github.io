@@ -1,18 +1,18 @@
 /* ═══════════════════════════════════════════════════════════════════════════════
-   THE MASTER PALETTE for areeb-ece.github.io, PrereqFlow and OTU Calendar.
+   THE MASTER PALETTE for areeb-ece.github.io, PrereqFlow, OTU Calendar and Satisfactory Tools.
 
-   All three sites load this one file from https://areeb-ece.github.io/design/tokens.css
+   All four sites load this one file from https://areeb-ece.github.io/design/tokens.css
    (the sibling sites live on the same address, so their security policy allows it).
    Change a colour here, push to main, and every site picks it up when the portfolio
-   deploys. PrereqFlow and OTU Calendar keep a copy of the night and paper values in
+   deploys. The other sites keep a copy of the night and paper values in
    their own css/style.css as a fallback for when they're opened offline or from disk.
 
-   THEMES. Every block below is one theme, and the settings panel (the gear icon on all
-   three sites, /design/ui.js) lists them in this order, under their --theme-label.
+   THEMES. Every block below is one theme, and the settings panel (the gear icon on every
+   site, /design/ui.js) lists them in this order, under their --theme-label.
    Night is the default. To add a theme, copy a block, give it a new name in both
    selectors (lowercase-with-hyphens) and a --theme-label, and change the colours;
    `npm test` checks that it defines every colour and keeps its text readable. A
-   visitor's choice is remembered in their browser and shared by all three sites.
+   visitor's choice is remembered in their browser and shared by all the sites.
 
    Text tiers: --ink (headings) → --ink-2 (body) → --ink-3 (labels, the dimmest text;
    keep it at 4.5:1 or more against --card) → --ink-4 (marks only, never text). The

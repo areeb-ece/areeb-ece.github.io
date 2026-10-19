@@ -18,7 +18,7 @@ doesn't work as described, that's a bug, not something you're doing wrong.
 - [Cards](#cards)
 - [The home page](#the-home-page)
 - [Fonts](#fonts)
-- [Colours, themes and the settings button (all three sites)](#colours-themes-and-the-settings-button-all-three-sites)
+- [Colours, themes and the settings button (every site)](#colours-themes-and-the-settings-button-every-site)
 - [Markdown](#markdown)
 - [The typing animation](#the-typing-animation)
 - [Previewing on your computer](#previewing-on-your-computer)
@@ -93,7 +93,7 @@ content/
 - **Folder names** become web addresses, so they must be lowercase words with hyphens:
   `nand-alu`, not `NAND ALU` or `nand_alu`. The `title` in the
   frontmatter is what people see.
-- **Reserved names:** `prereqflow` and `otucalendar` can't be top-level folders, because
+- **Reserved names:** `prereqflow`, `otucalendar` and `satisfactorytools` can't be top-level folders, because
   those addresses already belong to those sites. They're listed under `reservedSlugs`
   in `site.config.yaml`. `fonts`, `icons`, `design` and `js` are used by the site itself.
 
@@ -267,11 +267,11 @@ blocks, and `font: inter` in a page's frontmatter sets it for that page.
 
 ---
 
-## Colours, themes and the settings button (all three sites)
+## Colours, themes and the settings button (every site)
 
 Every colour lives in one file: **`public/design/tokens.css`**, the master palette. This
-site, PrereqFlow and OTU Calendar all load it, so changing a value there and pushing to
-`main` restyles all three once this site deploys.
+site, PrereqFlow, OTU Calendar and Satisfactory Tools all load it, so changing a value there
+and pushing to `main` restyles all of them once this site deploys.
 
 - `--bg`, `--sheet`, `--card`: backgrounds, from darkest to lightest.
 - `--ink`, `--ink-2`, `--ink-3`: text, from headings to the dimmest labels. `--ink-4` is
@@ -282,11 +282,11 @@ site, PrereqFlow and OTU Calendar all load it, so changing a value there and pus
 **Themes.** Each block in the file is one theme: Night (the default), Paper, Void (pure
 black and white), Console (green terminal), Amber, Arctic, Ocean, Forest, Retro, Solar
 dark, Synthwave, Ink (pure white and black), Sepia, Solar light and Rosé. Visitors pick
-one with the **gear icon** (bottom of the sidebar here, top right in PrereqFlow and OTU
-Calendar), which also sets a custom accent colour, square or round corners, motion, the
+one with the **gear icon** (bottom of the sidebar here, top right in PrereqFlow, OTU
+Calendar and Satisfactory Tools), which also sets a custom accent colour, square or round corners, motion, the
 typing effect and the night sky: number of stars, size, brightness, blur, colour, how
 many are tinted, drift speed and direction, scroll parallax and the glow. Their choice is
-saved in their browser and used on all three sites.
+saved in their browser and used on every site.
 
 - **Add a theme:** copy a block, change the name in both selectors (lowercase with
   hyphens: `:root[data-theme="my-theme"], [data-theme="my-theme"] {`), set
@@ -302,8 +302,8 @@ saved in their browser and used on all three sites.
 Keep text readable: `npm test` checks that every theme defines every colour and that its
 text (`--ink-3` on `--card` and the backgrounds, the accent, the highlight) keeps WCAG
 AA contrast, and names the line to fix if not. The browser check also measures `--ink-3`
-against the default night sky. PrereqFlow and OTU Calendar keep a copy of the Night and
-Paper values in their own `css/style.css`, used only when they're opened offline.
+against the default night sky. PrereqFlow, OTU Calendar and Satisfactory Tools keep a copy
+of the Night and Paper values in their own `css/style.css`, used only when they're opened offline.
 
 ---
 
