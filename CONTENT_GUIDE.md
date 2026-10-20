@@ -89,7 +89,14 @@ content/
 
 - **A page** is a folder with an `index.md` inside.
 - **A category** is just a page with sub-folders. Its sub-pages are listed at the bottom
-  as cards, and it gets a folder arrow in the sidebar. Nest as deep as you like.
+  as cards, and it gets a folder arrow in the sidebar. Nest as deep as you like. The
+  first card of a set is drawn wide, the rest two to a row.
+- **Section headings** (`##`) hang in a column to the left of the text on wide screens,
+  like a manual; pages without them keep one left edge. Smaller headings (`###`) stay
+  in the text.
+- **The sidebar** collapses to a narrow rail with its arrow button, and remembers that.
+  Tablets start with the rail; on phones it's a bar along the top whose menu button opens
+  the page tree over the page.
 - **Folder names** become web addresses, so they must be lowercase words with hyphens:
   `nand-alu`, not `NAND ALU` or `nand_alu`. The `title` in the
   frontmatter is what people see.
@@ -143,6 +150,7 @@ description: One-line summary used on cards and in search results.
 order: 10              # sort among siblings; ties fall back to title A→Z
 banner: ./banner.png   # overrides the automatic banner.(jpg|jpeg|png|webp|avif)
 bannerAlt: Block diagram of the CPU datapath
+bannerCredit: '"Photo title" by Someone, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), via [Wikimedia Commons](https://commons.wikimedia.org/)'
 font: mononoki         # any name under fonts.registry in site.config.yaml
 date: 2026-09-14       # shown under the title
 children: cards        # how sub-pages are listed at the bottom: cards | list | none
@@ -165,15 +173,20 @@ If a title contains a colon, wrap it in quotes: `title: "Lab 3: UART"`.
   the page's card.
 - **Explicit:** `banner: ./images/cover.png` in the frontmatter. The path is relative to
   the page's folder.
-- **None:** the page gets a soft gradient made from the site's pastel colours. It's
-  picked from the page's address, so it stays the same between builds.
+- **None:** the page gets a drawn timing diagram: a clock lane and two or three signal
+  lanes in the theme's colours. The pattern comes from the page's address, so it stays
+  the same between builds.
 - **Size:** the strip is wide and short, so landscape images work best. About
-  1600 × 500 px is plenty. Images are served as they are, not resized, so keep them
+  2000 × 625 px is plenty. Images are served as they are, not resized, so keep them
   under roughly 500 KB.
 - `bannerAlt` describes the image for screen readers.
+- `bannerCredit` is for a photo that isn't yours. It shows as a small label on the
+  banner's corner. Write it as one line; `[text](https://…)` makes a link and nothing
+  else is formatted. Most open licences (CC BY, CC BY-SA) require it.
 
-The banner in `content/projects/` is a labelled placeholder. Replace it, or delete it
-to get the gradient.
+The banner in `content/projects/` is a photo from Wikimedia Commons (CC BY 4.0), credited
+with `bannerCredit`. Replace it with your own photo and delete the `bannerCredit` line, or
+delete both to get the drawn timing diagram.
 
 ---
 
@@ -240,7 +253,10 @@ links:
 
 ## Fonts
 
-The whole site is set in mononoki, apart from maths, which always uses KaTeX's fonts.
+Text is set in **Libre Franklin**. **mononoki** is the code face: code blocks, the
+Markdown you see being typed, the AREEB/ECE wordmark and the figures in tables. Maths
+always uses KaTeX's fonts. Both are open-licence fonts kept in `public/fonts/` with their
+licences.
 
 **To add a font:**
 
@@ -249,21 +265,24 @@ The whole site is set in mononoki, apart from maths, which always uses KaTeX's f
 
    ```yaml
    fonts:
-     default: mononoki
+     default: libre-franklin
      code: mononoki
      registry:
+       libre-franklin:
+         files: { 400-800: /fonts/LibreFranklin-Var.woff2, 400-800italic: /fonts/LibreFranklin-Italic-Var.woff2 }
+         fallback: 'system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif'
        mononoki:
          files: { 400: /fonts/mononoki-Regular.woff2, 700: /fonts/mononoki-Bold.woff2 }
          fallback: 'ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace'
-       inter:
-         files: { 400: /fonts/Inter-Regular.woff2, 700: /fonts/Inter-Bold.woff2 }
-         fallback: "system-ui, sans-serif"
    ```
 
-   The numbers are font weights: 400 is regular, 700 is bold.
+   The keys are font weights: 400 is regular, 700 is bold. A variable font (one file
+   for many weights) takes a range such as `400-800`. Put `italic` after a key for the
+   italic file (`400italic`, `400-800italic`); without one, browsers slant the regular.
 
-**To use it:** `default` sets the font for the whole site, `code` sets it for code
-blocks, and `font: inter` in a page's frontmatter sets it for that page.
+**To use it:** `default` sets the font for the whole site, `code` sets it for code,
+the typed Markdown, the wordmark and table figures, and `font: mononoki` in a page's
+frontmatter sets the text font for that page.
 
 ---
 
@@ -299,9 +318,21 @@ saved in their browser and used on every site.
 - **The default sky** (star counts, sizes, brightness and speeds before anyone changes
   them) is the `LAYERS` list near the top of `public/design/ui.js`, one line per layer.
 
+**Shared scales and components.** Below the themes, the same file holds everything that
+doesn't change between themes: type sizes (`--fs-1` … `--fs-8`), spacing (`--sp-1` …
+`--sp-10`), control heights, the focus ring, motion (durations go to zero with reduced
+motion or the Animations switch off) and a few colours mixed from each theme's own
+(`--field`, `--field-line`, `--tint`, `--ok-ink` and friends), so a new theme gets them
+for free. `public/design/ui.css` has the shared components every site can use: buttons,
+segmented controls, form fields, file drops, tables, cards, navigation, tabs, notes, tags,
+dialogs and toasts, all with `sd-` class names. **`/design/components.html`** on the live
+site shows every one of them in every state; pick a theme with its gear to check them.
+
 Keep text readable: `npm test` checks that every theme defines every colour and that its
 text (`--ink-3` on `--card` and the backgrounds, the accent, the highlight) keeps WCAG
-AA contrast, and names the line to fix if not. The browser check also measures `--ink-3`
+AA contrast, and that the mixed colours do too (input borders and focus rings 3:1), and
+names the line to fix if not. The browser check also measures every component on
+`/design/components.html` in every theme. The browser check also measures `--ink-3`
 against the default night sky. PrereqFlow, OTU Calendar and Satisfactory Tools keep a copy
 of the Night and Paper values in their own `css/style.css`, used only when they're opened offline.
 
@@ -379,6 +410,11 @@ An image on its own line becomes a figure, and the quoted title becomes its capt
 The text in `[...]` is the alt text for screen readers, so describe the image. Images
 from other websites are refused, because the site's security policy only loads its
 own files. Download them and put them next to the page.
+
+Charts and drawings you make yourself read best with a **transparent background** and
+dark-on-light *and* light-on-dark in mind (most themes are dark). A white chart exported
+from matplotlib shows as a bright white slab on the night sheet; `savefig(...,
+transparent=True)` with mid-tone colours avoids it.
 
 ### Footnotes
 
@@ -460,6 +496,20 @@ Any [Mermaid diagram type](https://mermaid.js.org/intro/) works: flowcharts, seq
 state, class, ER, Gantt, pie and so on. Diagrams are drawn when the site builds, in the
 site's colours. Try them in the [Mermaid live editor](https://mermaid.live) first. A
 syntax error shows as a red box with Mermaid's message.
+
+Wide diagrams shrink to fit only until their text would get too small to read; past
+that they scroll sideways inside their box (and take keyboard focus so they can be
+scrolled with the arrow keys). Give each one a name for screen readers with Mermaid's
+own lines, right after the diagram type:
+
+````md
+```mermaid
+flowchart LR
+  accTitle: Ripple-carry adder
+  accDescr: Eight full adders, each carry-out feeding the next carry-in.
+  ...
+```
+````
 
 ### Diagrams: WaveDrom timing diagrams
 

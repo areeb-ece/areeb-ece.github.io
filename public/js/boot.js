@@ -6,7 +6,9 @@
   var root = document.documentElement;
   var rail = null;
   try { rail = localStorage.getItem("site.rail"); } catch (e) {}
-  if (rail === "1" || (rail === null && window.innerWidth < 760)) root.classList.add("rail");
+  // Narrow screens always start with the tree closed (there it opens as a drawer), and
+  // tablet widths start with the rail unless the visitor has opened it before.
+  if (rail === "1" || window.innerWidth < 760 || (rail === null && window.innerWidth < 1024)) root.classList.add("rail");
 
   var mode = root.getAttribute("data-typing");
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;

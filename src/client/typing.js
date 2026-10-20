@@ -210,7 +210,7 @@ function done(lastBlock, cursor) {
   if (!lastBlock || !cursor) return;
   cursor.classList.add("idle");
   const walker = document.createTreeWalker(lastBlock, NodeFilter.SHOW_TEXT, {
-    acceptNode: (n) => (n.data.trim() && !n.parentElement.closest("svg, .katex, pre, .card, script") ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP),
+    acceptNode: (n) => (n.data.trim() && !n.parentElement.closest("svg, .katex, pre, .card, script, button, figcaption") ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP),
   });
   let lastText = null;
   while (walker.nextNode()) lastText = walker.currentNode;

@@ -6,9 +6,11 @@ import { fontStack } from "../lib/config.ts";
 export const GET: APIRoute = async () => {
   const { config } = await loadSite();
   const faces = Object.entries(config.fonts.registry).flatMap(([name, f]) =>
-    Object.entries(f.files).map(
-      ([weight, src]) => `@font-face { font-family: "${name}"; src: url("${src}") format("woff2"); font-weight: ${weight}; font-style: normal; font-display: swap; }`,
-    ),
+    Object.entries(f.files).map(([key, src]) => {
+      const weight = key.replace("italic", "").replace("-", " "); // "400-800" → a variable range
+      const style = key.endsWith("italic") ? "italic" : "normal";
+      return `@font-face { font-family: "${name}"; src: url("${src}") format("woff2"); font-weight: ${weight}; font-style: ${style}; font-display: swap; }`;
+    }),
   );
   const perPage = Object.keys(config.fonts.registry).map((name) => `:root[data-font="${name}"] { --f: ${fontStack(config, name)}; }`);
   const css = [

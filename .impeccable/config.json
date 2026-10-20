@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "flat-type-hierarchy",
+        "value": "*",
+        "files": [
+          "public/design/components.html"
+        ],
+        "createdAt": "2026-10-20T17:35:09.769Z",
+        "reason": "Claude (session 2026-10-20): static scan can't resolve root-relative /design/reference.css; in the browser the h1 is --fs-7 (~72px) over 16px body"
+      }
+    ]
+  }
+}

@@ -1,50 +1,57 @@
-/* Rendered Markdown. Text is capped at a readable measure; code, diagrams, tables
-   and card grids may use the full width. */
+/* Rendered Markdown, the body of the sheet. Text keeps a readable measure; code,
+   diagrams, tables and card grids may use the sheet's full width. Tables take the
+   shared datasheet setting from /design/ui.css (.sd-prose table). */
 
-.prose { font-size: 14.5px; line-height: 1.72; color: var(--ink-2); }
-.prose > .b > * { max-width: var(--measure); }
-.prose > .b > :is(pre, figure, .code, .diagram, .cards, table) { max-width: none; }
-.prose > .b > .cards.one { max-width: 340px; }
-.prose > .b { margin: 0 0 1.05em; }
+.prose { font-size: var(--fs-4); line-height: var(--lh-text); color: var(--ink); }
+.prose > .b > * { max-width: var(--measure-text); }
+.prose > .b > :is(pre, figure, .code, .diagram, .cards, table) { max-width: 100%; }
+.prose > .b > .cards.one { max-width: 22rem; }
+.prose > .b { margin: 0 0 1.1em; }
 .prose > .b > :first-child { margin-top: 0; }
 .prose > .b > :last-child { margin-bottom: 0; }
-.prose strong { color: var(--ink); }
-.prose a:not(.card) { text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent); text-underline-offset: 3px; }
-.prose a:not(.card):hover { text-decoration-color: var(--accent); }
-.prose p { margin: 0 0 1em; }
+.prose strong { font-weight: var(--fw-strong); }
+.prose a:not(.card) { text-decoration: underline; text-decoration-thickness: 1px; text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent); text-underline-offset: 3px; transition: text-decoration-color var(--dur-1); }
+@media (hover: hover) { .prose a:not(.card):hover { text-decoration-color: var(--accent); } }
+.prose p { margin: 0 0 1em; text-wrap: pretty; }
 
-.prose :is(h1, h2, h3, h4, h5, h6) { position: relative; color: var(--ink); margin: 0; line-height: 1.3; scroll-margin-top: 24px; }
-.prose > .b:has(> :is(h1, h2, h3, h4, h5, h6)) { margin-top: 2.1em; margin-bottom: .7em; }
+.prose :is(h1, h2, h3, h4, h5, h6) { position: relative; margin: 0; color: var(--ink); scroll-margin-top: var(--sp-6); text-wrap: balance; }
+.prose > .b:has(> :is(h1, h2, h3, h4, h5, h6)) { margin-top: 2.4em; margin-bottom: .6em; }
+.prose > .b:has(> h2) { margin-top: 3em; }
 .prose > .b:first-child:has(> :is(h1, h2, h3)) { margin-top: 0; }
-.prose h1 { font: 700 26px/1.2 var(--f); }
-.prose h2 { font: 700 19px/1.3 var(--f); letter-spacing: .01em; }
-.prose h3 { font: 700 16px/1.35 var(--f); }
-.prose :is(h4, h5, h6) { font: 700 11.5px/1.4 var(--f); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2); }
-.prose .anchor { margin-left: .45em; color: var(--ink-3); font-weight: 400; text-decoration: none; opacity: 0; transition: opacity .15s, color .15s; }
+.prose :is(h1, h2) { font: var(--fw-head) var(--fs-5)/1.2 var(--font-text); letter-spacing: var(--tr-head); }
+.prose :is(h3, h4, h5, h6) { font: var(--fw-head) var(--fs-4)/1.35 var(--font-text); }
+.prose .anchor { margin-left: .35em; color: var(--ink-3); font-weight: var(--fw-text); text-decoration: none; opacity: 0; transition: opacity var(--dur-1), color var(--dur-1); }
 .prose :is(h1, h2, h3, h4, h5, h6):hover .anchor, .prose .anchor:focus-visible { opacity: 1; }
-.prose .anchor:hover { color: var(--accent); }
+@media (hover: hover) { .prose .anchor:hover { color: var(--accent); } }
+@media (hover: none) { .prose .anchor { opacity: .6; } }
 
-.prose :is(ul, ol) { margin: 0; padding-left: 1.5em; }
-.prose li { margin: .25em 0; }
+.prose :is(ul, ol) { margin: 0; padding-left: 1.4em; }
+.prose li { margin: .3em 0; }
 .prose li::marker { color: var(--ink-3); }
-.prose .contains-task-list { list-style: none; padding-left: .2em; }
-.prose .task-list-item input { accent-color: var(--accent); margin: 0 .55em 0 0; vertical-align: -1px; }
+.prose .contains-task-list { list-style: none; padding-left: .1em; }
+.prose .task-list-item input { accent-color: var(--accent); width: 1em; height: 1em; margin: 0 .55em 0 0; vertical-align: -.12em; }
 
-.prose blockquote { margin: 0; padding: 2px 0 2px 16px; border-left: 3px solid var(--rule); color: var(--ink-2); }
-.prose hr { border: 0; border-top: 1px solid var(--rule-2); margin: 2em 0; }
+.prose blockquote { margin: 0; padding: 0 0 0 1.2em; color: var(--ink-2); font-style: italic; }
+.prose blockquote > :last-child { margin-bottom: 0; }
+/* A short heavy bar rather than a hairline across the page. */
+.prose hr { width: var(--sp-8); height: 3px; margin: 2.4em 0; border: 0; border-radius: 2px; background: var(--ink-4); }
 
-.prose table { display: block; overflow-x: auto; width: max-content; max-width: 100%; border-collapse: collapse; font-size: 13px; line-height: 1.5; font-variant-numeric: tabular-nums; }
-.prose th { font: 400 10.5px/1.3 var(--f); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); padding: 8px 14px 8px 0; border-bottom: 1px solid var(--rule); }
+.prose table { display: block; overflow-x: auto; width: max-content; max-width: 100%; }
 .prose th:not([align]) { text-align: left; }
-.prose td { padding: 7px 14px 7px 0; border-bottom: 1px solid var(--rule-2); color: var(--ink-2); vertical-align: top; }
-.prose :is(th, td):last-child { padding-right: 0; }
+.prose th { font-size: var(--fs-2); }
+/* A number or an expression in a table cell never breaks in the middle; the table scrolls. */
+.prose :is(td, th) :is(code, .katex) { white-space: nowrap; overflow-wrap: normal; }
+.prose table { scrollbar-width: thin; scrollbar-color: var(--ink-4) transparent; }
+/* On a narrow sheet a text column keeps a readable width and the table scrolls instead. */
+@container (max-width: 40rem) { .prose td:not([align="right"], [align="center"]) { min-width: 8.5em; } }
 
 .prose .fig { margin: 0; }
-.prose .fig img { display: block; height: auto; border-radius: var(--r); border: 1px solid var(--rule-2); background: var(--sheet); }
-.prose figcaption { margin-top: 8px; font-size: 12px; color: var(--ink-3); }
+.prose .fig img { display: block; height: auto; border-radius: var(--r); background: var(--field); }
+.prose figcaption { margin-top: var(--sp-2); font: var(--fs-2)/1.45 var(--font-text); color: var(--ink-2); }
 .prose p img { vertical-align: middle; height: auto; }
 
-.prose .footnotes { margin-top: 2.5em; padding-top: 1em; border-top: 1px solid var(--rule-2); font-size: 12.5px; color: var(--ink-3); }
+.prose .footnotes { margin-top: 3em; font-size: var(--fs-2); color: var(--ink-2); }
+.prose .footnotes::before { content: ""; display: block; width: var(--sp-8); height: 3px; margin-bottom: 1.2em; border-radius: 2px; background: var(--ink-4); }
 .prose .footnotes ol { padding-left: 1.4em; }
 .prose [data-footnote-ref] { font-size: .75em; margin-left: 1px; text-decoration: none; }
 .prose [data-footnote-ref]::before { content: "["; }
@@ -57,3 +64,17 @@
 .prose pre { overflow-x: auto; }
 .prose .katex-display { overflow-x: auto; overflow-y: hidden; padding: 4px 0; }
 .prose .b { min-width: 0; }
+
+/* On a wide sheet, section heads hang in a gutter to the left of the text, the way a
+   technical manual sets them; wide things (code, tables, diagrams) stay in the text column.
+   Pages without section heads keep one left edge. */
+@container (min-width: 50rem) {
+  .prose:has(> .b > :is(h1, h2)), .sheet:has(> .prose > .b > :is(h1, h2)) > .children { --gutter: clamp(11rem, 22cqi, 15rem); padding-left: var(--gutter); }
+  .prose > .b:has(> :is(h1, h2)) { float: left; clear: left; width: calc(var(--gutter) - var(--sp-6)); margin: 1.9em 0 0 calc(var(--gutter) * -1); }
+  .prose > .b:has(> :is(h1, h2)) + .b { margin-top: 3em; }
+  .prose > .b:first-child:has(> :is(h1, h2)) { margin-top: 0; }
+  .prose > .b:first-child:has(> :is(h1, h2)) + .b { margin-top: 0; }
+  .prose::after { content: ""; display: block; clear: both; }
+  /* Code and diagrams take the gutter too, below any hanging head. */
+  .prose > .b:has(> :is(figure.code, figure.diagram)) { clear: left; margin-left: calc(var(--gutter) * -1); }
+}

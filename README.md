@@ -3,8 +3,9 @@
 **Live: [areeb-ece.github.io](https://areeb-ece.github.io/)** · made by areeb
 
 My portfolio: degree projects in digital logic, FPGA design, computer hardware and
-audio DSP, plus the small tools I've built. Every page appears as its own Markdown being
-typed out, block by block, and then switches to the finished page.
+audio DSP, plus the small tools I've built. Every page is set like a component datasheet
+laid on a night sky, and appears as its own Markdown being typed out, block by block,
+before it switches to the finished sheet.
 
 It's a static site built with [Astro](https://astro.build). Pages are folders of
 Markdown, the home page and site chrome come from one YAML file, and the result is plain
@@ -51,15 +52,16 @@ without deploying. If a test fails, nothing is published.
 ```
 site.config.yaml          wordmark, home title + intro, contact links, fonts, reserved slugs
 content/                  the pages: every folder with an index.md is a page (and a sidebar entry)
-public/                   copied as-is: fonts (mononoki, OFL), contact icons, favicon, boot.js
+public/                   copied as-is: fonts (Libre Franklin, mononoki; OFL), contact icons, favicon, boot.js
 src/lib/                  build code: config + frontmatter schemas, page tree, Markdown pipeline
 src/lib/markdown/         unified pipeline, Shiki theme, KaTeX, Mermaid and WaveDrom renderers
 src/client/               the browser scripts: typing animation (timing.js has every constant),
                           sidebar tree, copy buttons
-public/design/            shared with PrereqFlow, OTU Calendar and Satisfactory Tools: tokens.css (the master palette
-                          and its themes), theme.js (applies saved settings before paint), ui.js
-                          + ui.css (the settings button and panel, the night sky)
-src/styles/               the PrereqFlow / OTU Calendar sheet: components, prose, code
+public/design/            shared with PrereqFlow, OTU Calendar and Satisfactory Tools: tokens.css (the master palette,
+                          its themes and the shared type, spacing and motion scales), theme.js (applies
+                          saved settings before paint), ui.js + ui.css (the settings button and panel,
+                          the night sky, and the shared components), components.html (their reference)
+src/styles/               the datasheet: shell, title blocks, plates, prose, code (tokens only)
 src/pages/                routes: home, every content page, 404, generated fonts.css and
                           diagrams.css
 scripts/new-page.ts       npm run new
@@ -94,8 +96,13 @@ straight away. Every timing constant is in `src/client/timing.js`.
 ### One palette, many themes, four sites
 
 `public/design/tokens.css` is the master palette: every colour, radius and shadow, as a
-set of themes (Night, Paper, Void, Console, Amber, Arctic, Ocean, Forest, Retro, Solar
-dark and light, Synthwave, Ink, Sepia and Rosé). This site,
+set of themes, followed by the scales every site shares (type sizes, spacing, control
+heights, focus ring, motion durations and easing, layers, and colours mixed from each
+theme). `public/design/ui.css` holds the shared components (`sd-` buttons, fields, file
+drops, tables, cards, navigation, tabs, notes, tags, dialogs, toasts); each site opts in
+by class, and [`/design/components.html`](https://areeb-ece.github.io/design/components.html)
+shows them all in every state. The themes are Night, Paper, Void, Console, Amber, Arctic, Ocean, Forest, Retro, Solar
+dark and light, Synthwave, Ink, Sepia and Rosé. This site,
 [PrereqFlow](https://areeb-ece.github.io/prereqflow/) and
 [OTU Calendar](https://areeb-ece.github.io/otucalendar/) and
 [Satisfactory Tools](https://areeb-ece.github.io/satisfactorytools/) all load it from
@@ -140,10 +147,15 @@ keeps WCAG AA contrast over any point of the sky, and the browser check measures
 
 ## Credits
 
+- [Libre Franklin](https://github.com/googlefonts/Libre-Franklin) by the Libre Franklin
+  Project Authors (Impallari Type), SIL Open Font License
+  (`public/fonts/OFL-LibreFranklin.txt`), subset to Latin and weights 400–800
 - [mononoki](https://github.com/madmalik/mononoki) by Matthias Tellen, SIL Open Font
   License (`public/fonts/OFL-mononoki.txt`)
+- Projects banner: ["Multimeter probes on breadboard"](https://commons.wikimedia.org/wiki/File:Multimeter_probes_on_breadboard.jpg)
+  by Zeroping, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), cropped
 - [Astro](https://astro.build), [unified](https://unifiedjs.com),
   [KaTeX](https://katex.org), [Shiki](https://shiki.style),
   [Mermaid](https://mermaid.js.org), [WaveDrom](https://wavedrom.com)
-- Look and feel from [PrereqFlow](https://areeb-ece.github.io/prereqflow/) and
+- The themes, settings panel and night sky began in [PrereqFlow](https://areeb-ece.github.io/prereqflow/) and
   [OTU Calendar](https://areeb-ece.github.io/otucalendar/)

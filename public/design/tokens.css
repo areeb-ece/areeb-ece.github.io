@@ -560,3 +560,94 @@
   --h0: #357A55; --h1: #8A58C4; --h2: #B83F3F; --h3: #8F6610; --h4: #2A8280; --h5: #A83D70;
   color-scheme: light;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   SHARED SCALES. The same in every theme: type, spacing, control sizes, motion, layers,
+   and a few colours mixed from each theme's own, so they follow every theme and the
+   visitor's accent without a line per theme. Every site uses these names instead of raw
+   numbers; adding a theme above never means touching this part.
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Type. Each site sets its own faces as --f (text) and --f-code (code, figures). */
+  --font-text: var(--f, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif);
+  --font-mono: var(--f-code, var(--f, ui-monospace, "SF Mono", Menlo, Consolas, monospace));
+  --fs-1: 13px;                                 /* captions, meta, table heads */
+  --fs-2: 14px;                                 /* controls, navigation */
+  --fs-3: 16px;                                 /* dense body, card titles */
+  --fs-4: clamp(16.5px, 15.5px + .25vw, 18px);  /* reading body */
+  --fs-5: clamp(19px, 15px + 1cqi, 24px);       /* lead, third-level heads */
+  --fs-6: clamp(25px, 17px + 2.2cqi, 38px);     /* section heads */
+  --fs-7: clamp(38px, 22px + 5cqi, 80px);       /* page titles */
+  --fs-8: clamp(48px, 16px + 10cqi, 148px);     /* one name per site, at most */
+  --lh-display: .94;
+  --lh-head: 1.12;
+  --lh-ui: 1.35;
+  --lh-text: 1.6;
+  --tr-display: -.035em;
+  --tr-head: -.018em;
+  --tr-mark: .14em;                             /* wordmarks only */
+  --fw-text: 400;
+  --fw-ui: 500;
+  --fw-strong: 600;
+  --fw-head: 700;
+  --measure-text: 34em;                         /* about 70 characters of running text */
+
+  /* Space, on a 4px base. */
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 24px;
+  --sp-6: 32px; --sp-7: 48px; --sp-8: 64px; --sp-9: 96px; --sp-10: 128px;
+
+  /* Controls: one height per context. Touch screens get bigger targets (below). */
+  --ctl-h-sm: 28px;
+  --ctl-h: 32px;
+  --ctl-h-lg: 40px;
+  --ctl-px: 12px;
+  --r-pill: 999px;
+
+  /* Focus ring, on everything a keyboard can reach. */
+  --ring-w: 2px;
+  --ring-off: 2px;
+
+  /* Motion. Short, and out of the way: UI 120–260ms, ease-out for anything that enters. */
+  --ease-out: cubic-bezier(.23, 1, .32, 1);
+  --ease-in-out: cubic-bezier(.77, 0, .175, 1);
+  --ease-drawer: cubic-bezier(.32, .72, 0, 1);
+  --dur-1: 120ms;                               /* press, hover colour */
+  --dur-2: 180ms;                               /* small things moving */
+  --dur-3: 260ms;                               /* panels, drawers, dialogs */
+
+  /* Layers. */
+  --z-page: 1;
+  --z-sticky: 10;
+  --z-drawer: 30;
+  --z-float: 40;
+  --z-toast: 50;
+}
+/* The settings panel's "Animations" switch and the system setting both stop motion. */
+:root[data-motion="off"] { --dur-1: 0ms; --dur-2: 0ms; --dur-3: 0ms; }
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-1: 0ms; --dur-2: 0ms; --dur-3: 0ms; }
+}
+@media (pointer: coarse) {
+  :root { --ctl-h-sm: 36px; --ctl-h: 40px; --ctl-h-lg: 44px; }
+}
+
+/* Colours mixed from each theme's own. Also on [data-theme] elements, so a preview of
+   another theme gets its own mixes. npm test checks their contrast in every theme. */
+:root, [data-theme] {
+  --ring: var(--accent);
+  --field: color-mix(in srgb, var(--bg) 50%, var(--sheet));          /* inside inputs */
+  --well: color-mix(in srgb, var(--ink) 8%, var(--sheet));           /* code, diagrams, figures */
+  --field-line: color-mix(in srgb, var(--ink) 50%, var(--sheet));    /* input borders: 3:1 */
+  --row-line: color-mix(in srgb, var(--ink) 14%, var(--sheet));      /* table rows */
+  --hover: color-mix(in srgb, var(--ink) 7%, transparent);           /* laid over a surface */
+  --tint: color-mix(in srgb, var(--accent) 12%, var(--sheet));       /* selected, notes */
+  --tint-ok: color-mix(in srgb, var(--ok) 12%, var(--sheet));
+  --tint-warn: color-mix(in srgb, var(--warn) 12%, var(--sheet));
+  --tint-danger: color-mix(in srgb, var(--danger) 12%, var(--sheet));
+  --ok-ink: color-mix(in srgb, var(--ok) 55%, var(--ink));           /* status as text: 4.5:1 */
+  --warn-ink: color-mix(in srgb, var(--warn) 55%, var(--ink));
+  --danger-ink: color-mix(in srgb, var(--danger) 55%, var(--ink));
+}
+/* Light inks are darker, so their borders need a bigger share to reach 3:1. */
+:root[data-scheme="light"] { --field-line: color-mix(in srgb, var(--ink) 60%, var(--sheet)); --well: color-mix(in srgb, var(--ink) 5%, var(--sheet)); }

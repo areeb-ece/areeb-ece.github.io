@@ -19,7 +19,10 @@ const { title, description, page = null, font, typing = "none" } = Astro.props;
 const site = await loadSite();
 const { config } = site;
 const fontName = font ?? config.fonts.default;
-const preload = Object.values(config.fonts.registry[fontName].files);
+// The upright files of the page's text face and of the code face: every page uses both
+// (the wordmark and the typed Markdown are set in the code face). Italics load when used.
+const upright = (name: string) => Object.entries(config.fonts.registry[name].files).filter(([k]) => !k.endsWith("italic")).map(([, src]) => src);
+const preload = [...new Set([...upright(fontName), ...upright(config.fonts.code)])];
 const isHome = typing === "home";
 const fullTitle = isHome ? `${config.wordmark.left}/${config.wordmark.right}` : `${title} · ${config.wordmark.left}/${config.wordmark.right}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -51,6 +54,7 @@ const csp = "default-src 'none'; script-src 'self'; style-src 'self'; style-src-
 <slot name="head" />
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 <Sky />
 <div class="shell" id="shell">
   <Sidebar current={page} />

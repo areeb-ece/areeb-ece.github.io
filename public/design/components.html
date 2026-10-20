@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; style-src-attr 'unsafe-inline'; font-src 'self'; img-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; frame-src 'none'; manifest-src 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex">
+<title>Shared components · AREEB/ECE</title>
+<!-- The shared design system's reference sheet: every sd- component in /design/ui.css, in
+     its states, on the master palette. Pick a theme with the gear to see it in that theme.
+     It's static on purpose: no build, nothing of its own but its page layout. -->
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/design/tokens.css">
+<link rel="stylesheet" href="/design/ui.css">
+<link rel="stylesheet" href="/fonts.css">
+<link rel="stylesheet" href="/design/reference.css">
+<script src="/design/theme.js"></script>
+<script src="/design/ui.js" defer></script>
+</head>
+<body>
+<header class="sd-bar ref-bar">
+  <a class="sd-wordmark" href="/">AREEB<span>/</span>ECE</a>
+  <span class="sd-grow"></span>
+  <div class="ref-gear" data-design-settings></div>
+</header>
+
+<main class="ref" id="main">
+  <header class="ref-head">
+    <h1>Shared components</h1>
+    <p>Everything in <code>/design/ui.css</code>, for the portfolio, PrereqFlow, OTU Calendar and Satisfactory Tools. Add the class to opt in; states are attributes, never extra classes. Every label and value below is an example.</p>
+  </header>
+
+  <section class="ref-sec" aria-labelledby="h-buttons">
+    <h2 id="h-buttons">Buttons</h2>
+    <div class="ref-row">
+      <button class="sd-btn sd-primary" type="button">Download .ics</button>
+      <button class="sd-btn" type="button">Export</button>
+      <button class="sd-btn sd-ghost" type="button">Cancel</button>
+      <button class="sd-btn sd-danger" type="button">Clear all</button>
+      <button class="sd-btn" type="button" disabled>Disabled</button>
+      <button class="sd-btn sd-icon" type="button" aria-label="Close">×</button>
+    </div>
+    <div class="ref-row">
+      <button class="sd-btn sd-small sd-primary" type="button">Small</button>
+      <button class="sd-btn sd-small" type="button">Small</button>
+      <button class="sd-btn sd-small sd-ghost" type="button">Small ghost</button>
+    </div>
+    <p class="ref-cls"><code>.sd-btn</code> + <code>.sd-primary</code> <code>.sd-ghost</code> <code>.sd-danger</code> <code>.sd-icon</code> <code>.sd-small</code>, <code>disabled</code> or <code>aria-disabled="true"</code></p>
+  </section>
+
+  <section class="ref-sec" aria-labelledby="h-seg">
+    <h2 id="h-seg">Segmented control</h2>
+    <div class="ref-row">
+      <div class="sd-seg" role="radiogroup" aria-label="Layout">
+        <button type="button" role="radio" aria-checked="true">Semesters</button>
+        <button type="button" role="radio" aria-checked="false">Free flow</button>
+      </div>
+      <div class="sd-seg" role="group" aria-label="Corners">
+        <button type="button" aria-pressed="false">sharp</button>
+        <button type="button" aria-pressed="true">default</button>
+        <button type="button" aria-pressed="false">round</button>
+      </div>
+    </div>
+    <p class="ref-cls"><code>.sd-seg</code> around buttons with <code>aria-checked</code> or <code>aria-pressed</code></p>
+  </section>
+
+  <section class="ref-sec" aria-labelledby="h-fields">
+    <h2 id="h-fields">Fields</h2>
+    <div class="ref-grid">
+      <label class="sd-field">
+        <span class="sd-label">Event title</span>
+        <input class="sd-input" type="text" value="{CourseCode} lecture">
+        <span class="sd-hint">Placeholders in braces are filled in for each event.</span>
+      </label>
+      <label class="sd-field">
+        <span class="sd-label">Target rate</span>
+        <input class="sd-input sd-mono" type="number" value="120" aria-invalid="true" aria-describedby="rate-err">
+        <span class="sd-error" id="rate-err">Enter a rate above 0.</span>
+      </label>
+      <label class="sd-field">
+        <span class="sd-label">Program</span>
+        <span class="sd-select"><select><option>Electrical Engineering</option><option>Computer Engineering</option></select></span>
+      </label>
+      <label class="sd-field">
+        <span class="sd-label">Disabled</span>
+        <input class="sd-input" type="text" value="Read only for now" disabled>
+      </label>
+      <label class="sd-field ref-wide">
+        <span class="sd-label">Course lines</span>
+        <textarea class="sd-textarea sd-mono" placeholder="One course per line">ENGR 1015U  Introduction to Engineering
+MATH 1010U  Calculus I</textarea>
+      </label>
+      <div class="sd-field ref-wide">
+        <span class="sd-label" id="link-label">Share link</span>
+        <div class="sd-join">
+          <input class="sd-input" type="text" readonly value="areeb-ece.github.io/prereqflow/" aria-labelledby="link-label">
+          <button class="sd-btn" type="button">Copy</button>
+        </div>
+      </div>
+      <fieldset class="sd-fieldset">
+        <legend>Export as</legend>
+        <label class="sd-check"><input type="radio" name="fmt" checked> PNG</label>
+        <label class="sd-check"><input type="radio" name="fmt"> SVG</label>
+      </fieldset>
+      <fieldset class="sd-fieldset">
+        <legend>Options</legend>
+        <label class="sd-check"><input type="checkbox" checked> Light sheet</label>
+        <label class="sd-check"><input type="checkbox" disabled> Embed font</label>
+      </fieldset>
+      <label class="sd-field ref-wide">
+        <span class="sd-label">Clock speed</span>
+        <input class="sd-range" type="range" min="1" max="250" value="100">
+      </label>
+      <label class="sd-drop ref-wide">
+        <input class="sr-only" type="file">
+        <b>Drop a saved schedule here</b>
+        <span>or choose a file (.html, .mhtml, .json)</span>
+      </label>
+      <div class="sd-drop ref-wide" data-over><b>While a file is over it</b><span>the well takes the accent: <code>data-over</code></span></div>
+    </div>
+    <p class="ref-cls"><code>.sd-field</code> <code>.sd-label</code> <code>.sd-hint</code> <code>.sd-error</code> · <code>.sd-input</code> <code>.sd-textarea</code> <code>.sd-select</code> (wrapper) or <code>select.sd-select</code> · <code>.sd-mono</code> · <code>.sd-join</code> · <code>.sd-fieldset</code> <code>.sd-check</code> <code>.sd-range</code> <code>.sd-drop</code> · <code>aria-invalid</code>, <code>disabled</code>, <code>readonly</code></p>
+  </section>
+
+  <section class="ref-sec" aria-labelledby="h-table">
+    <h2 id="h-table">Table</h2>
+    <div class="ref-scroll">
+      <table class="sd-table">
+        <caption>NAND cost of each building block (from the NAND ALU page)</caption>
+        <thead><tr><th>Block</th><th>Built as</th><th class="sd-num">NANDs</th><th class="sd-num">Levels</th></tr></thead>
+        <tbody>
+          <tr><td>NOT</td><td><code>nand(a, a)</code></td><td class="sd-num">1</td><td class="sd-num">1</td></tr>
+          <tr><td>AND</td><td>NOT of a NAND</td><td class="sd-num">2</td><td class="sd-num">2</td></tr>
+          <tr aria-selected="true"><td>OR</td><td>NAND of the two inverted inputs</td><td class="sd-num">3</td><td class="sd-num">2</td></tr>
+          <tr><td>XOR</td><td>the four-gate form</td><td class="sd-num">4</td><td class="sd-num">3</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="ref-cls"><code>table.sd-table</code> (<code>.sd-sticky</code> keeps the header in view) · <code>.sd-num</code> or <code>align="right"</code> · <code>.sd-none</code> for a missing value · <code>aria-selected</code> on a row · Markdown tables inside <code>.sd-prose</code> get the same</p>
+  </section>
+
+  <section class="ref-sec" aria-labelledby="h-cards">
+    <h2 id="h-cards">Surfaces and cards</h2>
+    <div class="ref-grid">
+      <a class="sd-card" href="/tools/prereqflow-notes/"><span class="sd-card-title">PrereqFlow</span><span class="sd-card-meta">A link card: hover, press and focus states.</span></a>
+      <div class="sd-card"><span class="sd-card-title">A plain card</span><span class="sd-card-meta">A raised surface for a group of things.</span></div>
+      <div class="ref-ground ref-wide"><div class="sd-surface"><span class="sd-card-title">A surface</span><span class="sd-card-meta">The sheet tone, for a panel or a side column, on the page's ground.</span></div></div>
+    </div>
+    <p class="ref-cls"><code>.sd-surface</code> · <code>.sd-card</code> (an <code>a</code> or <code>button</code> becomes interactive) · <code>.sd-card-title</code> <code>.sd-card-meta</code></p>
+  </section>
+
+  <section class="ref-sec" aria-labelledby="h-nav">
+    <h2 id="h-nav">Navigation, bar and tabs</h2>
+    <div class="ref-grid">
+      <nav aria-label="Example list">
+        <ul class="sd-nav">
+          <li><a href="#h-nav" aria-current="page">Production planner</a></li>
+          <li><a href="#h-nav">Recipes &amp; items</a></li>
+          <li><a href="#h-nav">Power plants</a></li>
+        </ul>
+      </nav>
+      <div class="ref-stack">
+        <div class="sd-bar ref-inset">
+          <span class="sd-wordmark">OTU<span>/</span>CALENDAR</span>
+          <span class="sd-grow"></span>
+          <button class="sd-btn sd-small" type="button">Help</button>
+        </div>
+        <div class="sd-tabs" role="tablist" aria-label="Example tabs">
+          <button class="sd-tab" type="button" role="tab" aria-selected="true">Week</button>
+          <button class="sd-tab" type="button" role="tab" aria-selected="false">Term</button>
+          <button class="sd-tab" type="button" role="tab" aria-selected="false">Raw .ics</button>
+        </div>
+        <ul class="sd-nav sd-across">
+          <li><a href="#h-nav" aria-current="page">Planning</a></li>
+          <li><a href="#h-nav">Machines</a></li>
+          <li><a href="#h-nav">Logistics</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="ref-cls"><code>.sd-nav</code> (<code>.sd-across</code> for a row) with <code>aria-current</code> · <code>.sd-bar</code> <code>.sd-grow</code> <code>.sd-wordmark</code> · <code>.sd-tabs</code> <code>.sd-tab</code> with <code>aria-selected</code></p>
+  </section>
+
+  <section class="ref-sec" aria-labelledby="h-notes">
+    <h2 id="h-notes">Notes, tags and keys</h2>
+    <div class="ref-grid">
+      <div class="sd-callout"><span class="sd-callout-title">Note</span>Sessions are saved in this browser only.</div>
+      <div class="sd-callout sd-ok"><span class="sd-callout-title">Done</span>The file has 42 events.</div>
+      <div class="sd-callout sd-warn"><span class="sd-callout-title">Check this</span>Two sections meet at the same time.</div>
+      <div class="sd-callout sd-danger"><span class="sd-callout-title">Couldn't read the file</span>It isn't a saved schedule page.</div>
+    </div>
+    <div class="ref-row">
+      <span class="sd-tag">Planned</span>
+      <span class="sd-tag sd-ok">Matches</span>
+      <span class="sd-tag sd-warn">Overlaps</span>
+      <span class="sd-tag sd-danger">Missing</span>
+      <span class="sd-tag sd-plain">Elective</span>
+      <span>Press <kbd class="sd-kbd">Ctrl</kbd> + <kbd class="sd-kbd">C</kbd></span>
+    </div>
+    <p class="ref-cls"><code>.sd-callout</code> <code>.sd-callout-title</code> · <code>.sd-tag</code> · both take <code>.sd-ok</code> <code>.sd-warn</code> <code>.sd-danger</code> (tags also <code>.sd-plain</code>) · <code>.sd-kbd</code></p>
+  </section>
+
+  <section class="ref-sec" aria-labelledby="h-over">
+    <h2 id="h-over">Dialog and toast</h2>
+    <div class="ref-grid">
+      <div class="sd-dialog ref-static" role="group" aria-label="Example dialog">
+        <header><h2>Clear the plan?</h2><button class="sd-x" type="button" aria-label="Close">×</button></header>
+        <div class="sd-body">Every product and recipe choice is removed. This can't be undone.</div>
+        <footer><button class="sd-btn sd-ghost" type="button">Keep it</button><button class="sd-btn sd-danger" type="button">Clear</button></footer>
+      </div>
+      <div class="ref-stack">
+        <div class="sd-toast ref-static" data-open>Copied to the clipboard</div>
+        <p class="ref-note">A real dialog is a <code>&lt;dialog class="sd-dialog"&gt;</code> opened with <code>showModal()</code>; it scales in from 96% and its backdrop is <code>--scrim</code>. A toast is <code>.sd-toast</code>, shown with <code>data-open</code>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="ref-sec" aria-labelledby="h-type">
+    <h2 id="h-type">Type and space</h2>
+    <div class="ref-type">
+      <p class="ref-fs8">--fs-8</p>
+      <p class="ref-fs7">--fs-7 page title</p>
+      <p class="ref-fs6">--fs-6 section head</p>
+      <p class="ref-fs5">--fs-5 lead and third-level heads</p>
+      <p class="ref-fs4">--fs-4 reading body, about 70 characters to a line at <code>--measure-text</code>.</p>
+      <p class="ref-fs3">--fs-3 dense body and card titles</p>
+      <p class="ref-fs2">--fs-2 controls and navigation</p>
+      <p class="ref-fs1">--fs-1 captions, meta and table heads</p>
+    </div>
+    <div class="ref-space" aria-hidden="true">
+      <span class="s1"></span><span class="s2"></span><span class="s3"></span><span class="s4"></span><span class="s5"></span><span class="s6"></span><span class="s7"></span><span class="s8"></span><span class="s9"></span><span class="s10"></span>
+    </div>
+    <p class="ref-cls"><code>--sp-1</code> … <code>--sp-10</code>: 4, 8, 12, 16, 24, 32, 48, 64, 96, 128px · controls <code>--ctl-h-sm</code> <code>--ctl-h</code> <code>--ctl-h-lg</code> (taller on touch screens) · motion <code>--dur-1..3</code> <code>--ease-out</code> (zero with reduced motion or the Animations switch off)</p>
+  </section>
+</main>
+</body>
+</html>

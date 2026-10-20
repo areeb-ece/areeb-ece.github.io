@@ -1,0 +1,54 @@
+/* Page layout for /design/components.html only; no site links this file. Everything
+   it shows comes from tokens.css and ui.css. */
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font: var(--fw-text) var(--fs-3)/var(--lh-text) var(--font-text); -webkit-font-smoothing: antialiased; }
+code { font-family: var(--font-mono); font-size: .9em; }
+a { color: var(--accent); }
+.sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+
+.ref-bar { position: sticky; top: 0; z-index: var(--z-sticky); }
+.ref-gear { display: contents; }
+.ref { max-width: 1040px; margin: 0 auto; padding: var(--sp-7) var(--sp-5) var(--sp-10); container-type: inline-size; }
+.ref-head { margin-bottom: var(--sp-8); }
+.ref-head h1 { margin: 0 0 var(--sp-4); font: var(--fw-head) var(--fs-7)/var(--lh-display) var(--font-text); letter-spacing: var(--tr-display); }
+.ref-head p { max-width: var(--measure-text); margin: 0; font-size: var(--fs-4); color: var(--ink-2); }
+
+.ref-sec { padding: var(--sp-6); margin-bottom: var(--sp-5); border-radius: var(--r-lg); background: var(--sheet); }
+@supports (corner-shape: bevel) { .ref-sec { border-top-right-radius: calc(var(--r-lg) * 2.5); corner-top-right-shape: bevel; } }
+.ref-sec > h2 { margin: 0 0 var(--sp-5); font: var(--fw-head) var(--fs-5)/1.2 var(--font-text); letter-spacing: var(--tr-head); }
+.ref-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-4); }
+.ref-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: var(--sp-5); align-items: start; margin-bottom: var(--sp-4); }
+.ref-wide { grid-column: 1 / -1; }
+.ref-stack { display: grid; gap: var(--sp-4); }
+.ref-scroll { overflow-x: auto; margin-bottom: var(--sp-4); }
+.ref-inset { border-radius: var(--r); background: var(--card); }
+.ref-ground { padding: var(--sp-4); border-radius: var(--r); background: var(--bg); }
+.ref-cls, .ref-note { margin: 0; font-size: var(--fs-2); line-height: 1.6; color: var(--ink-2); }
+.ref-cls code { color: var(--ink); }
+/* Specimens of things that normally float, set in the page instead. */
+.sd-dialog.ref-static, .sd-toast.ref-static { position: static; margin: 0; transform: none; animation: none; max-width: 100%; }
+.sd-dialog.ref-static { width: auto; background: var(--card); }
+.sd-dialog.ref-static, .sd-toast.ref-static { box-shadow: none; }
+
+.ref-type p { margin: 0 0 var(--sp-3); color: var(--ink); }
+.ref-fs8 { font: var(--fw-head) var(--fs-8)/var(--lh-display) var(--font-text); letter-spacing: var(--tr-display); }
+.ref-fs7 { font: var(--fw-head) var(--fs-7)/var(--lh-display) var(--font-text); letter-spacing: var(--tr-display); }
+.ref-fs6 { font: var(--fw-head) var(--fs-6)/var(--lh-head) var(--font-text); letter-spacing: var(--tr-head); }
+.ref-fs5 { font: var(--fw-head) var(--fs-5)/1.25 var(--font-text); }
+.ref-fs4 { font-size: var(--fs-4); max-width: var(--measure-text); }
+.ref-fs3 { font-size: var(--fs-3); }
+.ref-fs2 { font-size: var(--fs-2); }
+.ref-fs1 { font-size: var(--fs-1); color: var(--ink-2); }
+.ref-space { display: flex; align-items: flex-end; gap: var(--sp-3); margin: var(--sp-5) 0 var(--sp-4); }
+.ref-space span { display: block; width: var(--sp-5); border-radius: 2px; background: var(--tint); }
+.ref-space .s1 { height: var(--sp-1); } .ref-space .s2 { height: var(--sp-2); } .ref-space .s3 { height: var(--sp-3); }
+.ref-space .s4 { height: var(--sp-4); } .ref-space .s5 { height: var(--sp-5); } .ref-space .s6 { height: var(--sp-6); }
+.ref-space .s7 { height: var(--sp-7); } .ref-space .s8 { height: var(--sp-8); } .ref-space .s9 { height: var(--sp-9); }
+.ref-space .s10 { height: var(--sp-10); }
+
+@media (max-width: 600px) {
+  .ref { padding: var(--sp-5) var(--sp-3) var(--sp-9); }
+  .ref-sec { padding: var(--sp-4); }
+}

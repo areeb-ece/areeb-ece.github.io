@@ -21,6 +21,7 @@ title: ${JSON.stringify(title)}
 # A banner: put banner.jpg / .png / .webp / .avif in this folder, or point to an image here:
 # banner: ./banner.png
 # bannerAlt: What the banner shows
+# bannerCredit: "Photo title" by Someone, CC BY 4.0, via [Wikimedia Commons](https://commons.wikimedia.org/)
 # date: ${today}
 # How the pages inside this one are listed at the bottom: cards, list or none
 # children: cards

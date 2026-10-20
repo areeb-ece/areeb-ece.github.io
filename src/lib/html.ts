@@ -1,6 +1,10 @@
 const ESC: Record<string, string> = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
 export const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ESC[c]);
 
+/** One line of text with [label](https://…) links and nothing else, for credits. */
+export const inlineLinks = (s: string) =>
+  esc(s).replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (_, label, href) => `<a href="${href}" rel="noopener noreferrer" target="_blank">${label}</a>`);
+
 /** Small deterministic PRNG (mulberry32) so anything "random" at build time is stable between builds. */
 export function rng(seed: number) {
   let a = seed >>> 0;

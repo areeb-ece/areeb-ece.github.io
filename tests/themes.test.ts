@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { colorsToVars, nightTokens, themes } from "../src/lib/design.ts";
+import { colorsToVars, derived, nightTokens, themes } from "../src/lib/design.ts";
 
 const ALL = themes();
 const NIGHT = ALL[0];
@@ -45,6 +45,26 @@ test("every theme keeps its text readable (WCAG AA, 4.5:1)", () => {
     for (const [fg, bg] of pairs) {
       const r = ratio(t.tokens[fg], t.tokens[bg]);
       assert.ok(r >= 4.5, `public/design/tokens.css:${t.line}: in theme "${t.name}", --${fg} on --${bg} is ${r.toFixed(2)}:1; it needs 4.5:1 to stay readable`);
+    }
+  }
+});
+
+test("the mixed colours stay readable in every theme (text 4.5:1, borders and rings 3:1)", () => {
+  const pairs: [string, string, number][] = [
+    ["field-line", "sheet", 3], ["field-line", "field", 3], ["field-line", "card", 3],
+    ["ring", "sheet", 3], ["ring", "tint", 3], ["ring", "card", 3],
+    ["ink", "field", 4.5], ["ink-3", "field", 4.5],
+    ["ink", "well", 4.5], ["ink-2", "well", 4.5], ["ink-3", "well", 4.5],
+    ["ink", "tint", 4.5], ["ink-2", "tint", 4.5],
+    ["ok-ink", "sheet", 4.5], ["warn-ink", "sheet", 4.5], ["danger-ink", "sheet", 4.5],
+    ["ok-ink", "tint-ok", 4.5], ["warn-ink", "tint-warn", 4.5], ["danger-ink", "tint-danger", 4.5],
+  ];
+  for (const t of ALL) {
+    const c = { ...t.tokens, ...derived(t) };
+    for (const [fg, bg, need] of pairs) {
+      assert.ok(c[fg] && c[bg], `public/design/tokens.css: --${fg} or --${bg} is missing from the mixed colours`);
+      const r = ratio(c[fg], c[bg]);
+      assert.ok(r >= need, `public/design/tokens.css:${t.line}: in theme "${t.name}", the mixed --${fg} on --${bg} is ${r.toFixed(2)}:1; it needs ${need}:1 (change the theme's colours, or the mix in the shared scales)`);
     }
   }
 });

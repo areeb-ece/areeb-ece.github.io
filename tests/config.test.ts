@@ -10,12 +10,14 @@ test("the real site.config.yaml is valid", () => {
   const c = parseConfig(real);
   assert.deepEqual(c.wordmark, { left: "AREEB", right: "ECE" });
   assert.deepEqual(c.reservedSlugs, ["prereqflow", "otucalendar", "satisfactorytools"]);
-  assert.equal(c.fonts.default, "mononoki");
+  assert.equal(c.fonts.default, "libre-franklin");
+  assert.equal(c.fonts.code, "mononoki");
   assert.ok(c.links.every((l) => l.href.includes("TODO")), "contact links stay as TODO placeholders");
 });
 
 test("config mistakes name site.config.yaml and the field", () => {
-  assert.throws(() => parseConfig(real.replace("default: mononoki", "default: comic")), /site\.config\.yaml: fonts\.default is "comic", but there is no fonts\.registry entry/);
+  assert.throws(() => parseConfig(real.replace("default: libre-franklin", "default: comic")), /site\.config\.yaml: fonts\.default is "comic", but there is no fonts\.registry entry/);
+  assert.throws(() => parseConfig(real.replace("400-800italic:", "400-800slanted:")), /site\.config\.yaml: fonts\.registry\.libre-franklin\.files: "400-800slanted" isn't a weight/);
   assert.throws(() => parseConfig(real.replace(/^title: .*$/m, "")), /site\.config\.yaml: \n {2}"title" is required/);
   assert.throws(() => parseConfig(real + "\ncolour: blue\n"), /unknown field "colour"/);
   assert.throws(() => parseConfig("title: [oops"), /site\.config\.yaml: is not valid YAML/);

@@ -8,6 +8,7 @@ const Schema = z.strictObject({
   order: z.number({ error: "order must be a number, like 10" }).optional(),
   banner: z.string().optional(),
   bannerAlt: z.string().optional(),
+  bannerCredit: z.string().optional(),
   font: z.string().optional(),
   date: z
     .union([z.string(), z.date()])
