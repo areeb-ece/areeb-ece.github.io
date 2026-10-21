@@ -15,13 +15,14 @@ week by week and see exactly what the file contains.
 
 MyOntarioTech has no export button and no public API, and a third-party site should
 never ask for your university password. So you bring the schedule to the page
-instead, in one of three ways:
+instead, in one of two ways:
 
 1. **Saved schedule page.** Save the Schedule Details page from your browser and drop
    the `.html` or `.mhtml` file in.
 2. **Copy and paste** the Schedule Details page.
-3. **Helper bookmark.** A short script you can read line by line. It asks the same
-   site for each section's meeting times and saves a `.json` file to load.
+
+As a last resort, mostly for students elsewhere, you can **enter each class by hand**,
+with an optional reading week that every-other-week classes skip over.
 
 ## Privacy
 
