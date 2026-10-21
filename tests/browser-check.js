@@ -51,10 +51,11 @@ const jsGzip = jsFiles.reduce((n, f) => n + zlib.gzipSync(fs.readFileSync(f), { 
 assert.ok(jsGzip <= 15 * 1024, `client JS is ${jsGzip} bytes gzipped (budget 15 KB)`);
 ok(`client JS budget: ${(jsGzip / 1024).toFixed(1)} KB gzipped across ${jsFiles.length} files (≤ 15 KB)`);
 
-// Pages: every built page except 404.
+// Pages: every built page except 404 and the shared design system's reference sheet
+// (/design/components.html, which has checks of its own below).
 const pages = htmlFiles
   .map((f) => "/" + path.relative(DIST, f).split(path.sep).join("/").replace(/index\.html$/, ""))
-  .filter((u) => u !== "/404.html");
+  .filter((u) => u !== "/404.html" && !u.startsWith("/design/"));
 const contentPages = pages.filter((u) => u !== "/");
 
 const { server, base } = await serve(DIST);
@@ -395,6 +396,133 @@ try {
     }
     ok("narrow window: no horizontal page scroll; the sidebar starts as a rail");
     await ctx.close();
+  }
+
+  // ── diagrams stay legible: they scroll in their figure rather than shrink their text ──
+  {
+    const ctx = await context({ reducedMotion: "reduce" });
+    const page = await ctx.newPage();
+    for (const url of ["/projects/nand-alu/", "/_kitchen-sink/"]) {
+      await page.goto(base + url);
+      const smallest = await page.evaluate(() => {
+        let min = Infinity, where = "";
+        for (const svg of document.querySelectorAll("figure.diagram svg")) {
+          for (const el of svg.querySelectorAll("text, foreignObject span, foreignObject p, foreignObject div")) {
+            if (!el.textContent.trim() || el.querySelector("span, p, div")) continue;
+            const h = el.getBoundingClientRect().height;
+            if (h > 0 && h < min) { min = h; where = el.textContent.trim().slice(0, 20); }
+          }
+        }
+        return { min, where };
+      });
+      assert.ok(smallest.min >= 9.5, `${url}: diagram text "${smallest.where}" renders ${smallest.min.toFixed(1)}px tall; diagrams should scroll before their text gets this small`);
+    }
+    ok("diagrams: no label renders smaller than 9.5 px at 1440 px (wide ones scroll in their figure)");
+
+    // Syntax colours keep 4.5:1 on the code well, highlighted lines included, dark and light.
+    for (const theme of ["dark", "light", "retro", "sepia"]) {
+      await page.addInitScript((t) => localStorage.setItem("design.settings", JSON.stringify({ theme: t })), theme);
+      await page.goto(base + "/_kitchen-sink/");
+      const worst = await page.evaluate(() => {
+        const parse = (c) => { let m = /rgba?\(([\d.]+),\s*([\d.]+),\s*([\d.]+)(?:,\s*([\d.]+))?\)/.exec(c); if (m) return [+m[1] / 255, +m[2] / 255, +m[3] / 255, m[4] === undefined ? 1 : +m[4]]; m = /color\(srgb ([\d.e-]+) ([\d.e-]+) ([\d.e-]+)(?: \/ ([\d.]+))?\)/.exec(c); return m ? [+m[1], +m[2], +m[3], m[4] === undefined ? 1 : +m[4]] : null; };
+        const over = (t, u) => t.slice(0, 3).map((v, i) => v * t[3] + u[i] * (1 - t[3])).concat(1);
+        const behind = (el) => { const st = []; for (let e = el; e; e = e.parentElement) { const c = parse(getComputedStyle(e).backgroundColor); if (c && c[3] > 0) { st.push(c); if (c[3] >= 1) break; } } return st.reverse().reduce((a, c) => over(c, a), [1, 1, 1, 1]); };
+        const lum = (c) => c.slice(0, 3).map((v) => (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4)).reduce((n, v, i) => n + v * [0.2126, 0.7152, 0.0722][i], 0);
+        const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+        let min = Infinity, what = "";
+        for (const el of document.querySelectorAll("figure.code .line span")) {
+          if (!el.textContent.trim() || el.children.length) continue;
+          const fg = parse(getComputedStyle(el).color), bg = behind(el);
+          const r = ratio(over(fg, bg), bg);
+          if (r < min) { min = r; what = el.textContent.trim().slice(0, 16); }
+        }
+        return { min, what };
+      });
+      assert.ok(worst.min >= 4.5, `theme "${theme}": code token "${worst.what}" is ${worst.min.toFixed(2)}:1 on the code well`);
+    }
+    await page.addInitScript(() => localStorage.removeItem("design.settings"));
+    ok("code: every syntax colour keeps 4.5:1 on the code well (night, paper, retro, sepia)");
+    await ctx.close();
+  }
+
+  // ── the shared components (/design/components.html), in every theme ──
+  {
+    const themeNames = [...fs.readFileSync(path.join(ROOT, "public/design/tokens.css"), "utf8").matchAll(/^:root(?:, |\[)data-theme="([\w-]+)"|^:root, \[data-theme="([\w-]+)"/gm)].map((m) => m[1] ?? m[2]);
+    const ctx = await context({ reducedMotion: "reduce" });
+    const page = await ctx.newPage();
+    for (const theme of themeNames) {
+      await page.addInitScript((t) => localStorage.setItem("design.settings", JSON.stringify({ theme: t })), theme);
+      await page.goto(base + "/design/components.html");
+      await page.waitForSelector("#designSettings");
+      // Colours as the browser computed them (rgb() or color(srgb …)), composited over
+      // whatever is behind, so mixed and translucent tokens are measured as seen.
+      const bad = await page.evaluate(() => {
+        const parse = (c) => {
+          let m = /rgba?\(([\d.]+),\s*([\d.]+),\s*([\d.]+)(?:,\s*([\d.]+))?\)/.exec(c);
+          if (m) return [+m[1] / 255, +m[2] / 255, +m[3] / 255, m[4] === undefined ? 1 : +m[4]];
+          m = /color\(srgb ([\d.e-]+) ([\d.e-]+) ([\d.e-]+)(?: \/ ([\d.]+))?\)/.exec(c);
+          if (m) return [+m[1], +m[2], +m[3], m[4] === undefined ? 1 : +m[4]];
+          return null;
+        };
+        const over = (top, under) => top.slice(0, 3).map((v, i) => v * top[3] + under[i] * (1 - top[3])).concat(1);
+        const behind = (el) => {
+          const stack = [];
+          for (let e = el; e; e = e.parentElement) {
+            const c = parse(getComputedStyle(e).backgroundColor);
+            if (c && c[3] > 0) { stack.push(c); if (c[3] >= 1) break; }
+          }
+          return stack.reverse().reduce((acc, c) => over(c, acc), [1, 1, 1, 1]);
+        };
+        const lum = (c) => c.slice(0, 3).map((v) => (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4)).reduce((n, v, i) => n + v * [0.2126, 0.7152, 0.0722][i], 0);
+        const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+        const out = [];
+        const text = ".sd-label, .sd-hint, .sd-error, .sd-btn:not(:disabled), .sd-tag, .sd-callout, .sd-callout-title, .sd-nav a, .sd-tab, .sd-table td, .sd-table th, .sd-table caption, .sd-card-title, .sd-card-meta, .sd-check, .sd-drop, .sd-seg button, .sd-input:not(:disabled), .sd-kbd, .sd-toast, .ref-cls";
+        for (const el of document.querySelectorAll(text)) {
+          const fg = parse(getComputedStyle(el).color);
+          if (!fg) continue;
+          const bg = behind(el);
+          const r = ratio(over(fg, bg), bg);
+          if (r < 4.5) out.push(`text ${el.className || el.tagName} "${el.textContent.trim().slice(0, 24)}" ${r.toFixed(2)}:1`);
+        }
+        for (const el of document.querySelectorAll(".sd-input:not(:disabled), .sd-textarea, .sd-select > select")) {
+          const line = parse(getComputedStyle(el).borderTopColor);
+          const bg = behind(el.parentElement);
+          const r = ratio(over(line, bg), bg);
+          if (r < 3) out.push(`field border ${el.className || el.tagName} ${r.toFixed(2)}:1`);
+        }
+        return out;
+      });
+      assert.deepEqual(bad, [], `components in theme "${theme}": text 4.5:1, field borders 3:1`);
+    }
+
+    // Keyboard: every control can be reached with Tab and shows a ring at least 3:1.
+    await page.addInitScript(() => localStorage.removeItem("design.settings"));
+    await page.goto(base + "/design/components.html");
+    await page.waitForSelector("#designSettings");
+    const reachable = await page.$$eval("a[href], button:not(:disabled), input:not(:disabled), select, textarea", (els) => els.filter((e) => e.getClientRects().length && !e.closest("[hidden]")).length);
+    const seen = new Set();
+    for (let i = 0; i < reachable + 5; i++) {
+      await page.keyboard.press("Tab");
+      const f = await page.evaluate(() => {
+        const el = document.activeElement;
+        if (!el || el === document.body) return null;
+        const cs = getComputedStyle(el.matches(".sd-drop input") ? el.closest(".sd-drop") : el);
+        return { key: el.outerHTML.slice(0, 80) + [...document.querySelectorAll("*")].indexOf(el), ring: cs.outlineStyle !== "none" && parseFloat(cs.outlineWidth) >= 2 };
+      });
+      if (!f) continue;
+      assert.ok(f.ring, `focus ring visible on ${f.key}`);
+      seen.add(f.key);
+    }
+    assert.ok(seen.size >= reachable - 2, `Tab reaches the controls (${seen.size} of ${reachable})`);
+    await page.screenshot({ path: path.join(SHOTS, "components.png"), fullPage: true });
+    await ctx.close();
+
+    const phone = await context({ viewport: { width: 390, height: 844 }, reducedMotion: "reduce" });
+    const p2 = await phone.newPage();
+    await p2.goto(base + "/design/components.html");
+    assert.equal(await p2.evaluate(() => document.documentElement.scrollWidth), 390, "components at 390 px: no sideways scroll");
+    await phone.close();
+    ok(`components: text and field borders readable in all ${themeNames.length} themes, every control reachable by Tab with a ring, fits a phone`);
   }
 
   assert.deepEqual(problems, [], "no console errors and no CSP violations");

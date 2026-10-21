@@ -49,6 +49,31 @@ export function nightTokens(css = readFileSync(MASTER_TOKENS, "utf8")): Record<s
 export const mix = (a: string, b: string, t: number) =>
   "#" + [1, 3, 5].map((i) => Math.round(parseInt(a.slice(i, i + 2), 16) * (1 - t) + parseInt(b.slice(i, i + 2), 16) * t).toString(16).padStart(2, "0")).join("");
 
+const MIX = /^color-mix\(in srgb,\s*var\(--([\w-]+)\)\s+([\d.]+)%,\s*var\(--([\w-]+)\)\)$/;
+const ALIAS = /^var\(--([\w-]+)\)$/;
+
+/**
+ * The colours the shared-scales part of the palette mixes from a theme's own
+ * (`:root, [data-theme] { --field: color-mix(…) }` and the light-scheme override), worked
+ * out as #rrggbb for one theme, the way a browser's color-mix(in srgb) does. Mixes with
+ * `transparent` are skipped: they have no colour of their own.
+ */
+export function derived(theme: Theme, css = readFileSync(MASTER_TOKENS, "utf8")): Record<string, string> {
+  const base = /:root\s*,\s*\[data-theme\]\s*\{([^}]*)\}/.exec(css)?.[1];
+  if (!base) throw new Error(`${MASTER_TOKENS}: couldn't find the mixed colours (:root, [data-theme] { … })`);
+  const decl = declarations(base);
+  if (theme.tokens["color-scheme"] === "light") Object.assign(decl, declarations(/:root\[data-scheme="light"\]\s*\{([^}]*)\}/.exec(css)?.[1] ?? ""));
+  const out: Record<string, string> = {};
+  const get = (k: string) => out[k] ?? theme.tokens[k];
+  for (const [k, v] of Object.entries(decl)) {
+    const m = MIX.exec(v);
+    const a = ALIAS.exec(v);
+    if (m && /^#[0-9a-f]{6}$/i.test(get(m[1]) ?? "") && /^#[0-9a-f]{6}$/i.test(get(m[3]) ?? "")) out[k] = mix(get(m[3]), get(m[1]), +m[2] / 100);
+    else if (a && get(a[1])) out[k] = get(a[1]);
+  }
+  return out;
+}
+
 // When two tokens share a colour, the first in this list wins, so a diagram's text is
 // tied to --ink rather than to a pastel that happens to match.
 const ORDER = ["ink", "ink-2", "ink-3", "ink-4", "bg", "sheet", "sheet-2", "card", "card-hover", "rule", "rule-2", "accent", "danger", "warn", "ok"];

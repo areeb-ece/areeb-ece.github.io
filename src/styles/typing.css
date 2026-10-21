@@ -1,32 +1,39 @@
 /* The typing animation (src/client/typing.js). Blocks waiting their turn are hidden
    visually but stay in the accessibility tree, so screen readers always get the
-   finished page; the typing layer itself is aria-hidden. */
+   finished page; the typing layer itself is aria-hidden. Each block types its Markdown
+   source in the code face, then "prints" in the text face. */
 
 html.typing .main .b:not(.shown) {
   position: absolute !important; width: 1px !important; height: 1px !important; margin: -1px !important; padding: 0 !important;
   overflow: hidden !important; clip-path: inset(50%) !important; white-space: nowrap !important; border: 0 !important;
 }
-html.typing .children:not(:has(.b.shown)) { border-top-color: transparent; }
+
+/* The title block's bar closes it once there's something under the title. */
+html.typing .hero:not(:has(.hero-intro .b.shown)) { border-bottom-color: transparent; }
 
 pre.typing {
-  margin: 0 0 1.05em; padding: 0; background: none; border: 0;
-  font: 400 14.5px/1.72 var(--f-code); color: var(--ink-2);
-  white-space: pre-wrap; overflow-wrap: anywhere; max-width: var(--measure);
+  margin: 0 0 1.1em; padding: 0; background: none; border: 0;
+  font: var(--fw-text) var(--fs-3)/1.7 var(--font-mono); color: var(--ink-2);
+  white-space: pre-wrap; overflow-wrap: anywhere; max-width: var(--measure-text);
 }
-.hero-intro pre.typing { font-size: 16px; line-height: 1.7; }
-.hero pre.typing:not(.typing-title) { margin-bottom: .8em; }
-pre.typing.typing-title { font: 700 clamp(34px, 4.4vw, 54px)/1.08 var(--f); letter-spacing: -.01em; color: var(--ink); margin: 0 0 18px; min-height: 1.08em; }
-.ph pre.typing { margin-bottom: 10px; }
+.hero-intro pre.typing { font-size: var(--fs-3); line-height: 1.6; }
+.hero pre.typing:not(.typing-title) { margin-bottom: .6em; }
+/* The title types in its own face and size, so nothing moves when it lands. */
+pre.typing.typing-title {
+  grid-column: 1 / -1; margin: 0; min-height: 1em; max-width: none;
+  font: var(--fw-head) var(--fs-8)/var(--lh-display) var(--font-text); letter-spacing: var(--tr-display); color: var(--ink);
+}
+.ph pre.typing { grid-column: 1 / -1; margin: 0; }
 
 /* the cursor: an underscore-shaped bar in the accent colour */
 .cursor {
   display: inline-block; width: .6em; height: 1.1em; margin-left: .06em; vertical-align: text-bottom;
   border-bottom: .14em solid var(--accent); pointer-events: none;
 }
-.typing-title .cursor { border-bottom-width: .08em; }
+.typing-title .cursor { border-bottom-width: .07em; height: .9em; }
 .cursor.idle { animation: blink var(--blink, 1060ms) steps(1, end) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
-.cursor-line { height: 1.6em; margin-top: 4px; }
+.cursor-line { height: 1.6em; margin-top: var(--sp-1); }
 
-.b.fade { animation: fade-in var(--fade, 180ms) ease-out both; }
+.b.fade { animation: fade-in var(--fade, 180ms) var(--ease-out) both; }
 @keyframes fade-in { from { opacity: 0; } }

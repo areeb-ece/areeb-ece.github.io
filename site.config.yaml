@@ -22,12 +22,18 @@ links:
   - { label: Email,    href: "mailto:TODO@example.com",         icon: /icons/email.svg }
 
 # Fonts. To add one: drop the .woff2 files into public/fonts/ and add an entry under
-# registry. Use it everywhere with `default`, for code with `code`, or on a single
-# page with `font: <name>` in that page's frontmatter.
+# registry. Use it everywhere with `default`, for code (and the typed Markdown, the
+# wordmark and table figures) with `code`, or on a single page with `font: <name>` in
+# that page's frontmatter. Keys are weights (or a range, for variable fonts); put
+# "italic" after one for italics.
 fonts:
-  default: mononoki
+  default: libre-franklin
   code: mononoki
   registry:
+    libre-franklin:
+      # Variable fonts: one file per style covers every weight from 400 to 800.
+      files: { 400-800: /fonts/LibreFranklin-Var.woff2, 400-800italic: /fonts/LibreFranklin-Italic-Var.woff2 }
+      fallback: 'system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif'
     mononoki:
       files: { 400: /fonts/mononoki-Regular.woff2, 700: /fonts/mononoki-Bold.woff2 }
       fallback: 'ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace'

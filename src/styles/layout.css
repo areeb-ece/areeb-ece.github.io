@@ -1,48 +1,102 @@
-/* Shell: sidebar + main column. Colours come from the master palette,
-   public/design/tokens.css (linked first in src/layouts/Base.astro). */
+/* Shell: the page tree on the night sky, and every page as one sheet laid on it.
+   Colours, sizes and motion come from the master file, public/design/tokens.css. */
 
-:root { --measure: 72ch; --side-w: 264px; --rail-w: 48px; }
+:root { --side-w: 248px; --rail-w: 56px; --sheet-w: 1240px; --bar-h: 56px; }
+/* Worked out once on the sheet (from the column's width) and inherited as a length, so a
+   banner can bleed to the sheet's edges by exactly the sheet's padding. */
+@property --sheet-pad { syntax: "<length>"; inherits: true; initial-value: 24px; }
 
-.shell { position: relative; z-index: 1; display: grid; grid-template-columns: var(--side-w) minmax(0, 1fr); min-height: 100vh; transition: grid-template-columns .25s cubic-bezier(.2, .8, .2, 1); }
+.shell { position: relative; z-index: var(--z-page); display: grid; grid-template-columns: var(--side-w) minmax(0, 1fr); min-height: 100vh; min-height: 100dvh; }
 .rail .shell { grid-template-columns: var(--rail-w) minmax(0, 1fr); }
 
-/* ── sidebar ───────────────────────────────────────── */
-.side { position: sticky; top: 0; height: 100vh; min-width: 0; display: flex; flex-direction: column; border-right: 1px solid var(--rule-2); background: color-mix(in srgb, var(--sheet) 88%, transparent); backdrop-filter: blur(6px); }
-.side-head { display: flex; align-items: center; gap: 8px; padding: 16px 12px 14px 18px; border-bottom: 1px solid var(--rule-2); min-height: 58px; }
+/* ── page tree: no panel of its own, it sits on the sky ── */
+.side { position: sticky; top: 0; height: 100vh; height: 100dvh; min-width: 0; display: flex; flex-direction: column; }
+.side-head { display: flex; align-items: center; gap: var(--sp-2); min-height: var(--bar-h); padding: var(--sp-4) var(--sp-3) var(--sp-2) var(--sp-5); }
 .side-head .wordmark { flex: 1; min-width: 0; overflow: hidden; }
-.rail-btn { flex: none; width: 28px; height: 28px; display: grid; place-items: center; border: 1px solid transparent; border-radius: var(--r-sm); background: transparent; color: var(--ink-3); cursor: pointer; transition: background-color .18s, border-color .18s, color .18s; }
-.rail-btn:hover { border-color: var(--rule); background: var(--sheet-2); color: var(--ink); }
-.rail-btn::before { content: ""; width: 7px; height: 7px; border-left: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateX(1.5px) rotate(45deg); transition: transform .25s; }
+.rail-btn {
+  flex: none; width: var(--ctl-h); height: var(--ctl-h); display: grid; place-items: center; padding: 0;
+  border: 0; border-radius: var(--r-sm); background: transparent; color: var(--ink-2); cursor: pointer; -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--dur-1), color var(--dur-1), transform var(--dur-1) var(--ease-out);
+}
+.rail-btn:active { transform: scale(.94); }
+@media (hover: hover) { .rail-btn:hover { background: var(--hover); color: var(--ink); } }
+.rail-btn::before { content: ""; width: 7px; height: 7px; border-left: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateX(1.5px) rotate(45deg); transition: transform var(--dur-3) var(--ease-out); }
 .rail .rail-btn::before { transform: translateX(-1.5px) rotate(-135deg); }
-.side-nav { flex: 1; min-height: 0; overflow: auto; padding: 12px 8px 24px; scrollbar-width: thin; }
+.side-nav { flex: 1; min-height: 0; overflow: auto; padding: var(--sp-3) var(--sp-3) var(--sp-6) var(--sp-4); scrollbar-width: thin; }
 
-.side-foot { flex: none; display: flex; align-items: center; padding: 10px 12px 12px 18px; border-top: 1px solid var(--rule-2); }
+.side-foot { flex: none; display: flex; align-items: center; padding: var(--sp-3) var(--sp-3) var(--sp-4) var(--sp-5); }
 .side-foot:empty { display: none; }
-.side-foot .sd-gear { width: 28px; height: 28px; border-color: transparent; background: transparent; color: var(--ink-3); }
-.side-foot .sd-gear:hover, .side-foot .sd-gear[aria-expanded="true"] { border-color: var(--rule); background: var(--sheet-2); color: var(--ink); }
+.side-foot .sd-gear { border-color: transparent; background: transparent; color: var(--ink-2); }
+@media (hover: hover) { .side-foot .sd-gear:hover { border-color: transparent; background: var(--hover); color: var(--ink); } }
+.side-foot .sd-gear[aria-expanded="true"] { background: var(--hover); color: var(--ink); }
 
-.rail .side-head { padding: 15px 9px; justify-content: center; }
-.rail .side-foot { padding: 10px 9px; justify-content: center; }
+.rail .side-head { padding: var(--sp-4) 0 var(--sp-2); justify-content: center; }
+.rail .side-foot { padding: var(--sp-3) 0 var(--sp-4); justify-content: center; }
 .rail .side-head .wordmark, .rail .side-nav { display: none; }
 
 /* tree */
 .tree, .tree ul { list-style: none; margin: 0; padding: 0; }
-.tree ul { margin-left: 13px; padding-left: 8px; border-left: 1px solid var(--rule-2); }
+.tree ul { margin-left: 15px; padding-left: var(--sp-2); }
 .tree [aria-expanded="false"] + ul { display: none; }
-.tree a { display: flex; align-items: center; gap: 7px; min-height: 30px; padding: 4px 8px; border-radius: var(--r-sm); color: var(--ink-2); font: 400 13px/1.3 var(--f); transition: background-color .15s, color .15s; }
-.tree a:hover { background: var(--sheet-2); color: var(--ink); text-decoration: none; }
+.tree a {
+  display: flex; align-items: center; gap: var(--sp-2); min-height: var(--ctl-h); padding: 5px var(--sp-2);
+  border-radius: var(--r-sm); color: var(--ink-2); font: var(--fw-ui) var(--fs-2)/1.3 var(--font-text);
+  transition: background-color var(--dur-1), color var(--dur-1);
+}
+@media (hover: hover) { .tree a:hover { background: var(--hover); color: var(--ink); text-decoration: none; } }
 .tree a:focus-visible { outline-offset: -2px; }
-.tree a[aria-current="page"] { background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--ink); font-weight: 700; box-shadow: inset 2px 0 0 var(--accent); }
+.tree a[aria-current="page"] { background: var(--tint); color: var(--ink); font-weight: var(--fw-strong); }
 .tree .t { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.tree .chev { flex: none; width: 16px; height: 16px; margin: 0 -2px; display: grid; place-items: center; border-radius: 4px; cursor: pointer; }
-.tree .chev::before { content: ""; width: 5px; height: 5px; border-right: 1.5px solid var(--ink-3); border-bottom: 1.5px solid var(--ink-3); transform: rotate(-45deg); transition: transform .2s; }
-.tree .chev:hover { background: var(--card-hover); }
+.tree .chev { flex: none; width: 20px; height: 20px; margin: 0 -3px; display: grid; place-items: center; border-radius: 4px; cursor: pointer; }
+.tree .chev::before { content: ""; width: 6px; height: 6px; border-right: 1.5px solid var(--ink-3); border-bottom: 1.5px solid var(--ink-3); transform: rotate(-45deg); transition: transform var(--dur-2) var(--ease-out); }
+@media (hover: hover) { .tree .chev:hover { background: var(--hover); } }
 .tree [aria-expanded="true"] > .chev::before { transform: translateY(-1px) rotate(45deg); }
-.tree .dot { flex: none; width: 12px; display: grid; place-items: center; }
-.tree .dot::before { content: ""; width: 4px; height: 4px; border-radius: 50%; background: var(--ink-4); }
+/* Leaves get a pin: a small square, filled for the page you're on. */
+.tree .dot { flex: none; width: 14px; display: grid; place-items: center; }
+.tree .dot::before { content: ""; width: 5px; height: 5px; border-radius: 1px; background: var(--ink-4); }
 .tree [aria-current="page"] > .dot::before { background: var(--accent); }
-.tree .draft-tag { margin-left: auto; font: 400 9.5px var(--f); letter-spacing: .1em; text-transform: uppercase; color: var(--warn); }
+.tree .draft-tag { margin-left: auto; padding: 1px 6px; border-radius: var(--r-pill); background: var(--tint-warn); color: var(--warn-ink); font: var(--fw-ui) 12px/1.4 var(--font-text); }
 
-/* ── main column ───────────────────────────────────── */
-.main { min-width: 0; padding: 40px clamp(20px, 5vw, 64px) 96px; }
-.main > * { max-width: 1240px; }
+/* ── main column: one sheet, centred, with the sky showing round it ── */
+.main { min-width: 0; padding: var(--sp-5) var(--sp-5) var(--sp-9); container-type: inline-size; }
+.sheet {
+  --sheet-pad: clamp(20px, 6cqi, 64px);
+  position: relative; max-width: var(--sheet-w); margin: 0 auto; padding: var(--sheet-pad);
+  border-radius: var(--r-lg); background: var(--sheet); container-type: inline-size;
+}
+/* The pin-1 corner of a chip package: one corner cut, where the browser can cut it. */
+@supports (corner-shape: bevel) {
+  .sheet { border-top-right-radius: calc(var(--r-lg) * 2.5); corner-top-right-shape: bevel; }
+}
+
+/* ── narrow screens: a bar along the top, and the page tree as a drawer over the page ── */
+@media (max-width: 759px) {
+  .shell, .rail .shell { display: block; }
+  .side {
+    position: sticky; top: 0; z-index: var(--z-drawer); height: auto; flex-direction: row; align-items: center;
+    min-height: var(--bar-h); padding: 0 var(--sp-2) 0 var(--sp-4); background: var(--bg);
+  }
+  .side-head, .rail .side-head { flex: 1; min-height: var(--bar-h); padding: 0; justify-content: flex-start; flex-direction: row-reverse; gap: var(--sp-2); }
+  .rail .side-head .wordmark { display: inline-flex; }
+  .side-foot, .rail .side-foot { order: 2; padding: 0; }
+  /* the toggle reads as a menu here */
+  .rail-btn { margin-left: calc(var(--sp-2) * -1); }
+  .rail-btn::before, .rail .rail-btn::before {
+    width: 16px; height: 1.5px; border: 0; background: currentColor; transform: none;
+    box-shadow: 0 -5px 0 currentColor, 0 5px 0 currentColor; transition: box-shadow var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out);
+  }
+  :root:not(.rail) .rail-btn::before { box-shadow: 0 0 0 currentColor, 0 0 0 currentColor; transform: rotate(45deg); }
+  :root:not(.rail) .rail-btn::after { content: ""; position: absolute; width: 16px; height: 1.5px; background: currentColor; transform: rotate(-45deg); }
+  .rail-btn { position: relative; }
+  .side-nav, .rail .side-nav {
+    position: fixed; left: 0; top: var(--bar-h); bottom: 0; width: min(320px, 86vw); display: block;
+    padding: var(--sp-3) var(--sp-3) var(--sp-6); background: var(--sheet); box-shadow: var(--shadow-pop);
+    transition: transform var(--dur-3) var(--ease-drawer), visibility 0s linear 0s;
+  }
+  .rail .side-nav { transform: translateX(-102%); visibility: hidden; transition: transform var(--dur-2) var(--ease-out), visibility 0s linear var(--dur-2); }
+  /* the rest of the page dims while the drawer is open; a tap on it closes the drawer */
+  .side::after { content: ""; position: fixed; inset: var(--bar-h) 0 0 0; z-index: -1; background: var(--scrim); opacity: 1; transition: opacity var(--dur-3) var(--ease-out); }
+  .rail .side::after { opacity: 0; pointer-events: none; }
+  .main { padding: var(--sp-2) var(--sp-2) var(--sp-8); }
+  .sheet { --sheet-pad: clamp(18px, 5.5cqi, 32px); border-radius: var(--r); }
+}

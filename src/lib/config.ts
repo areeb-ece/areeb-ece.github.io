@@ -5,7 +5,9 @@ import { ContentError, formatIssues } from "./errors.ts";
 const FILE = "site.config.yaml";
 
 const Font = z.strictObject({
-  files: z.record(z.string().regex(/^[1-9]00$/, "weights are 100–900"), z.string().startsWith("/", "font paths start with / (they live in public/)")),
+  // Keys are weights (400 regular, 700 bold), or a range such as 400-800 for a variable
+  // font; add "italic" for the slanted style, e.g. 400italic or 400-800italic. Checked below.
+  files: z.record(z.string(), z.string().startsWith("/", "font paths start with / (they live in public/)")),
   fallback: z.string().default("monospace"),
 });
 
@@ -38,6 +40,13 @@ export function parseConfig(raw: string, file = FILE): SiteConfig {
   const r = Schema.safeParse(data ?? {}, { reportInput: true });
   if (!r.success) throw new ContentError(file, "\n  " + formatIssues(r.error.issues as never, Object.keys(Schema.shape)));
   const c = r.data;
+  for (const [name, f] of Object.entries(c.fonts.registry)) {
+    for (const key of Object.keys(f.files)) {
+      if (!/^[1-9]00(-[1-9]00)?(italic)?$/.test(key)) {
+        throw new ContentError(file, `fonts.registry.${name}.files: "${key}" isn't a weight. Use 100–900 (400 is regular, 700 bold), a range such as 400-800 for a variable font, and add "italic" for italics (400italic)`);
+      }
+    }
+  }
   for (const key of ["default", "code"] as const) {
     if (!c.fonts.registry[c.fonts[key]]) {
       throw new ContentError(file, `fonts.${key} is "${c.fonts[key]}", but there is no fonts.registry entry with that name (have: ${Object.keys(c.fonts.registry).join(", ")})`);

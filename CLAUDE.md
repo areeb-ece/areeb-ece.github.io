@@ -10,7 +10,14 @@ if a feature can only be changed by editing code, it isn't finished. Update
 
 - **Astro 7** with static output and `trailingSlash: "always"`. No UI framework, no
   Tailwind: hand-written CSS in `src/styles/` and vanilla ES-module client scripts in
-  `src/client/`.
+  `src/client/`. Component CSS uses only the master tokens (`--fs-*`, `--sp-*`, `--dur-*`,
+  colours): no raw sizes, colours or durations.
+- **Type:** Libre Franklin (variable, self-hosted) for text; mononoki for code, the typed
+  Markdown, the wordmark and table figures. Both come from `fonts` in `site.config.yaml`.
+- **Design direction:** each page is a component datasheet laid on the night sky: a sheet
+  with a title block closed by a heavy bar, section heads hanging in a gutter on wide
+  sheets, datasheet tables, one bevelled corner (pin 1, `corner-shape` where supported)
+  and drawn timing diagrams for missing banners. `PRODUCT.md` holds the product context.
 - **Markdown:** our own unified pipeline (`src/lib/markdown/pipeline.ts`), not Astro's
   Markdown processor (Astro 7 defaults to Sätteri). It uses remark-parse, remark-gfm,
   remark-math, remark-directive, remark-rehype with custom handlers, rehype-katex and
@@ -50,22 +57,27 @@ download.
 ```
 site.config.yaml        home title/intro (Markdown), links, wordmark, fonts registry, reservedSlugs
 content/                pages: <path>/index.md = /<path>/; home.md = extra home content; images live beside pages
-public/                 fonts (mononoki + OFL), icons (placeholders), favicon, js/boot.js (pre-paint, not bundled)
+public/                 fonts (Libre Franklin + mononoki, with OFL texts), icons (placeholders), favicon, js/boot.js (pre-paint, not bundled)
 public/design/          SHARED WITH ALL FOUR SITES, served at /design/, not bundled:
-                          tokens.css (master palette = the themes), theme.js (pre-paint: applies saved
-                          settings), ui.js + ui.css (gear button, settings panel, night sky + its defaults)
+                          tokens.css (the themes, then the shared scales: type, space, controls, motion,
+                          layers and mixed colours), theme.js (pre-paint: applies saved settings),
+                          ui.js + ui.css (gear, settings panel, night sky, and the sd- components:
+                          buttons, fields, tables, cards, nav, tabs, notes, dialog, toast),
+                          components.html + reference.css (the components' reference sheet),
+                          fonts.css (Libre Franklin @font-face for the tools, from public/fonts/)
 src/lib/config.ts       site.config.yaml schema (astro/zod) → readable errors
 src/lib/frontmatter.ts  frontmatter schema; errors name the file and field
 src/lib/tree.ts         content/ → page tree: order, hidden, draft, banners, slug rules, reserved slugs
 src/lib/site.ts         Astro-only loader (import.meta.glob): renders every page once per build
-src/lib/card.ts         card + banner HTML (also seeded fallback gradient)
+src/lib/card.ts         card + banner HTML (and the seeded timing-diagram fallback banner)
 src/lib/markdown/       pipeline, shiki, mermaid, wavedrom, relaxed-json
 src/pages/              index, [...slug], 404, fonts.css.ts, diagrams.css.ts
 src/components/         Sidebar/TreeNodes (ARIA tree), Blocks, ChildList, ContactPanel, Sky, KatexStyles
 src/client/             typing.js + timing.js (ALL timing constants), sidebar.js, copy.js, store.js
 src/styles/             base, layout, page, prose, code, typing (colours come from public/design/tokens.css)
 src/lib/design.ts       reads the master palette: themes (for tests), night colours + colorsToVars (Mermaid)
-tests/                  *.test.ts (node --test), fixtures/, serve.js, browser-check.js
+tests/                  *.test.ts (node --test), fixtures/, serve.js, browser-check.js (also checks
+                          /design/components.html in every theme: contrast, focus rings, Tab order)
 scripts/new-page.ts     the `new` command
 ```
 
@@ -104,14 +116,22 @@ scripts/new-page.ts     the `new` command
     CSS (`--star*`, falling back to `--ink`/`--c2`/`--c0`).
   - Anything in `public/design/` must work in all four sites: no `style="…"` attributes
     in markup (OTU Calendar's CSP has no `style-src-attr`; set styles through
-    `el.style.setProperty`), `sd-` class prefixes, no dependencies. Their browser checks
-    can load it with `DESIGN_DIR=../areeb-ece.github.io/public/design`.
+    `el.style.setProperty`), `sd-` class prefixes, no dependencies, no new names that a
+    site already defines (`--f`, `--sd`, `--cc`, `--c`, `--mix`…). Only add: never rename
+    or remove a token, class, id, attribute or `SiteDesign` method the tools use. Their
+    browser checks can load it with `DESIGN_DIR=../areeb-ece.github.io/public/design`.
+  - New shared tokens go in the "Shared scales" part at the end of `tokens.css`, not in
+    the theme blocks (the parsers in `src/lib/design.ts`, `tests/themes.test.ts` and the
+    browser check read the theme selectors exactly). Mixed colours there are checked for
+    contrast in every theme by `tests/themes.test.ts` (`derived()`).
   - Change colours there, never in component CSS. When you change it, also update the
     fallback copies in the three sibling repos so offline use matches.
 - **Sibling repos: only with Areeb's say-so.** Don't edit, branch or open PRs on
   `areeb-ece/prereqflow` or `areeb-ece/otucalendar` unless he asks (he did, on
   2026-10-12, for the shared palette and then for the shared themes, settings and sky).
-  Their CSS remains the source for the design: otucalendar for components, prereqflow for the `.card` sheen, the aurora and the `--h*` hues.
+  The master files are now the source for the design: themes and scales in `tokens.css`,
+  shared components (`sd-*`) in `ui.css`. The tools' own components predate them and
+  move over only when Areeb asks (each `sd-` class is opt-in).
 - **Their paths are reserved.** `/prereqflow/`, `/otucalendar/` and `/satisfactorytools/`
   are served by those repos' Pages sites. `reservedSlugs` in `site.config.yaml` blocks them; keep it that
   way.
@@ -130,8 +150,10 @@ scripts/new-page.ts     the `new` command
 - **No personal contact details** beyond the `TODO` placeholders in `site.config.yaml`.
 - **Don't invent project facts.** Tool pages use only what their READMEs say. Example
   content is labelled as such.
-- **Desktop-first:** no horizontal scroll; the sidebar collapses to a rail below 760 px.
-  Themes come from the gear menu; night is the default.
+- **Desktop-first:** no horizontal scroll. The sidebar starts as a rail below 1024 px
+  (unless the visitor opened it before) and below 760 px becomes a top bar whose menu
+  opens the tree as a drawer (page behind made inert, Escape closes). Themes come from
+  the gear menu; night is the default.
 - **Contrast budget.** The default star brightness (`LAYERS` in `public/design/ui.js`)
   and the haze are capped so the night theme's `--ink-3` keeps 4.5:1 over the brightest
   possible sky. The browser check measures this. Re-run it after touching

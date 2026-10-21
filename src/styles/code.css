@@ -1,39 +1,50 @@
-/* Code blocks, diagrams and math. */
+/* Code blocks, diagrams and math: windows cut into the sheet, one tone deeper. */
 
-/* Syntax colours for the Shiki theme (src/lib/markdown/shiki.ts), from the site tokens. */
-:root {
-  --code-bg: var(--sheet);
+/* Syntax colours for the Shiki theme (src/lib/markdown/shiki.ts), from the site tokens.
+   The hues are mixed 40% towards the ink and comments 25%, which keeps every one at 4.5:1
+   or more on the code well, highlighted lines included, in all fifteen themes. */
+:root, [data-theme] {
+  --code-bg: var(--well);
   --code-fg: var(--ink-2);
-  --code-comment: var(--ink-3);
-  --code-keyword: var(--c0);
-  --code-punct: var(--ink-3);
-  --code-string: var(--h0);
-  --code-number: var(--c2);
-  --code-type: var(--h1);
-  --code-func: var(--h4);
-  --code-param: var(--h3);
-  --code-macro: var(--h5);
+  --code-comment: color-mix(in srgb, var(--ink-3) 75%, var(--ink));
+  --code-keyword: color-mix(in srgb, var(--c0) 60%, var(--ink));
+  --code-punct: color-mix(in srgb, var(--ink-3) 75%, var(--ink));
+  --code-string: color-mix(in srgb, var(--h0) 60%, var(--ink));
+  --code-number: color-mix(in srgb, var(--c2) 60%, var(--ink));
+  --code-type: color-mix(in srgb, var(--h1) 60%, var(--ink));
+  --code-func: color-mix(in srgb, var(--h4) 60%, var(--ink));
+  --code-param: color-mix(in srgb, var(--h3) 60%, var(--ink));
+  --code-macro: color-mix(in srgb, var(--h5) 60%, var(--ink));
   --code-var: var(--ink);
-  --code-inserted: var(--ok);
-  --code-deleted: var(--danger);
+  --code-inserted: color-mix(in srgb, var(--ok) 60%, var(--ink));
+  --code-deleted: color-mix(in srgb, var(--danger) 60%, var(--ink));
 }
 
-figure.code { margin: 0; border: 1px solid var(--rule-2); border-radius: var(--r); background: var(--code-bg); box-shadow: var(--shadow-card); overflow: hidden; }
-.code-head { display: flex; align-items: center; gap: 12px; min-height: 32px; padding: 4px 6px 4px 14px; border-bottom: 1px solid var(--rule-2); background: color-mix(in srgb, var(--bg) 45%, var(--code-bg)); }
-.code-file { font: 400 12px var(--f-code); color: var(--ink-2); }
-.code-head .copy { margin-left: auto; height: 24px; padding: 0 9px; border: 1px solid transparent; border-radius: 5px; background: transparent; color: var(--ink-3); font: 400 11px var(--f); letter-spacing: .06em; cursor: pointer; transition: background-color .15s, color .15s, border-color .15s; }
-.code-head .copy:hover { border-color: var(--rule); background: var(--sheet-2); color: var(--ink); }
-.code-head .copy.done { color: var(--ok); }
-figure.code pre { margin: 0; padding: 12px 0; overflow-x: auto; background: var(--code-bg); color: var(--code-fg); font: 13px/1.65 var(--f-code); tab-size: 4; }
+figure.code { margin: 0; border-radius: var(--r); background: var(--code-bg); overflow: hidden; }
+.code-head { display: flex; align-items: center; gap: var(--sp-3); min-height: var(--ctl-h-lg); padding: var(--sp-1) var(--sp-2) 0 var(--sp-4); }
+.code-head .lbl { font: var(--fw-text) var(--fs-2)/1.2 var(--font-mono); color: var(--ink-3); }
+.code-file { font: var(--fw-ui) var(--fs-2)/1.2 var(--font-mono); color: var(--ink); }
+.code-head .copy {
+  margin-left: auto; height: var(--ctl-h-sm); padding: 0 10px; border: 0; border-radius: var(--r-sm); background: transparent;
+  color: var(--ink-2); font: var(--fw-ui) var(--fs-2)/1 var(--font-text); cursor: pointer; -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--dur-1), color var(--dur-1), transform var(--dur-1) var(--ease-out);
+}
+.code-head .copy:active { transform: scale(.96); }
+@media (hover: hover) { .code-head .copy:hover { background: var(--hover); color: var(--ink); } }
+.code-head .copy.done { color: var(--ok-ink); }
+figure.code pre { margin: 0; padding: var(--sp-2) 0 var(--sp-4); overflow-x: auto; background: var(--code-bg); color: var(--code-fg); font: var(--fs-2)/1.65 var(--font-mono); tab-size: 4; }
 figure.code pre:focus-visible { outline-offset: -2px; }
 figure.code code { display: block; min-width: max-content; }
-figure.code .line { display: inline-block; min-width: 100%; padding: 0 16px; }
-figure.code .line.hl { background: color-mix(in srgb, var(--accent) 11%, transparent); box-shadow: inset 2px 0 0 var(--accent); }
+figure.code .line { display: inline-block; min-width: 100%; padding: 0 var(--sp-4); }
+figure.code .line.hl { background: color-mix(in srgb, var(--accent) 10%, transparent); }
 
 /* ── diagrams ──────────────────────────────────────── */
-figure.diagram { margin: 0; padding: 18px; border: 1px solid var(--rule-2); border-radius: var(--r); background: var(--sheet); box-shadow: var(--shadow-card); overflow-x: auto; text-align: center; }
+/* A diagram shrinks to fit only so far (the build gives each one a minimum width that
+   keeps its text at about 10px or more); past that it scrolls inside its well. */
+figure.diagram { margin: 0; padding: var(--sp-5); border-radius: var(--r); background: var(--well); overflow-x: auto; text-align: center; scrollbar-width: thin; scrollbar-color: var(--ink-4) transparent; }
 figure.diagram > svg { display: inline-block; height: auto; max-width: 100%; }
-figure.mermaid svg { font-family: var(--f-code); }
+figure.diagram:focus-visible { outline-offset: 2px; }
+figure.mermaid svg { font-family: var(--font-mono); }
 
 /* WaveDrom: the skin's shapes are styled inline from these variables (see
    src/lib/markdown/wavedrom.ts), so they also reach the <use> copies in Firefox. */
@@ -53,7 +64,7 @@ figure.wavedrom {
   --wd-9: color-mix(in srgb, var(--h2) 26%, transparent);
 }
 figure.wavedrom > svg { max-width: 100%; height: auto; }
-.wavedrom text { font-family: var(--f-code); font-size: 11px; fill: var(--ink); }
+.wavedrom text { font-family: var(--font-mono); font-size: 11px; fill: var(--ink); }
 .wavedrom :is(.h1, .h2, .h3, .h4, .h5, .h6) { font-weight: 700; fill: var(--ink); }
 .wavedrom .h1 { font-size: 22px; } .wavedrom .h2 { font-size: 18px; } .wavedrom .h3 { font-size: 15px; }
 .wavedrom .h4 { font-size: 13px; } .wavedrom .h5 { font-size: 11px; } .wavedrom .h6 { font-size: 9px; }
@@ -61,14 +72,15 @@ figure.wavedrom > svg { max-width: 100%; height: auto; }
 .wavedrom .muted { fill: var(--ink-3); }
 .wavedrom .warning { fill: var(--warn); } .wavedrom .error { fill: var(--danger); } .wavedrom .success { fill: var(--ok); }
 
-.diagram-error, .math-error { display: grid; gap: 6px; text-align: left; padding: 10px 14px; border: 1px solid color-mix(in srgb, var(--danger) 45%, transparent); border-left: 3px solid var(--danger); border-radius: 0 var(--r-sm) var(--r-sm) 0; background: color-mix(in srgb, var(--danger) 7%, var(--bg)); color: var(--ink-2); }
-.diagram-error .lbl, .math-error::before { color: var(--danger); }
-.diagram-error-msg, .math-error-msg { font: 12.5px/1.5 var(--f); color: var(--danger); white-space: pre-wrap; overflow-wrap: anywhere; }
-.diagram-error pre, .math-error code { margin: 0; padding: 8px 10px; border-radius: 5px; background: var(--bg); font: 12px/1.5 var(--f-code); color: var(--ink-2); overflow-x: auto; white-space: pre; }
+/* Errors in maths or diagram syntax: a red-tinted block, so one typo never blocks a deploy. */
+.diagram-error, .math-error { display: grid; gap: var(--sp-2); text-align: left; padding: var(--sp-3) var(--sp-4); border-radius: var(--r-sm); background: var(--tint-danger); color: var(--ink); }
+.diagram-error .lbl, .math-error::before { color: var(--danger-ink); font-weight: var(--fw-head); }
+.diagram-error-msg, .math-error-msg { font: var(--fs-2)/1.5 var(--font-text); color: var(--danger-ink); white-space: pre-wrap; overflow-wrap: anywhere; }
+.diagram-error pre, .math-error code { margin: 0; padding: var(--sp-2) var(--sp-3); border-radius: min(var(--r-sm), 5px); background: var(--well); font: var(--fs-1)/1.5 var(--font-mono); color: var(--ink-2); overflow-x: auto; white-space: pre; }
 
 /* ── math ──────────────────────────────────────────── */
-.katex { font-size: 1.12em; color: var(--ink); }
+.katex { font-size: 1.1em; color: var(--ink); }
 .katex-display { margin: .2em 0; }
-span.math-error { display: inline-grid; color: var(--ink-2) !important; }
-.math-error::before { content: "math error"; font: 400 10.5px/1.3 var(--f); letter-spacing: .1em; text-transform: uppercase; }
+span.math-error { display: inline-grid; color: var(--ink) !important; }
+.math-error::before { content: "Math error"; font: var(--fw-head) var(--fs-1)/1.3 var(--font-text); }
 .katex-display > .math-error, .b > .math-error { display: grid; }

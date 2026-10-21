@@ -13,7 +13,7 @@ const hasMermaid = all.some((b) => b.html.includes('class="diagram mermaid"'));
 <Base title={config.title} typing="home">
   {hasMath && <KatexStyles slot="head" />}
   {hasMermaid && <link slot="head" rel="stylesheet" href="/diagrams.css" />}
-  <div class="home">
+  <div class="home sheet">
     <header class="hero">
       <div class="hero-main">
         <h1 class="hero-title b" data-kind="title" data-src={config.title}>{config.title}</h1>

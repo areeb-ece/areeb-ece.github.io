@@ -6,7 +6,7 @@ const { pages, current, open, root = false } = Astro.props;
 const items = listed(pages);
 ---
 <ul role={root ? "tree" : "group"} class={root ? "tree" : undefined} aria-label={root ? "Pages" : undefined}>
-  {items.map((p) => {
+  {items.map((p, i) => {
     const kids = listed(p.children);
     const expanded = kids.length ? (open.has(p.slug) ? "true" : "false") : undefined;
     return (
@@ -17,7 +17,7 @@ const items = listed(pages);
           data-slug={p.slug}
           aria-expanded={expanded}
           aria-current={p.slug === current ? "page" : undefined}
-          tabindex="-1"
+          tabindex={p.slug === current || (root && i === 0 && current === null) ? "0" : "-1"}
         >
           {kids.length ? <span class="chev" aria-hidden="true"></span> : <span class="dot" aria-hidden="true"></span>}
           <span class="t">{p.fm.title}</span>

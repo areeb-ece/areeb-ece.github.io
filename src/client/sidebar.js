@@ -77,16 +77,32 @@ if (tree) {
   });
 }
 
+// On narrow screens the same toggle opens the tree as a drawer over the page: the page
+// behind is inert while it's open, and the choice isn't remembered (every page starts closed).
+const narrow = matchMedia("(max-width: 759px)");
+const side = document.getElementById("side");
+const main = document.getElementById("main");
+
 function setRail(on) {
   root.classList.toggle("rail", on);
   railBtn?.setAttribute("aria-expanded", String(!on));
   railBtn?.setAttribute("title", on ? "Expand the sidebar" : "Collapse the sidebar");
   const label = railBtn?.querySelector(".sr-only");
   if (label) label.textContent = on ? "Expand sidebar" : "Collapse sidebar";
+  if (main) main.inert = narrow.matches && !on;
+}
+function closeDrawer() {
+  setRail(true);
+  railBtn?.focus();
 }
 setRail(root.classList.contains("rail"));
 railBtn?.addEventListener("click", () => {
   const on = !root.classList.contains("rail");
   setRail(on);
-  store.set(RAIL, on ? "1" : "0");
+  if (!narrow.matches) store.set(RAIL, on ? "1" : "0");
+  else if (!on) (tree?.querySelector('[tabindex="0"]') ?? tree?.querySelector('[role="treeitem"]'))?.focus();
 });
+// The dimmed page around the open drawer is the sidebar's own ::after, so a tap on it lands on .side.
+side?.addEventListener("click", (e) => { if (e.target === side && narrow.matches && !root.classList.contains("rail")) closeDrawer(); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && narrow.matches && !root.classList.contains("rail")) closeDrawer(); });
+narrow.addEventListener("change", () => setRail(root.classList.contains("rail")));

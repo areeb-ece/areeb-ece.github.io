@@ -44,6 +44,23 @@ export interface RenderDeps {
 
 const parser = unified().use(remarkParse).use(remarkGfm).use(remarkMath).use(remarkDirective);
 
+/**
+ * Gives a diagram's <svg> a minimum width, so shrinking it to fit the column never takes
+ * its text below about 10px: Mermaid draws text at 14px (floor 0.75 of its natural width),
+ * WaveDrom at 11px in viewBox units (floor 0.95 of the viewBox width). Past that the figure
+ * scrolls. Error boxes and anything else pass through untouched.
+ */
+export function legibleWidth(svg: string): string {
+  if (!svg.startsWith("<svg")) return svg;
+  return svg.replace(/^<svg\b[^>]*>/, (open) => {
+    const mermaid = /style="max-width: ([\d.]+)px;"/.exec(open);
+    if (mermaid) return open.replace(mermaid[0], `style="max-width: ${mermaid[1]}px; min-width: ${Math.round(+mermaid[1] * 0.75)}px;"`);
+    const box = /viewBox="[\d.-]+ [\d.-]+ ([\d.]+) [\d.]+"/.exec(open);
+    if (box && !/\sstyle=/.test(open)) return open.replace(/^<svg/, `<svg style="min-width: ${Math.round(+box[1] * 0.95)}px;"`);
+    return open;
+  });
+}
+
 export function parseMarkdown(body: string): MdRoot {
   return parser.parse(body);
 }
@@ -94,7 +111,10 @@ export function renderMarkdown(body: string, deps: RenderDeps): Rendered {
           const lang = node.lang?.toLowerCase() ?? null;
           let out: Element;
           if ((lang === "mermaid" || lang === "wavedrom") && deps.diagram) {
-            out = { type: "element", tagName: "figure", properties: { className: ["diagram", lang] }, children: [raw(deps.diagram(lang, node.value))] };
+            const svg = legibleWidth(deps.diagram(lang, node.value));
+            // A diagram wider than the column scrolls in its figure, so the figure takes focus
+            // for keyboard scrolling.
+            out = { type: "element", tagName: "figure", properties: { className: ["diagram", lang], tabIndex: 0 }, children: [raw(svg)] };
           } else if (deps.code) {
             out = deps.code(node.value, lang, node.meta ?? null);
           } else {

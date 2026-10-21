@@ -5,6 +5,7 @@ import ChildList from "../components/ChildList.astro";
 import KatexStyles from "../components/KatexStyles.astro";
 import { loadSite } from "../lib/site.ts";
 import { bannerHtml } from "../lib/card.ts";
+import { inlineLinks } from "../lib/html.ts";
 import { ancestors, type Page } from "../lib/tree.ts";
 
 export async function getStaticPaths() {
@@ -23,8 +24,8 @@ const date = page.fm.date ? new Date(page.fm.date + "T12:00:00Z") : null;
 <Base title={page.fm.title} description={page.fm.description} page={page} font={page.fm.font} typing={page.fm.animate ? "page" : "none"}>
   {r.hasMath && <KatexStyles slot="head" />}
   {hasMermaid && <link slot="head" rel="stylesheet" href="/diagrams.css" />}
-  <article class="page">
-    <div class="banner-strip b" data-kind="media" data-src={img ? `![${page.fm.bannerAlt ?? ""}](${page.fm.banner ?? "./" + page.banner!.split("/").pop()})` : ""} set:html={bannerHtml(page, img, page.fm.bannerAlt ?? "", "banner")} />
+  <article class="page sheet">
+    <div class="banner-strip b" data-kind="media" data-src={img ? `![${page.fm.bannerAlt ?? ""}](${page.fm.banner ?? "./" + page.banner!.split("/").pop()})` : ""} set:html={bannerHtml(page, img, page.fm.bannerAlt ?? "", "banner") + (img && page.fm.bannerCredit ? `<p class="banner-credit">${inlineLinks(page.fm.bannerCredit)}</p>` : "")} />
     <header class="ph">
       <nav class="crumbs lbl" aria-label="Breadcrumb">
         <ol>
