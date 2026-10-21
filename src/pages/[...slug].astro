@@ -40,7 +40,7 @@ const date = page.fm.date ? new Date(page.fm.date + "T12:00:00Z") : null;
           <time datetime={page.fm.date}>{date.toLocaleDateString("en-CA", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })}</time>
         </p>
       )}
-      {page.fm.draft && <p class="note warn">Draft: this page is only visible while running the site locally.</p>}
+      {page.fm.draft && <p class="note sd-callout sd-warn">Draft: this page is only visible while running the site locally.</p>}
     </header>
     <Blocks blocks={r.blocks} />
     <ChildList page={page} />

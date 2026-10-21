@@ -10,7 +10,7 @@ const open = new Set(current ? [...ancestors(current), current].map((p) => p.slu
 ---
 <aside class="side" id="side" aria-label="Site navigation">
   <div class="side-head">
-    <a class="wordmark" href="/" aria-label="Home"><b>{config.wordmark.left}<span>/</span>{config.wordmark.right}</b></a>
+    <a class="wordmark sd-wordmark" href="/" aria-label="Home">{config.wordmark.left}<span>/</span>{config.wordmark.right}</a>
     <button class="rail-btn" id="railBtn" type="button" aria-controls="sideTree" aria-expanded="true" title="Collapse the sidebar">
       <span class="sr-only">Collapse sidebar</span>
     </button>

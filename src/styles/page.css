@@ -30,7 +30,7 @@
 .ico svg { width: 18px; height: 18px; display: block; }
 
 /* ── content page: banner plate, then the title block ── */
-.banner-strip { margin: calc(var(--sheet-pad) * -1) calc(var(--sheet-pad) * -1) var(--sp-7); }
+.banner-strip { position: relative; margin: calc(var(--sheet-pad) * -1) calc(var(--sheet-pad) * -1) var(--sp-7); }
 .banner-strip:empty { display: none; }
 .banner { position: relative; display: block; height: clamp(140px, 31.25cqi, 300px); overflow: hidden; border-radius: var(--r-lg) var(--r-lg) 0 0; background: var(--sheet-2); }
 @supports (corner-shape: bevel) {
@@ -83,13 +83,12 @@
 .card:active { transform: scale(.985); }
 @media (hover: hover) {
   .card:hover { background: var(--card-hover); text-decoration: none; }
-  .card:hover .card-banner img, .card:hover .card-banner svg { transform: scale(1.03); }
   .card:hover .card-title { color: var(--accent); }
 }
 .card:focus-visible { outline-offset: 3px; }
 .card-banner { display: block; aspect-ratio: 16 / 7; overflow: hidden; background: var(--well); }
 .card-banner.gen { aspect-ratio: 16 / 5; }
-.card-banner img, .card-banner svg { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-3) var(--ease-out); }
+.card-banner img, .card-banner svg { display: block; width: 100%; height: 100%; object-fit: cover; }
 .card-body { display: grid; gap: var(--sp-1); padding: var(--sp-3) var(--sp-4) var(--sp-4); }
 .card-title { font: var(--fw-head) var(--fs-3)/1.25 var(--font-text); color: var(--ink); text-wrap: balance; transition: color var(--dur-1); }
 .card-desc { font: var(--fs-3)/1.45 var(--font-text); color: var(--ink-2); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
@@ -108,9 +107,8 @@
   .hero .contact { grid-column: 1; }
 }
 
-/* Credit for a banner that's someone else's photo (bannerCredit in the frontmatter). */
-/* A small solid label on the photo's corner, so nothing sits between banner and title. */
-.banner-strip { position: relative; }
+/* Credit for a banner that's someone else's photo (bannerCredit in the frontmatter):
+   a small solid label on the photo's corner, so nothing sits between banner and title. */
 .banner-credit {
   position: absolute; right: var(--sp-3); bottom: var(--sp-3); max-width: calc(100% - var(--sp-6)); margin: 0; padding: 3px var(--sp-2);
   border-radius: min(var(--r-sm), 5px); background: var(--sheet); color: var(--ink-2); font: var(--fs-1)/1.4 var(--font-text); text-align: right;

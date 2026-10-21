@@ -29,20 +29,6 @@ img, svg { max-width: 100%; }
 }
 .skip:focus-visible { transform: none; outline-color: var(--ink); text-decoration: none; }
 
-/* AREEB/ECE, set in the code face like the tools' wordmarks. */
-.wordmark { display: inline-flex; align-items: center; min-height: var(--ctl-h); white-space: nowrap; color: var(--ink); }
-.wordmark:hover { text-decoration: none; }
-.wordmark b { font: var(--fw-head) var(--fs-3)/1.1 var(--font-mono); letter-spacing: var(--tr-mark); }
-.wordmark b span { color: var(--accent); font-weight: var(--fw-text); }
-
-/* Notes (:::note, :::warn): a tinted block, its title in the text's own ink. */
-.note { margin: 0; padding: var(--sp-3) var(--sp-4); border-radius: var(--r-sm); background: var(--tint); color: var(--ink); }
-.note.warn { background: var(--tint-warn); }
-.note > :first-child { margin-top: 0; }
-.note > :last-child { margin-bottom: 0; }
-.note .note-title { margin: 0 0 var(--sp-1); font-weight: var(--fw-head); color: var(--ink); }
-.note.warn .note-title { color: var(--warn-ink); }
-
 :not(pre) > code { font-size: .88em; padding: .1em .35em; border-radius: min(var(--r-sm), 5px); background: var(--well); color: var(--ink); overflow-wrap: anywhere; }
 kbd { display: inline-block; min-width: 1.7em; padding: 0 .35em; border: 1px solid var(--field-line); border-bottom-width: 2px; border-radius: min(var(--r-sm), 4px); background: var(--field); color: var(--ink); font-size: .82em; line-height: 1.5; text-align: center; white-space: nowrap; }
 
