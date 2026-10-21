@@ -33,7 +33,7 @@ test("kitchen sink: every block keeps its exact source, and nothing is dropped",
   assert.equal([...squash(r.blocks.map((b) => b.src).join(""))].sort().join(""), [...squash(body)].sort().join(""));
   assert.ok(r.hasMath);
   const html = r.blocks.map((b) => b.html).join("");
-  for (const needle of ['class="katex"', "math-error", 'figure class="code"', 'class="diagram mermaid"', 'class="diagram wavedrom"', 'class="note"', 'class="note warn"', 'class="cards"', 'class="cards one"', "<figcaption>", "footnotes", "contains-task-list", "<table>", "<blockquote>", 'class="anchor"']) {
+  for (const needle of ['class="katex"', "math-error", 'figure class="code"', 'class="diagram mermaid"', 'class="diagram wavedrom"', 'class="note sd-callout"', 'class="note sd-callout sd-warn"', 'class="cards"', 'class="cards one"', "<figcaption>", "footnotes", "contains-task-list", "<table>", "<blockquote>", 'class="anchor"']) {
     assert.ok(html.includes(needle), `kitchen sink renders ${needle}`);
   }
   assert.equal(r.blocks.filter((b) => b.kind === "media").length, 3, "the figure and the two card blocks fade in");

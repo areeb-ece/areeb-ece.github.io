@@ -61,8 +61,13 @@
         <button type="button" aria-pressed="true">default</button>
         <button type="button" aria-pressed="false">round</button>
       </div>
+      <div class="sd-seg" role="radiogroup" aria-label="Resolution">
+        <button type="button" role="radio" aria-checked="true">2×</button>
+        <button type="button" role="radio" aria-checked="false">3×</button>
+        <button type="button" role="radio" aria-checked="false" disabled>6×</button>
+      </div>
     </div>
-    <p class="ref-cls"><code>.sd-seg</code> around buttons with <code>aria-checked</code> or <code>aria-pressed</code></p>
+    <p class="ref-cls"><code>.sd-seg</code> around buttons with <code>aria-checked</code> or <code>aria-pressed</code>; a <code>disabled</code> button fades</p>
   </section>
 
   <section class="ref-sec" aria-labelledby="h-fields">
@@ -136,17 +141,16 @@ MATH 1010U  Calculus I</textarea>
         </tbody>
       </table>
     </div>
-    <p class="ref-cls"><code>table.sd-table</code> (<code>.sd-sticky</code> keeps the header in view) · <code>.sd-num</code> or <code>align="right"</code> · <code>.sd-none</code> for a missing value · <code>aria-selected</code> on a row · Markdown tables inside <code>.sd-prose</code> get the same</p>
+    <p class="ref-cls"><code>table.sd-table</code> · <code>.sd-num</code> or <code>align="right"</code> · <code>aria-selected</code> on a row · Markdown tables inside <code>.sd-prose</code> get the same</p>
   </section>
 
   <section class="ref-sec" aria-labelledby="h-cards">
-    <h2 id="h-cards">Surfaces and cards</h2>
+    <h2 id="h-cards">Cards</h2>
     <div class="ref-grid">
       <a class="sd-card" href="/tools/prereqflow-notes/"><span class="sd-card-title">PrereqFlow</span><span class="sd-card-meta">A link card: hover, press and focus states.</span></a>
       <div class="sd-card"><span class="sd-card-title">A plain card</span><span class="sd-card-meta">A raised surface for a group of things.</span></div>
-      <div class="ref-ground ref-wide"><div class="sd-surface"><span class="sd-card-title">A surface</span><span class="sd-card-meta">The sheet tone, for a panel or a side column, on the page's ground.</span></div></div>
     </div>
-    <p class="ref-cls"><code>.sd-surface</code> · <code>.sd-card</code> (an <code>a</code> or <code>button</code> becomes interactive) · <code>.sd-card-title</code> <code>.sd-card-meta</code></p>
+    <p class="ref-cls"><code>.sd-card</code> (an <code>a</code> or <code>button</code> becomes interactive) · <code>.sd-card-title</code> <code>.sd-card-meta</code> · <code>.sd-pin1</code> cuts the pin-1 corner on any large surface</p>
   </section>
 
   <section class="ref-sec" aria-labelledby="h-nav">
@@ -170,14 +174,9 @@ MATH 1010U  Calculus I</textarea>
           <button class="sd-tab" type="button" role="tab" aria-selected="false">Term</button>
           <button class="sd-tab" type="button" role="tab" aria-selected="false">Raw .ics</button>
         </div>
-        <ul class="sd-nav sd-across">
-          <li><a href="#h-nav" aria-current="page">Planning</a></li>
-          <li><a href="#h-nav">Machines</a></li>
-          <li><a href="#h-nav">Logistics</a></li>
-        </ul>
       </div>
     </div>
-    <p class="ref-cls"><code>.sd-nav</code> (<code>.sd-across</code> for a row) with <code>aria-current</code> · <code>.sd-bar</code> <code>.sd-grow</code> <code>.sd-wordmark</code> · <code>.sd-tabs</code> <code>.sd-tab</code> with <code>aria-selected</code></p>
+    <p class="ref-cls"><code>.sd-nav</code> with <code>aria-current</code> · <code>.sd-bar</code> <code>.sd-grow</code> <code>.sd-wordmark</code> · <code>.sd-tabs</code> <code>.sd-tab</code> with <code>aria-selected</code></p>
   </section>
 
   <section class="ref-sec" aria-labelledby="h-notes">

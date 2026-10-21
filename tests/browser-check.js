@@ -246,7 +246,7 @@ try {
     const page = await ctx.newPage();
     await page.goto(base + "/_kitchen-sink/");
     await page.waitForLoadState("networkidle");
-    for (const sel of [".katex-display .katex", ".katex", ".math-error", "figure.code pre.shiki .line", "figure.code .line.hl", "figure.mermaid svg", "figure.wavedrom svg", ".diagram-error", ".note:not(.warn)", ".note.warn", ".cards .card", ".cards.one .card", "figure.fig figcaption", "table", ".footnotes", ".contains-task-list"]) {
+    for (const sel of [".katex-display .katex", ".katex", ".math-error", "figure.code pre.shiki .line", "figure.code .line.hl", "figure.mermaid svg", "figure.wavedrom svg", ".diagram-error", ".note.sd-callout:not(.sd-warn)", ".note.sd-callout.sd-warn", ".cards .card", ".cards.one .card", "figure.fig figcaption", "table", ".footnotes", ".contains-task-list"]) {
       assert.ok(await page.$(sel), `kitchen sink has ${sel}`);
     }
     const langs = await page.$$eval("figure.code", (fs) => fs.map((f) => f.dataset.lang));
@@ -476,7 +476,7 @@ try {
         const lum = (c) => c.slice(0, 3).map((v) => (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4)).reduce((n, v, i) => n + v * [0.2126, 0.7152, 0.0722][i], 0);
         const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
         const out = [];
-        const text = ".sd-label, .sd-hint, .sd-error, .sd-btn:not(:disabled), .sd-tag, .sd-callout, .sd-callout-title, .sd-nav a, .sd-tab, .sd-table td, .sd-table th, .sd-table caption, .sd-card-title, .sd-card-meta, .sd-check, .sd-drop, .sd-seg button, .sd-input:not(:disabled), .sd-kbd, .sd-toast, .ref-cls";
+        const text = ".sd-label, .sd-hint, .sd-error, .sd-btn:not(:disabled), .sd-tag, .sd-callout, .sd-callout-title, .sd-nav a, .sd-tab, .sd-table td, .sd-table th, .sd-table caption, .sd-card-title, .sd-card-meta, .sd-check, .sd-drop, .sd-seg button:not(:disabled), .sd-input:not(:disabled), .sd-kbd, .sd-toast, .ref-cls";
         for (const el of document.querySelectorAll(text)) {
           const fg = parse(getComputedStyle(el).color);
           if (!fg) continue;

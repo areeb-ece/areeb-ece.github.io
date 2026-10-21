@@ -24,7 +24,6 @@ a { color: var(--accent); }
 .ref-stack { display: grid; gap: var(--sp-4); }
 .ref-scroll { overflow-x: auto; margin-bottom: var(--sp-4); }
 .ref-inset { border-radius: var(--r); background: var(--card); }
-.ref-ground { padding: var(--sp-4); border-radius: var(--r); background: var(--bg); }
 .ref-cls, .ref-note { margin: 0; font-size: var(--fs-2); line-height: 1.6; color: var(--ink-2); }
 .ref-cls code { color: var(--ink); }
 /* Specimens of things that normally float, set in the page instead. */

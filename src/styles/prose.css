@@ -58,8 +58,6 @@
 .prose [data-footnote-ref]::after { content: "]"; }
 .prose .data-footnote-backref, .prose [data-footnote-backref] { text-decoration: none; }
 
-.prose .note { margin: 0; }
-
 /* Wide things scroll inside their own box, never the page. */
 .prose pre { overflow-x: auto; }
 .prose .katex-display { overflow-x: auto; overflow-y: hidden; padding: 4px 0; }

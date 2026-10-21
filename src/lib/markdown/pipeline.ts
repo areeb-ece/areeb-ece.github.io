@@ -176,8 +176,8 @@ export function renderMarkdown(body: string, deps: RenderDeps): Rendered {
           } else if (node.name === "note" || node.name === "warn") {
             const kids = node.children;
             const label = kids[0]?.type === "paragraph" && kids[0].data && (kids[0].data as any).directiveLabel ? kids.shift() : null;
-            const title = label ? [{ type: "element", tagName: "p", properties: { className: ["note-title"] }, children: state.all(label as any) } as Element] : [];
-            out = { type: "element", tagName: "div", properties: { className: node.name === "warn" ? ["note", "warn"] : ["note"] }, children: [...title, ...state.wrap(state.all(node), true)] };
+            const title = label ? [{ type: "element", tagName: "p", properties: { className: ["sd-callout-title"] }, children: state.all(label as any) } as Element] : [];
+            out = { type: "element", tagName: "div", properties: { className: node.name === "warn" ? ["note", "sd-callout", "sd-warn"] : ["note", "sd-callout"] }, children: [...title, ...state.wrap(state.all(node), true)] };
           } else {
             throw new ContentError(where(node), `unknown block ":::${node.name}". Supported: :::note, :::warn, :::cards`);
           }
