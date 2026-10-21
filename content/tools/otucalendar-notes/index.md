@@ -35,6 +35,8 @@ and your schedule isn't kept once you close it.
 
 - The preview is drawn from the generated `.ics` text itself, so what you see is
   what your calendar app gets.
+- **Save image** draws the schedule as a PNG (up to 6×) or SVG. Under it, a week table
+  gives each week's dates and the day each alternating or part-term class meets.
 - Templates control each event's title, description and location, with placeholders
   such as `{CourseCode}` and `{RoomCodeandNumber}`.
 - Times are written in UTC and converted one occurrence at a time, so daylight saving
