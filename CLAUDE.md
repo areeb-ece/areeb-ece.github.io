@@ -63,7 +63,8 @@ public/design/          SHARED WITH ALL FOUR SITES, served at /design/, not bund
                           layers and mixed colours), theme.js (pre-paint: applies saved settings),
                           ui.js + ui.css (gear, settings panel, night sky, and the sd- components:
                           buttons, fields, tables, cards, nav, tabs, notes, dialog, toast),
-                          components.html + reference.css (the components' reference sheet)
+                          components.html + reference.css (the components' reference sheet),
+                          fonts.css (Libre Franklin @font-face for the tools, from public/fonts/)
 src/lib/config.ts       site.config.yaml schema (astro/zod) → readable errors
 src/lib/frontmatter.ts  frontmatter schema; errors name the file and field
 src/lib/tree.ts         content/ → page tree: order, hidden, draft, banners, slug rules, reserved slugs

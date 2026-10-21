@@ -1,0 +1,10 @@
+/* The portfolio's text face for the tools (served as /design/fonts.css). PrereqFlow, OTU
+   Calendar and Satisfactory Tools can link it to set their text in Libre Franklin like the
+   portfolio, then name it in their own --f:
+     --f: "Libre Franklin", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+   mononoki stays theirs (for codes, times and figures, as --f-code), from their own files.
+   The font files are the portfolio's own, in public/fonts/ (the same ones site.config.yaml
+   registers), so this stays in step with them. Offline the tools fall back to the system sans.
+   The portfolio itself doesn't need this file: its /fonts.css declares the same faces. */
+@font-face { font-family: "Libre Franklin"; src: url("../fonts/LibreFranklin-Var.woff2") format("woff2"); font-weight: 400 800; font-style: normal; font-display: swap; }
+@font-face { font-family: "Libre Franklin"; src: url("../fonts/LibreFranklin-Italic-Var.woff2") format("woff2"); font-weight: 400 800; font-style: italic; font-display: swap; }

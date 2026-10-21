@@ -60,7 +60,8 @@ src/client/               the browser scripts: typing animation (timing.js has e
 public/design/            shared with PrereqFlow, OTU Calendar and Satisfactory Tools: tokens.css (the master palette,
                           its themes and the shared type, spacing and motion scales), theme.js (applies
                           saved settings before paint), ui.js + ui.css (the settings button and panel,
-                          the night sky, and the shared components), components.html (their reference)
+                          the night sky, and the shared components), components.html (their reference),
+                          fonts.css (the text face, Libre Franklin, for the tools)
 src/styles/               the datasheet: shell, title blocks, plates, prose, code (tokens only)
 src/pages/                routes: home, every content page, 404, generated fonts.css and
                           diagrams.css
