@@ -1,6 +1,7 @@
 ---
 title: Satisfactory Tools
 description: Ten calculators and planners for the game Satisfactory in one page, led by a production planner for whole factories. Runs entirely in the browser.
+bannerAlt: "Satisfactory Tools' production planner: a factory diagram of smelters, constructors and assemblers, with one machine's inputs and outputs traced"
 order: 30
 ---
 

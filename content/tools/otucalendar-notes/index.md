@@ -1,6 +1,7 @@
 ---
 title: OTU Calendar
 description: Turns an Ontario Tech course schedule into a calendar file (.ics), with a week-by-week preview. Nothing is uploaded.
+bannerAlt: "OTU Calendar's week preview of the fictional sample schedule, with lectures and a lab laid out by day"
 order: 20
 ---
 

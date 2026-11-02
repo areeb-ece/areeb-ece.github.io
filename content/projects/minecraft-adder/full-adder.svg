@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 280" width="620" height="280" role="img" aria-labelledby="t d">
+  <title id="t">Full adder</title>
+  <desc id="d">A and B go into XOR 1 and AND 1. XOR 1's output and Cin go into XOR 2, whose output is S, and into AND 2. AND 1 and AND 2 go into an OR gate, whose output is Cout.</desc>
+  <!-- Mid-tone colours on a transparent background, so it reads on dark and light themes. -->
+  <defs>
+    <style>
+      .w { fill: none; stroke: #7b8598; stroke-width: 2; stroke-linejoin: round; }
+      .g { fill: rgba(143, 153, 171, 0.08); stroke: #7d95dc; stroke-width: 2.5; stroke-linejoin: round; }
+      .c { fill: none; stroke: #d48f52; stroke-width: 2; stroke-linejoin: round; }
+      .dot { fill: #7b8598; }
+      text { font-family: ui-monospace, Menlo, Consolas, "Liberation Mono", monospace; font-size: 15px; fill: #7b8598; }
+      .io { font-size: 18px; font-weight: 700; fill: #7b8598; }
+      .lbl { font-size: 12px; fill: #7b8598; }
+    </style>
+  </defs>
+
+  <!-- inputs -->
+  <text class="io" x="14" y="66">A</text>
+  <text class="io" x="14" y="86">B</text>
+  <text class="io" x="14" y="126">C<tspan font-size="12" dy="4">in</tspan></text>
+
+  <!-- A: to XOR 1, and down to AND 1 -->
+  <path class="w" d="M42 60 H162.6"/>
+  <path class="w" d="M100 60 V230 H360"/>
+  <circle class="dot" cx="100" cy="60" r="3.5"/>
+  <!-- B: to XOR 1, and down to AND 1 -->
+  <path class="w" d="M42 80 H162.6"/>
+  <path class="w" d="M120 80 V250 H360"/>
+  <circle class="dot" cx="120" cy="80" r="3.5"/>
+  <!-- XOR 1 out: to XOR 2, and down to AND 2 -->
+  <path class="w" d="M225 70 H362.6"/>
+  <path class="w" d="M265 70 V160 H360"/>
+  <circle class="dot" cx="265" cy="70" r="3.5"/>
+  <!-- Cin: up to XOR 2, down to AND 2 -->
+  <path class="w" d="M60 120 H305 V90 H362.6"/>
+  <path class="w" d="M305 120 V180 H360"/>
+  <circle class="dot" cx="305" cy="120" r="3.5"/>
+  <!-- XOR 2 out: S -->
+  <path class="w" d="M425 80 H570"/>
+  <!-- the carry: both ANDs into the OR -->
+  <path class="c" d="M410 170 H450 V195 H490.6"/>
+  <path class="c" d="M410 240 H465 V215 H490.6"/>
+  <path class="c" d="M545 205 H570"/>
+
+  <!-- XOR 1 -->
+  <path class="w" d="M157 50 Q172 70 157 90"/>
+  <path class="g" d="M165 50 Q180 70 165 90 Q205 90 225 70 Q205 50 165 50 Z"/>
+  <text class="lbl" x="178" y="44">XOR</text>
+  <!-- XOR 2 -->
+  <path class="w" d="M357 60 Q372 80 357 100"/>
+  <path class="g" d="M365 60 Q380 80 365 100 Q405 100 425 80 Q405 60 365 60 Z"/>
+  <text class="lbl" x="378" y="54">XOR</text>
+  <!-- AND 2 -->
+  <path class="g" d="M360 150 H390 A20 20 0 0 1 390 190 H360 Z"/>
+  <text class="lbl" x="368" y="144">AND</text>
+  <!-- AND 1 -->
+  <path class="g" d="M360 220 H390 A20 20 0 0 1 390 260 H360 Z"/>
+  <text class="lbl" x="368" y="276">AND</text>
+  <!-- OR -->
+  <path class="g" d="M485 185 Q500 205 485 225 Q525 225 545 205 Q525 185 485 185 Z"/>
+  <text class="lbl" x="500" y="179">OR</text>
+
+  <!-- outputs -->
+  <text class="io" x="578" y="86">S</text>
+  <text class="io" x="578" y="211">C<tspan font-size="12" dy="4">out</tspan></text>
+</svg>

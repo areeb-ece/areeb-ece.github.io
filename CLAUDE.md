@@ -57,7 +57,7 @@ download.
 ```
 site.config.yaml        home title/intro (Markdown), links, wordmark, fonts registry, reservedSlugs
 content/                pages: <path>/index.md = /<path>/; home.md = extra home content; images live beside pages
-public/                 fonts (Libre Franklin + mononoki, with OFL texts), icons (placeholders), favicon, js/boot.js (pre-paint, not bundled)
+public/                 fonts (Libre Franklin + mononoki, with OFL texts), contact icons, favicon, js/boot.js (pre-paint, not bundled)
 public/design/          SHARED WITH ALL FOUR SITES, served at /design/, not bundled:
                           tokens.css (the themes, then the shared scales: type, space, controls, motion,
                           layers and mixed colours), theme.js (pre-paint: applies saved settings),
@@ -147,7 +147,8 @@ scripts/new-page.ts     the `new` command
   self-hosted.
 - **Don't add dependencies without asking Areeb.** Unified utilities (walkers, slugger,
   meta parsing) are hand-written on purpose.
-- **No personal contact details** beyond the `TODO` placeholders in `site.config.yaml`.
+- **No personal contact details** beyond the links Areeb gave in `site.config.yaml`
+  (email, LinkedIn, GitHub).
 - **Don't invent project facts.** Tool pages use only what their READMEs say. Example
   content is labelled as such.
 - **Desktop-first:** no horizontal scroll. The sidebar starts as a rail below 1024 px

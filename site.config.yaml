@@ -18,8 +18,9 @@ description: Projects and small tools by areeb, an electrical engineering studen
 # Contact panel on the home page. Add, remove or reorder freely.
 # icon is a path to an SVG in public/ (e.g. public/icons/github.svg → /icons/github.svg).
 links:
-  - { label: LinkedIn, href: "https://www.linkedin.com/in/TODO", icon: /icons/linkedin.svg }
-  - { label: Email,    href: "mailto:TODO@example.com",         icon: /icons/email.svg }
+  - { label: LinkedIn, href: "https://www.linkedin.com/in/areeb-hossain/", icon: /icons/linkedin.svg }
+  - { label: GitHub,   href: "https://github.com/areeb-ece",              icon: /icons/github.svg }
+  - { label: Email,    href: "mailto:areeb0811@gmail.com",                icon: /icons/email.svg }
 
 # Fonts. To add one: drop the .woff2 files into public/fonts/ and add an entry under
 # registry. Use it everywhere with `default`, for code (and the typed Markdown, the
