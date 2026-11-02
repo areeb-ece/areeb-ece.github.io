@@ -10,13 +10,13 @@ export const BANNER_EXTS = ["jpg", "jpeg", "png", "webp", "avif"];
 export const SLUG = /^_?[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 export interface Page {
-  /** "projects/nand-alu" */
+  /** "projects/minecraft-adder" */
   slug: string;
-  /** "/projects/nand-alu/" */
+  /** "/projects/minecraft-adder/" */
   url: string;
-  /** "content/projects/nand-alu/index.md" (for error messages) */
+  /** "content/projects/minecraft-adder/index.md" (for error messages) */
   file: string;
-  /** "content/projects/nand-alu" */
+  /** "content/projects/minecraft-adder" */
   dir: string;
   fm: Frontmatter;
   raw: string;

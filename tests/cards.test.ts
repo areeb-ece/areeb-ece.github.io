@@ -5,8 +5,8 @@ import { resolveTo } from "../src/lib/markdown/pipeline.ts";
 import { readFixture, renderAll, tree, page } from "./helpers.ts";
 
 test("card paths resolve absolute and relative to the page", () => {
-  assert.equal(resolveTo("/projects/nand-alu", "/tools/x/"), "projects/nand-alu");
-  assert.equal(resolveTo("/projects/nand-alu/", "/"), "projects/nand-alu");
+  assert.equal(resolveTo("/projects/minecraft-adder", "/tools/x/"), "projects/minecraft-adder");
+  assert.equal(resolveTo("/projects/minecraft-adder/", "/"), "projects/minecraft-adder");
   assert.equal(resolveTo("../alpha", "/projects/beta/"), "projects/alpha");
   assert.equal(resolveTo("./child", "/projects/"), "projects/child");
   assert.equal(resolveTo("child", "/projects/"), "projects/child");

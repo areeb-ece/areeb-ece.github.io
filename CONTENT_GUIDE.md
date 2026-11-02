@@ -78,9 +78,10 @@ content/
   projects/
     index.md                  → /projects/
     banner.jpg
-    nand-alu/
-      index.md                → /projects/nand-alu/
-      settle.svg              images sit next to the page that uses them
+    minecraft-adder/
+      index.md                → /projects/minecraft-adder/
+      banner.webp             picked up as the banner automatically
+      full-adder.svg          images sit next to the page that uses them
   tools/
     index.md                  → /tools/
     prereqflow-notes/
@@ -98,7 +99,7 @@ content/
   Tablets start with the rail; on phones it's a bar along the top whose menu button opens
   the page tree over the page.
 - **Folder names** become web addresses, so they must be lowercase words with hyphens:
-  `nand-alu`, not `NAND ALU` or `nand_alu`. The `title` in the
+  `minecraft-adder`, not `Minecraft Adder` or `minecraft_adder`. The `title` in the
   frontmatter is what people see.
 - **Reserved names:** `prereqflow`, `otucalendar` and `satisfactorytools` can't be top-level folders, because
   those addresses already belong to those sites. They're listed under `reservedSlugs`
@@ -197,7 +198,7 @@ A card is a big link to another page that shows its banner, title and descriptio
 A single card:
 
 ```md
-::card{to="/projects/nand-alu"}
+::card{to="/projects/minecraft-adder"}
 ```
 
 A row of cards:
@@ -210,7 +211,7 @@ A row of cards:
 :::
 ```
 
-`to` can be a full site path (`/projects/nand-alu`) or a path relative to the
+`to` can be a full site path (`/projects/minecraft-adder`) or a path relative to the
 current page: `./child`, `../sibling` or just `child`. A card that points at a page that
 doesn't exist stops the build and names the file, line and path, so a dead card can
 never go live.
@@ -232,8 +233,9 @@ intro: >-
   **digital logic and FPGA design**, **computer hardware**, and **audio DSP**.
 description: One line for search engines and link previews.
 links:
-  - { label: LinkedIn, href: "https://www.linkedin.com/in/your-name", icon: /icons/linkedin.svg }
-  - { label: Email,    href: "mailto:you@example.com",                icon: /icons/email.svg }
+  - { label: LinkedIn, href: "https://www.linkedin.com/in/areeb-hossain/", icon: /icons/linkedin.svg }
+  - { label: GitHub,   href: "https://github.com/areeb-ece",              icon: /icons/github.svg }
+  - { label: Email,    href: "mailto:areeb0811@gmail.com",                icon: /icons/email.svg }
 ```
 
 - **`intro`** is Markdown: `**bold**`, `[links](https://…)`, `` `code` ``. Keep the
@@ -243,11 +245,10 @@ links:
 - **Icons:** put an SVG in `public/icons/` and point `icon` at it (`public/icons/github.svg`
   → `icon: /icons/github.svg`). It's drawn at 18 px. Icons that use `currentColor` (or
   `fill="currentColor"`) follow the text colour and light up on hover. If the file is
-  missing, a neutral placeholder dot shows instead. The two icons there now are
-  placeholders.
+  missing, a neutral placeholder dot shows instead. `email.svg`, `linkedin.svg` and
+  `github.svg` are simple line icons in that style; swap in your own if you like.
 - **Below the intro:** anything in `content/home.md` appears under the hero. Delete the
   file if you don't want anything there.
-- The email and LinkedIn links are `TODO` placeholders. Put your own in.
 
 ---
 

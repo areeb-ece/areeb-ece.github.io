@@ -206,7 +206,7 @@ A warning with its own title.
 
 A single card:
 
-::card{to="/projects/nand-alu"}
+::card{to="/projects/minecraft-adder"}
 
 A group of cards:
 

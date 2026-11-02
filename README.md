@@ -2,7 +2,7 @@
 
 **Live: [areeb-ece.github.io](https://areeb-ece.github.io/)** · made by areeb
 
-My portfolio: degree projects in digital logic, FPGA design, computer hardware and
+My portfolio: projects in digital logic, FPGA design, computer hardware and
 audio DSP, plus the small tools I've built. Every page is set like a component datasheet
 laid on a night sky, and appears as its own Markdown being typed out, block by block,
 before it switches to the finished sheet.
@@ -16,7 +16,7 @@ no trackers.
 
 ## Purpose
 
-1. **Show my work.** Degree projects and smaller tools, each with a banner, maths, code,
+1. **Show my work.** Projects and smaller tools, each with a banner, maths, code,
    timing diagrams and block diagrams where they help.
 2. **Stay easy to maintain.** Adding a page, a category, a link or a new intro is an edit
    to Markdown or to `site.config.yaml`. No component code needs to change.

@@ -19,7 +19,7 @@ web
 
 ## Product Purpose
 
-A static portfolio that shows Areeb's degree projects and the small browser tools he has
+A static portfolio that shows Areeb's projects and the small browser tools he has
 built, each with the maths, code, timing and block diagrams the work needs. Success: a
 hiring visitor reaches a project page from the first screen, reads far enough to judge the
 engineering, and finds the contact links; a student finds a tool and opens it.
@@ -71,13 +71,14 @@ from `/design/`.
 
 ## Evidence on Hand
 
-- Project: `content/projects/nand-alu/` (8-bit NAND-only ALU, 310 gates, exhaustively
-  tested; tables, KaTeX, Mermaid, WaveDrom, Verilog).
+- Project: `content/projects/minecraft-adder/` (a 16-bit ripple-carry adder built in
+  Minecraft from 16 full adders, with Areeb's screenshot and video link; tables, KaTeX,
+  Mermaid and a drawn full-adder schematic).
 - Tools: notes pages for PrereqFlow, OTU Calendar and Satisfactory Tools, written only
   from their READMEs.
 - `content/_kitchen-sink/` is a hidden fixture labelled as example content.
-- Contact links in `site.config.yaml` are `TODO` placeholders and must stay so until Areeb
-  fills them. There are no testimonials, employers, grades, awards or metrics; never invent
+- Contact links in `site.config.yaml` (email, LinkedIn, GitHub) are the ones Areeb gave
+  on 2026-11-02. There are no testimonials, employers, grades, awards or metrics; never invent
   any.
 - `content/projects/banner.jpg` is a placeholder; Areeb approved replacing it with a
   credited open-licence photo (2026-10-20).

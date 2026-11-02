@@ -12,7 +12,8 @@ test("the real site.config.yaml is valid", () => {
   assert.deepEqual(c.reservedSlugs, ["prereqflow", "otucalendar", "satisfactorytools"]);
   assert.equal(c.fonts.default, "libre-franklin");
   assert.equal(c.fonts.code, "mononoki");
-  assert.ok(c.links.every((l) => l.href.includes("TODO")), "contact links stay as TODO placeholders");
+  assert.deepEqual(c.links.map((l) => l.label), ["LinkedIn", "GitHub", "Email"]);
+  assert.ok(c.links.every((l) => /^(https:\/\/|mailto:)/.test(l.href) && !l.href.includes("TODO")), "contact links are real https or mailto links");
 });
 
 test("config mistakes name site.config.yaml and the field", () => {
@@ -21,5 +22,5 @@ test("config mistakes name site.config.yaml and the field", () => {
   assert.throws(() => parseConfig(real.replace(/^title: .*$/m, "")), /site\.config\.yaml: \n {2}"title" is required/);
   assert.throws(() => parseConfig(real + "\ncolour: blue\n"), /unknown field "colour"/);
   assert.throws(() => parseConfig("title: [oops"), /site\.config\.yaml: is not valid YAML/);
-  assert.throws(() => parseConfig(real.replace("{ label: Email,", "{ name: Email,")), /links\.1/);
+  assert.throws(() => parseConfig(real.replace("{ label: GitHub,", "{ name: GitHub,")), /links\.1/);
 });

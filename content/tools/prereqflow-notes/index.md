@@ -1,6 +1,7 @@
 ---
 title: PrereqFlow
 description: Course prerequisite flowcharts in the browser, with all 16 Ontario Tech engineering program maps built in.
+bannerAlt: "PrereqFlow showing the Electrical Engineering program map, with one course's prerequisites and the courses it unlocks traced"
 order: 10
 ---
 
