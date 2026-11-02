@@ -77,7 +77,7 @@ content/
   home.md                     extra content under the intro on the home page (optional)
   projects/
     index.md                  → /projects/
-    banner.jpg
+    banner.webp
     minecraft-adder/
       index.md                → /projects/minecraft-adder/
       banner.webp             picked up as the banner automatically
@@ -185,9 +185,8 @@ If a title contains a colon, wrap it in quotes: `title: "Lab 3: UART"`.
   banner's corner. Write it as one line; `[text](https://…)` makes a link and nothing
   else is formatted. Most open licences (CC BY, CC BY-SA) require it.
 
-The banner in `content/projects/` is a photo from Wikimedia Commons (CC BY 4.0), credited
-with `bannerCredit`. Replace it with your own photo and delete the `bannerCredit` line, or
-delete both to get the drawn timing diagram.
+The banners in `content/projects/` and `content/tools/` are your own images (a logic
+circuit and a PrereqFlow goal-path export), so they need no `bannerCredit`.
 
 ---
 

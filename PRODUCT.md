@@ -80,8 +80,9 @@ from `/design/`.
 - Contact links in `site.config.yaml` (email, LinkedIn, GitHub) are the ones Areeb gave
   on 2026-11-02. There are no testimonials, employers, grades, awards or metrics; never invent
   any.
-- `content/projects/banner.jpg` is a placeholder; Areeb approved replacing it with a
-  credited open-licence photo (2026-10-20).
+- Banners are Areeb's own: his logic-circuit screenshot (projects), his Minecraft
+  screenshot (the adder), and renders of his tools (each tool page; a PrereqFlow
+  goal-path export for the tools category).
 
 ## Product Principles
 

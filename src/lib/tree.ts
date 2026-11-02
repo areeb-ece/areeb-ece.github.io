@@ -22,7 +22,7 @@ export interface Page {
   raw: string;
   body: string;
   bodyOffset: number;
-  /** Content-relative path of the banner image, e.g. "content/projects/banner.jpg". */
+  /** Content-relative path of the banner image, e.g. "content/projects/banner.webp". */
   banner: string | null;
   parent: Page | null;
   children: Page[];
