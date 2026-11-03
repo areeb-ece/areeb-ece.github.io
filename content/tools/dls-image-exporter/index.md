@@ -1,6 +1,6 @@
 ---
 title: DLS Image Exporter
-description: Exports every chip I've built in Digital Logic Sim as an image, either as laid out in the editor or opened up all the way down to its NAND gates, with an automatic layout that keeps the gates readable.
+description: Exports every chip I've built in Digital Logic Sim as an image, either on its own or opened up all the way down to its NAND gates, with an automatic layout that keeps the circuits easy to follow and the gates readable.
 bannerAlt: "An auto-layout export of my ALU chip with each sub-chip opened one level: AND-8, OR-8, XOR-8, NOT-8, two ADDSUB-8 adders and the 8-to-1 multiplexer, each in its own bordered frame"
 order: 50
 ---
@@ -18,28 +18,33 @@ needs no mods.
 
 | Mode | What it shows |
 | --- | --- |
-| Circuit | The inside of each chip, as I laid it out in the editor |
+| Circuit | The inside of each chip |
 | Expanded | Every custom sub-chip opened up in place, recursively. Each one becomes a bordered frame, titled with the chip's name, holding its own inner circuit |
 
 ## The auto layout
 
-Opened up in place, a big chip spends most of its area on empty space. The auto layout,
-the default for expanded images, rearranges the parts and re-routes the wires instead:
+Both modes use the auto layout by default. It rearranges the parts and re-routes the
+wires so each circuit is easy to follow, and an opened-up chip takes far less space than
+it would with the editor layout:
 
 - Each chip's parts go in columns by signal flow, inputs on the left and outputs on the
   right. Feedback loops, as in latches, are routed back around.
 - Parts are ordered to reduce wire crossings and lined up with whatever drives them, so
-  most wires run straight.
+  most wires run straight. Parts are then nudged wherever there's room so more wires
+  run dead level instead of taking small jogs.
 - Wires run horizontally and vertically through the gaps between columns, each vertical
   run on its own track, and dots mark where a wire branches.
-- Bit splitters and mergers are left out. A bus is drawn as one wire per bit, close
-  together and in bit order (highest bit on top, as the game lays out bus pins), and each
-  bit peels off on its own toward where it goes. Single-bit wires join a bus at a
+- Bit splitters and mergers are left out. A bus whose bits all go to the same place is
+  one thick wire. Where a bus splits up, it's drawn as one wire per bit, close together
+  and in bit order (highest bit on top, as the game lays out bus pins), and each bit
+  peels off on its own toward where it goes. Single-bit wires join a bus at a
   multi-bit pin in the same order. Each wire is traced through the splitters to the pin
   that really drives it.
-- A layout much wider than the target shape wraps into rows, and every wire is still
+- A layout much wider than the target shape can wrap into rows, and every wire is still
   drawn whole: a wire crossing a row break runs down the right edge of its row, back
-  along its own lane in the gap between rows, and into the next row.
+  along its own lane in the gap between rows, and into the next row. A layout only wraps
+  when the better shape outweighs those looping wires, so a small chip whose wires
+  mostly cross the break stays in one long row.
 
 The other layout keeps my own placement and wire bends, and stretches the space around
 each opened chip to make room.
