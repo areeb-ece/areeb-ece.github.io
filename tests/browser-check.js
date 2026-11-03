@@ -214,9 +214,14 @@ try {
     ok(`sidebar: tree matches content/ (${expected.length} pages, hidden and drafts left out)`);
 
     // keyboard: arrows move, right expands, left collapses
+    // Down from the current page lands on the next item shown: a later page in Projects (only
+    // its direct pages are visible) or, after the last one, the next top-level page.
     await page.focus('[aria-current="page"]');
     await page.keyboard.press("ArrowDown");
-    assert.equal(await page.evaluate(() => document.activeElement.dataset.slug), "tools");
+    const shown = (s) => s.split("/").length === 1 || (s.startsWith("projects/") && s.split("/").length === 2);
+    const next = expected.slice(expected.indexOf("projects/minecraft-adder") + 1).find(shown);
+    assert.equal(await page.evaluate(() => document.activeElement.dataset.slug), next);
+    await page.focus('[data-slug="tools"]');
     await page.keyboard.press("ArrowRight");
     assert.equal(await page.getAttribute('[data-slug="tools"]', "aria-expanded"), "true");
     await page.keyboard.press("ArrowLeft");
