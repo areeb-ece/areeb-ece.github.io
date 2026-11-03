@@ -1,6 +1,6 @@
 ---
 title: OTU Calendar
-description: Turns an Ontario Tech course schedule into a calendar file (.ics), with a week-by-week preview. Nothing is uploaded.
+description: Converts Ontario Tech course schedules into calendar files and graphics.
 bannerAlt: "OTU Calendar's week preview of the fictional sample schedule, with lectures and a lab laid out by day"
 order: 20
 ---
@@ -9,7 +9,7 @@ order: 20
 source on [GitHub](https://github.com/areeb-ece/otucalendar)
 
 Turn your Ontario Tech course schedule into a calendar file (`.ics`) for Google,
-Apple or Outlook Calendar. Before you download it, you can scroll through the term
+Apple or Outlook Calendar, or into an image of the schedule. Before you download it, you can scroll through the term
 week by week and see exactly what the file contains.
 
 ## Getting a schedule in

@@ -1,6 +1,6 @@
 ---
 title: PrereqFlow
-description: Course prerequisite flowcharts in the browser, with all 16 Ontario Tech engineering program maps built in.
+description: Map program course structures and view prerequisite trees.
 bannerAlt: "PrereqFlow showing the Electrical Engineering program map, with one course's prerequisites and the courses it unlocks traced"
 order: 10
 ---
@@ -8,8 +8,9 @@ order: 10
 **Live: [areeb-ece.github.io/prereqflow](https://areeb-ece.github.io/prereqflow/)** ·
 source on [GitHub](https://github.com/areeb-ece/prereqflow)
 
-Course prerequisite flowcharts in the browser. Every course is a card and every
-prerequisite is a link, so you can see what a course needs and what it unlocks.
+Map a program's course structure and view the prerequisite tree behind any course.
+Every course is a card and every prerequisite is a link, so you can see what a course
+needs and what it unlocks.
 
 All **16 Ontario Tech University engineering program maps (2026–2027)** are built in:
 158 courses and 266 prerequisite links. You can also bring your own courses as typed
