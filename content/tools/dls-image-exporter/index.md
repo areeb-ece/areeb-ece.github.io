@@ -33,9 +33,10 @@ the default for expanded images, rearranges the parts and re-routes the wires in
 - Wires run horizontally and vertically through the gaps between columns, each vertical
   run on its own track, and dots mark where a wire branches.
 - Bit splitters and mergers are left out. A bus is drawn as one wire per bit, close
-  together, and each bit peels off on its own toward where it goes, without crossing the
-  others. Single-bit wires join a bus at a multi-bit pin the same way. Each wire is
-  traced through the splitters to the pin that really drives it.
+  together and in bit order (highest bit on top, as the game lays out bus pins), and each
+  bit peels off on its own toward where it goes. Single-bit wires join a bus at a
+  multi-bit pin in the same order. Each wire is traced through the splitters to the pin
+  that really drives it.
 - A layout much wider than the target shape wraps into rows, and every wire is still
   drawn whole: a wire crossing a row break runs down the right edge of its row, back
   along its own lane in the gap between rows, and into the next row.
