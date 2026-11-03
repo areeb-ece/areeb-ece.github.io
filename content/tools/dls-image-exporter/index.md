@@ -32,9 +32,12 @@ the default for expanded images, rearranges the parts and re-routes the wires in
   most wires run straight.
 - Wires run horizontally and vertically through the gaps between columns, each vertical
   run on its own track, and dots mark where a wire branches.
-- A layout much wider than the target shape wraps into rows. A wire that crosses a row
-  break ends in a named tag (`N3 >`) and continues from the matching tag (`> N3`) on the
-  next row.
+- Bit splitters and mergers are left out. A bus fans straight out into its single-bit
+  wires where they branch off, and joins back up at a multi-bit pin. Each wire is traced
+  through the splitters to the pin that really drives it.
+- A layout much wider than the target shape wraps into rows, and every wire is still
+  drawn whole: a wire crossing a row break runs down the right edge of its row, back
+  along its own lane in the gap between rows, and into the next row.
 
 The other layout keeps my own placement and wire bends, and stretches the space around
 each opened chip to make room.
