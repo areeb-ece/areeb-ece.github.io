@@ -1,6 +1,6 @@
 ---
 title: An 8-bit ALU in Digital Logic Sim
-description: An 8-bit arithmetic logic unit built from 961 NAND gates in Digital Logic Sim, with eight operations chosen by a 3-bit select code.
+description: An 8-bit arithmetic logic unit built from NAND gates in Digital Logic Sim.
 order: 20
 bannerAlt: "Part of the ALU with every chip opened down to NAND gates: the XOR-8 that flips B for subtraction, and the first full adders of the adder chain"
 ---

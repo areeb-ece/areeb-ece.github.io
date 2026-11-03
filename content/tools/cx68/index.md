@@ -1,6 +1,6 @@
 ---
 title: CX68 for Linux
-description: A Linux desktop app for my iCAN CX68 Hall-effect keyboard, with live key travel, remapping, macros and lighting, plus a bridge that turns its analog keys into a gamepad for racing games.
+description: A Linux desktop app to configure the iCAN CX68 Hall-effect keyboard with analog gamepad functionality.
 bannerAlt: "The app's live view of the CX68: a 3D keyboard with W, A, D and Shift pressed to different depths"
 order: 40
 ---

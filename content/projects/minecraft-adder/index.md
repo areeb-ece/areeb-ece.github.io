@@ -1,6 +1,6 @@
 ---
 title: A 16-bit adder in Minecraft
-description: Sixteen full adders in a row, built in Minecraft, adding two 16-bit numbers one carry at a time.
+description: A 16-bit ripple-carry adder built in Minecraft from 16 full adders.
 order: 10
 bannerAlt: A tall Minecraft build of red, green and blue wiring over a village, the 16-bit adder
 ---

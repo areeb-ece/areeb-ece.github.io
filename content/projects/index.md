@@ -5,4 +5,4 @@ order: 10
 bannerAlt: A digital logic circuit in a simulator, with 8-bit inputs and select lines wired through AND blocks into a tree of OR gates
 ---
 
-Things I've built on my own time. Each one has its own page below.
+Things I've built on my own time.

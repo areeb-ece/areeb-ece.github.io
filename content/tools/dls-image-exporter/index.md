@@ -1,6 +1,6 @@
 ---
 title: DLS Image Exporter
-description: Exports every chip I've built in Digital Logic Sim as an image, either on its own or opened up all the way down to its NAND gates, with an automatic layout that keeps the circuits easy to follow and the gates readable.
+description: Python script to export chips from Digital Logic Sim as images.
 bannerAlt: "An auto-layout export of my ALU chip with each sub-chip opened one level: AND-8, OR-8, XOR-8, NOT-8, two ADDSUB-8 adders and the 8-to-1 multiplexer, each in its own bordered frame"
 order: 50
 ---
@@ -46,8 +46,8 @@ it would with the editor layout:
   when the better shape outweighs those looping wires, so a small chip whose wires
   mostly cross the break stays in one long row.
 
-The other layout keeps my own placement and wire bends, and stretches the space around
-each opened chip to make room.
+The other layout, `original`, keeps the placement and wire bends from the editor, and
+stretches the space around each opened chip to make room.
 
 ## Details
 

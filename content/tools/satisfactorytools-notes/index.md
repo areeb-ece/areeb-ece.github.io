@@ -1,6 +1,6 @@
 ---
 title: Satisfactory Tools
-description: Ten calculators and planners for the game Satisfactory in one page, led by a production planner for whole factories. Runs entirely in the browser.
+description: Tools for production planning in Satisfactory, a factory building game.
 bannerAlt: "Satisfactory Tools' production planner: a factory diagram of smelters, constructors and assemblers, with one machine's inputs and outputs traced"
 order: 30
 ---
@@ -8,8 +8,8 @@ order: 30
 **Live: [areeb-ece.github.io/satisfactorytools](https://areeb-ece.github.io/satisfactorytools/)** ·
 source on [GitHub](https://github.com/areeb-ece/satisfactorytools)
 
-Calculators and planners for [Satisfactory](https://www.satisfactorygame.com/), in one
-page. Plan a whole factory for several products at once, then size every machine, miner,
+Calculators and planners for [Satisfactory](https://www.satisfactorygame.com/), a factory
+building game, in one page. Plan a whole factory for several products at once, then size every machine, miner,
 generator, belt split and train for it.
 
 ## The tools
