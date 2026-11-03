@@ -122,51 +122,13 @@ The 47-delay path goes from bit 0 of $B$ to bit 7 of the output:
 5. The multiplexer: 10
 
 The carry has to ripple through the adders one at a time, so the longest path to each
-output bit is 4 delays longer than to the bit below it. The adder that only adds is just as slow, because its $B$
-still goes through the XOR-8, with $K = 0$.
+output bit is 4 delays longer than to the bit below it. The adder that only adds is just as
+slow, because its $B$ still goes through the XOR-8, with $K = 0$.
 
-## Plans: Verilog and VHDL
+## Follow-up: Verilog and VHDL
 
-Next, I want to build the same ALU in Verilog, then VHDL, and run it on an FPGA.
-
-- **Two versions.** A structural one that mirrors the chips here (full adder, ADDSUB-8,
-  multiplexer), and a behavioural one written as a `case` on the select code. A testbench
-  will check them against each other for every possible input. That's
-  $2^{8+8+3} = 524{,}288$ cases, few enough to test them all.
-- **One adder instead of two.** The add and subtract codes, 100 and 101, differ only in
-  $S_0$, so $S_0$ can drive $K$ on a single ADDSUB-8.
-- **Flags.** The carry-out isn't used yet. I'll add carry, zero, negative and overflow
-  outputs.
-- **Timing.** With registers on the inputs and outputs, the synthesis tool's timing report
-  gives the critical path and the fastest clock the design can run at. I expect the
-  adder's carry chain to be the critical path there too. The NAND counts above won't
-  carry over directly, since an FPGA builds logic from lookup tables and has dedicated
-  carry logic for adders. Then I'll compare the ripple-carry adder with a carry-lookahead
-  adder, which works out the carries in parallel.
-
-The behavioural version is short:
-
-```verilog title="alu.v"
-module alu (
-  input  wire [7:0] a,
-  input  wire [7:0] b,
-  input  wire [2:0] s,
-  output reg  [7:0] out
-);
-  always @(*) begin
-    case (s)
-      3'b000: out = a & b;
-      3'b001: out = a | b;
-      3'b010: out = a ^ b;
-      3'b011: out = ~a;
-      3'b100: out = a + b;
-      3'b101: out = a - b;
-      3'b110: out = a;
-      3'b111: out = b;
-    endcase
-  end
-endmodule
-```
+As a follow-up to this project, I plan to build the ALU in Verilog and VHDL and look at its
+critical timing paths there.
 
 ## The whole ALU, expanded
 
