@@ -1,4 +1,4 @@
-/* Shared by areeb-ece.github.io, PrereqFlow, OTU Calendar and Satisfactory Tools (served as /design/theme.js).
+/* Shared by areeb-ece.github.io, PrereqFlow, OTU Calendar, Satisfactory Tools and Prayer Calendar (served as /design/theme.js).
    Runs before first paint and applies the visitor's saved appearance settings. All the
    sites live on one address, so they share this one localStorage entry: a theme picked
    on any of them is used on all of them. The settings panel (/design/ui.js) edits it.

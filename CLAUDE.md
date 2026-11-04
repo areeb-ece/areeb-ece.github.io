@@ -87,7 +87,7 @@ scripts/new-page.ts     the `new` command
   source is sliced from the file using mdast position offsets, and blocks are grouped
   *before* KaTeX runs (KaTeX drops positions). `typing.js` reads `data-src`.
 - `public/design/theme.js` runs first and applies the visitor's settings from
-  `localStorage["design.settings"]` (shared by all four sites, same origin): `data-theme`,
+  `localStorage["design.settings"]` (shared by all five sites, same origin): `data-theme`,
   `data-scheme` (dark/light, from the theme's color-scheme), `data-motion="off"`, and
   inline `--accent`/`--r*` overrides. It exposes `window.SiteDesign`; `ui.js` adds
   `set`, `reset`, `onChange`, `themes`, `open`. The theme list is read from the labelled
@@ -103,7 +103,7 @@ scripts/new-page.ts     the `new` command
 
 ## Hard rules
 
-- **One master palette for all four sites.** `public/design/tokens.css` (served at
+- **One master palette for all five sites.** `public/design/tokens.css` (served at
   `/design/tokens.css`) holds every shared colour, radius and shadow, one block per theme
   (night first, the default). `tests/themes.test.ts` checks every theme for missing
   tokens and AA contrast.
@@ -112,9 +112,10 @@ scripts/new-page.ts     the `new` command
     `ui.js`) after their own `css/style.css`, whose night/paper values and light/dark
     button (`js/theme.js`, `#btnTheme`) are only an offline fallback.
   - `areeb-ece/satisfactorytools` (made on 2026-10-19, on request) links them the same way.
+  - `areeb-ece/PrayerCalendar` (made on 2026-11-04, on request) links them the same way.
   - Mermaid's theme is read from it at build time (`src/lib/design.ts`); star colours are
     CSS (`--star*`, falling back to `--ink`/`--c2`/`--c0`).
-  - Anything in `public/design/` must work in all four sites: no `style="…"` attributes
+  - Anything in `public/design/` must work in all five sites: no `style="…"` attributes
     in markup (OTU Calendar's CSP has no `style-src-attr`; set styles through
     `el.style.setProperty`), `sd-` class prefixes, no dependencies, no new names that a
     site already defines (`--f`, `--sd`, `--cc`, `--c`, `--mix`…). Only add: never rename
@@ -125,16 +126,16 @@ scripts/new-page.ts     the `new` command
     browser check read the theme selectors exactly). Mixed colours there are checked for
     contrast in every theme by `tests/themes.test.ts` (`derived()`).
   - Change colours there, never in component CSS. When you change it, also update the
-    fallback copies in the three sibling repos so offline use matches.
+    fallback copies in the four sibling repos so offline use matches.
 - **Sibling repos: only with Areeb's say-so.** Don't edit, branch or open PRs on
   `areeb-ece/prereqflow` or `areeb-ece/otucalendar` unless he asks (he did, on
   2026-10-12, for the shared palette and then for the shared themes, settings and sky).
   The master files are now the source for the design: themes and scales in `tokens.css`,
   shared components (`sd-*`) in `ui.css`. The tools' own components predate them and
   move over only when Areeb asks (each `sd-` class is opt-in).
-- **Their paths are reserved.** `/prereqflow/`, `/otucalendar/` and `/satisfactorytools/`
-  are served by those repos' Pages sites. `reservedSlugs` in `site.config.yaml` blocks them; keep it that
-  way.
+- **Their paths are reserved.** `/prereqflow/`, `/otucalendar/`, `/satisfactorytools/` and
+  `/PrayerCalendar/` are served by those repos' Pages sites. `reservedSlugs` in
+  `site.config.yaml` blocks them (lowercase, as folder names are); keep it that way.
 - **CSP stays strict.** The CSP is hand-written in `src/layouts/Base.astro`, production
   only.
   - No inline `<script>` or `<style>`: `build.inlineStylesheets: "never"` and Vite
@@ -164,7 +165,7 @@ scripts/new-page.ts     the `new` command
 
 ## Display rules
 
-These hold for the portfolio, for anything in `public/design/`, and for the three tools
+These hold for the portfolio, for anything in `public/design/`, and for the four tools
 (each repeats them in its own CLAUDE.md). No inferable bloat in the UI or in exports
 (image, SVG, PDF, print, text). Displayed text is bloat if any of these apply:
 

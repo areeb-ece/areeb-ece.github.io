@@ -40,6 +40,6 @@ fonts:
       fallback: 'ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace'
 
 # Top-level folder names the portfolio must never use, because another site
-# already lives at that address (areeb-ece.github.io/prereqflow/, /otucalendar/ and
-# /satisfactorytools/).
-reservedSlugs: [prereqflow, otucalendar, satisfactorytools]
+# already lives at that address (areeb-ece.github.io/prereqflow/, /otucalendar/,
+# /satisfactorytools/ and /PrayerCalendar/).
+reservedSlugs: [prereqflow, otucalendar, satisfactorytools, prayercalendar]

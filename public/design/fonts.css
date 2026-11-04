@@ -1,5 +1,5 @@
 /* The portfolio's text face for the tools (served as /design/fonts.css). PrereqFlow, OTU
-   Calendar and Satisfactory Tools can link it to set their text in Libre Franklin like the
+   Calendar, Satisfactory Tools and Prayer Calendar can link it to set their text in Libre Franklin like the
    portfolio, then name it in their own --f:
      --f: "Libre Franklin", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
    mononoki stays theirs (for codes, times and figures, as --f-code), from their own files.
