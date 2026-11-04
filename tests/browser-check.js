@@ -75,9 +75,22 @@ async function context(opts = {}) {
   ctx.on("page", (page) => {
     page.on("console", (m) => m.type() === "error" && !/status of 404/.test(m.text()) && problems.push(`${page.url()}: ${m.text()}`));
     page.on("pageerror", (e) => problems.push(`${page.url()}: ${e.message}`));
+    // Never leave a page while its lazy banners are still downloading: Firefox logs an image
+    // cut off mid-transfer as "Image corrupt or truncated", which says nothing about the site.
+    for (const nav of ["goto", "reload"]) {
+      const go = page[nav].bind(page);
+      page[nav] = async (...args) => (await settle(page), go(...args));
+    }
   });
+  const close = ctx.close.bind(ctx);
+  ctx.close = async (...args) => {
+    for (const page of ctx.pages()) await settle(page);
+    return close(...args);
+  };
   return ctx;
 }
+/** Waits until the page has had no network traffic for 500 ms (or 5 s pass). */
+const settle = (page) => page.waitForLoadState("networkidle", { timeout: 5000 }).catch(() => {});
 const marks = (page) => page.evaluate(() => Object.fromEntries(performance.getEntriesByType("mark").map((m) => [m.name, m.startTime])));
 const waitDone = (page, timeout = 8000) => page.waitForFunction(() => document.documentElement.classList.contains("typed"), null, { timeout, polling: 50 });
 
