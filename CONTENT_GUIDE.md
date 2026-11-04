@@ -101,7 +101,7 @@ content/
 - **Folder names** become web addresses, so they must be lowercase words with hyphens:
   `minecraft-adder`, not `Minecraft Adder` or `minecraft_adder`. The `title` in the
   frontmatter is what people see.
-- **Reserved names:** `prereqflow`, `otucalendar` and `satisfactorytools` can't be top-level folders, because
+- **Reserved names:** `prereqflow`, `otucalendar`, `satisfactorytools` and `prayercalendar` can't be top-level folders, because
   those addresses already belong to those sites. They're listed under `reservedSlugs`
   in `site.config.yaml`. `fonts`, `icons`, `design` and `js` are used by the site itself.
 
@@ -289,7 +289,7 @@ frontmatter sets the text font for that page.
 ## Colours, themes and the settings button (every site)
 
 Every colour lives in one file: **`public/design/tokens.css`**, the master palette. This
-site, PrereqFlow, OTU Calendar and Satisfactory Tools all load it, so changing a value there
+site, PrereqFlow, OTU Calendar, Satisfactory Tools and Prayer Calendar all load it, so changing a value there
 and pushing to `main` restyles all of them once this site deploys.
 
 - `--bg`, `--sheet`, `--card`: backgrounds, from darkest to lightest.
@@ -333,7 +333,7 @@ text (`--ink-3` on `--card` and the backgrounds, the accent, the highlight) keep
 AA contrast, and that the mixed colours do too (input borders and focus rings 3:1), and
 names the line to fix if not. The browser check also measures every component on
 `/design/components.html` in every theme. The browser check also measures `--ink-3`
-against the default night sky. PrereqFlow, OTU Calendar and Satisfactory Tools keep a copy
+against the default night sky. PrereqFlow, OTU Calendar, Satisfactory Tools and Prayer Calendar keep a copy
 of the Night and Paper values in their own `css/style.css`, used only when they're opened offline.
 
 ---

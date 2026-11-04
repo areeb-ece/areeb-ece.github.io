@@ -1,4 +1,4 @@
-/* Shared by areeb-ece.github.io, PrereqFlow, OTU Calendar and Satisfactory Tools (served as /design/ui.js).
+/* Shared by areeb-ece.github.io, PrereqFlow, OTU Calendar, Satisfactory Tools and Prayer Calendar (served as /design/ui.js).
    Needs /design/theme.js (loaded first, in <head>) and /design/ui.css.
 
    - The settings button: placed in the page's [data-design-settings] element, or floating
@@ -212,7 +212,7 @@
       '<div class="sd-row"><span>Drift direction</span>' + seg("direction", [["w", "←", "west"], ["n", "↑", "north"], ["s", "↓", "south"], ["e", "→", "east"], ["nw", "↖", "north-west"], ["ne", "↗", "north-east"], ["sw", "↙", "south-west"], ["se", "↘", "south-east"]]) + "</div>" +
       '<p class="sd-note">Very bright skies can make the dimmest text harder to read.</p></section>' +
       '<div class="sd-foot"><button class="sd-reset" type="button" data-reset>Reset all</button>' +
-      '<p class="sd-note">Saved in this browser, and shared by areeb-ece.github.io, PrereqFlow, OTU Calendar and Satisfactory Tools.</p></div>';
+      '<p class="sd-note">Saved in this browser, and shared by areeb-ece.github.io, PrereqFlow, OTU Calendar, Satisfactory Tools and Prayer Calendar.</p></div>';
     document.body.appendChild(panel);
 
     // Keys typed in the panel are the panel's, not shortcuts for the page underneath.

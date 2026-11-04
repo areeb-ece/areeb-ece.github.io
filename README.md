@@ -57,7 +57,7 @@ src/lib/                  build code: config + frontmatter schemas, page tree, M
 src/lib/markdown/         unified pipeline, Shiki theme, KaTeX, Mermaid and WaveDrom renderers
 src/client/               the browser scripts: typing animation (timing.js has every constant),
                           sidebar tree, copy buttons
-public/design/            shared with PrereqFlow, OTU Calendar and Satisfactory Tools: tokens.css (the master palette,
+public/design/            shared with PrereqFlow, OTU Calendar, Satisfactory Tools and Prayer Calendar: tokens.css (the master palette,
                           its themes and the shared type, spacing and motion scales), theme.js (applies
                           saved settings before paint), ui.js + ui.css (the settings button and panel,
                           the night sky, and the shared components), components.html (their reference),
@@ -94,7 +94,7 @@ after the cursor blinks alone for a second, once per visit. Any click, key or sc
 finishes it. With JavaScript off, `animate: false` or reduced motion, the page shows
 straight away. Every timing constant is in `src/client/timing.js`.
 
-### One palette, many themes, four sites
+### One palette, many themes, five sites
 
 `public/design/tokens.css` is the master palette: every colour, radius and shadow, as a
 set of themes, followed by the scales every site shares (type sizes, spacing, control
@@ -105,17 +105,18 @@ by class, and [`/design/components.html`](https://areeb-ece.github.io/design/com
 shows them all in every state. The themes are Night, Paper, Void, Console, Amber, Arctic, Ocean, Forest, Retro, Solar
 dark and light, Synthwave, Ink, Sepia and Rosé. This site,
 [PrereqFlow](https://areeb-ece.github.io/prereqflow/) and
-[OTU Calendar](https://areeb-ece.github.io/otucalendar/) and
-[Satisfactory Tools](https://areeb-ece.github.io/satisfactorytools/) all load it from
+[OTU Calendar](https://areeb-ece.github.io/otucalendar/),
+[Satisfactory Tools](https://areeb-ece.github.io/satisfactorytools/) and
+[Prayer Calendar](https://areeb-ece.github.io/PrayerCalendar/) all load it from
 `/design/tokens.css`, along with the rest of `public/design/` (they share the same
-address, so their security policies allow it). Edit it and push, and all four sites
+address, so their security policies allow it). Edit it and push, and all five sites
 change when this one deploys. `npm test` checks every theme for missing colours and
 text contrast.
 
 The gear icon on every site opens one settings panel (`public/design/ui.js`): theme
 (or follow the system's light/dark), accent colour, corners, motion, this site's typing
 effect, and the night sky. The settings live in one `localStorage` entry
-(`design.settings`), which the four sites share because they're on one origin, so a
+(`design.settings`), which the five sites share because they're on one origin, so a
 choice made on any of them applies to all of them, in later visits and in other open
 tabs. `public/design/theme.js` applies it before the first paint. Mermaid diagrams are
 drawn once at build time and their colours rewritten as CSS variables, so they follow the
@@ -124,7 +125,7 @@ theme; code, WaveDrom and KaTeX already use the variables.
 ### Background
 
 Three layers of stars from fixed seeds, drawn as tiling SVG patterns by
-`public/design/ui.js` (so PrereqFlow, OTU Calendar and Satisfactory Tools get the same sky behind their
+`public/design/ui.js` (so PrereqFlow, OTU Calendar, Satisfactory Tools and Prayer Calendar get the same sky behind their
 sheets), drift over several minutes and follow a fraction of the scroll. The aurora glow
 sits behind them. Only transforms animate, the sky pauses in hidden tabs, and it holds
 still with reduced motion or with animations turned off. Star colours come from the

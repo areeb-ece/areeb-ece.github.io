@@ -13,7 +13,7 @@ web
   digital logic, FPGA, computer hardware or audio DSP work. They arrive from a link, give
   the home page seconds, and judge depth from one project write-up.
 - **Secondary: Ontario Tech students** arriving for the tools (PrereqFlow, OTU Calendar,
-  Satisfactory Tools), which run as their own sites under the same address.
+  Satisfactory Tools, Prayer Calendar), which run as their own sites under the same address.
 - **Areeb** is the only editor and maintains every page in Markdown and
   `site.config.yaml`, following `CONTENT_GUIDE.md`, without touching code.
 
@@ -24,7 +24,7 @@ built, each with the maths, code, timing and block diagrams the work needs. Succ
 hiring visitor reaches a project page from the first screen, reads far enough to judge the
 engineering, and finds the contact links; a student finds a tool and opens it.
 
-It is also the home of the shared design system (`public/design/`) that all four sites load
+It is also the home of the shared design system (`public/design/`) that all five sites load
 from `/design/`.
 
 ## Positioning
@@ -35,15 +35,15 @@ from `/design/`.
 - Diagrams (Mermaid, WaveDrom), KaTeX maths and highlighted code are produced at build
   time and follow the visitor's theme.
 - One settings panel and one saved choice of theme, accent, corners, motion and night sky
-  apply across the portfolio and all three tools.
+  apply across the portfolio and all four tools.
 - Nothing is fetched at runtime: no trackers, CDNs or font services.
 
 ## Operating Context
 
 - Built with Astro and deployed by GitHub Actions to GitHub Pages; pushes to `main` deploy
   after unit tests and a browser check in Chromium and Firefox.
-- The three tools live in sibling repos and are served at `/prereqflow/`, `/otucalendar/`
-  and `/satisfactorytools/`; those paths are reserved here. Their own CSS keeps an offline
+- The four tools live in sibling repos and are served at `/prereqflow/`, `/otucalendar/`,
+  `/satisfactorytools/` and `/PrayerCalendar/`; those paths are reserved here. Their own CSS keeps an offline
   fallback of the night and paper colours.
 - Visitors may arrive on desktop or phone; the site is desktop-first.
 
@@ -55,7 +55,7 @@ from `/design/`.
   `:::cards`, `:::note`, `:::warn`, KaTeX, Shiki code with titles, highlighted lines and a
   copy button, Mermaid and WaveDrom.
 - Strict Content Security Policy (no inline scripts or styles; `style-src-attr` is the one
-  loosening). OTU Calendar and Satisfactory Tools have stricter policies with no
+  loosening). OTU Calendar, Satisfactory Tools and Prayer Calendar have stricter policies with no
   `style-src-attr`, so shared code never writes `style` attributes.
 - Client JavaScript stays at or under 15 KB gzipped; no long tasks while typing.
 - No new dependencies without Areeb's approval. Fonts are self-hosted.
@@ -74,7 +74,7 @@ from `/design/`.
 - Project: `content/projects/minecraft-adder/` (a 16-bit ripple-carry adder built in
   Minecraft from 16 full adders, with Areeb's screenshot and video link; tables, KaTeX,
   Mermaid and a drawn full-adder schematic).
-- Tools: notes pages for PrereqFlow, OTU Calendar and Satisfactory Tools, written only
+- Tools: notes pages for PrereqFlow, OTU Calendar, Satisfactory Tools and Prayer Calendar, written only
   from their READMEs.
 - `content/_kitchen-sink/` is a hidden fixture labelled as example content.
 - Contact links in `site.config.yaml` (email, LinkedIn, GitHub) are the ones Areeb gave
@@ -89,7 +89,7 @@ from `/design/`.
 1. Get a hiring visitor to real engineering fast: projects lead, proof comes from the work
    itself (specs, tests, diagrams), never from claims.
 2. Areeb keeps control: everything visible is editable through Markdown or the config.
-3. One shared design system: change it once and all four sites follow.
+3. One shared design system: change it once and all five sites follow.
 4. Fast, private and quiet: nothing external, motion that can be skipped and switched off.
 5. Readable for everyone: AA contrast in every theme, keyboard access, reduced motion.
 

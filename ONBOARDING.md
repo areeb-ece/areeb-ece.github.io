@@ -23,6 +23,7 @@ Top MCP Servers:
 - [ ] prereqflow — https://github.com/areeb-ece/prereqflow
 - [ ] otucalendar — https://github.com/areeb-ece/otucalendar
 - [ ] satisfactorytools — https://github.com/areeb-ece/satisfactorytools
+- [ ] PrayerCalendar — https://github.com/areeb-ece/PrayerCalendar
 
 ### MCP Servers to Activate
 - None needed yet.
