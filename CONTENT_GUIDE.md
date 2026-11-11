@@ -101,7 +101,7 @@ content/
 - **Folder names** become web addresses, so they must be lowercase words with hyphens:
   `minecraft-adder`, not `Minecraft Adder` or `minecraft_adder`. The `title` in the
   frontmatter is what people see.
-- **Reserved names:** `prereqflow`, `otucalendar`, `satisfactorytools` and `prayercalendar` can't be top-level folders, because
+- **Reserved names:** `prereqflow`, `otucalendar`, `satisfactorytools`, `prayercalendar` and `laplaceanalyser` can't be top-level folders, because
   those addresses already belong to those sites. They're listed under `reservedSlugs`
   in `site.config.yaml`. `fonts`, `icons`, `design` and `js` are used by the site itself.
 

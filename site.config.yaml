@@ -41,5 +41,5 @@ fonts:
 
 # Top-level folder names the portfolio must never use, because another site
 # already lives at that address (areeb-ece.github.io/prereqflow/, /otucalendar/,
-# /satisfactorytools/ and /PrayerCalendar/).
-reservedSlugs: [prereqflow, otucalendar, satisfactorytools, prayercalendar]
+# /satisfactorytools/, /PrayerCalendar/ and /LaplaceAnalyser/).
+reservedSlugs: [prereqflow, otucalendar, satisfactorytools, prayercalendar, laplaceanalyser]

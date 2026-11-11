@@ -9,7 +9,7 @@ const real = readFileSync(join(import.meta.dirname, "..", "site.config.yaml"), "
 test("the real site.config.yaml is valid", () => {
   const c = parseConfig(real);
   assert.deepEqual(c.wordmark, { left: "AREEB", right: "ECE" });
-  assert.deepEqual(c.reservedSlugs, ["prereqflow", "otucalendar", "satisfactorytools", "prayercalendar"]);
+  assert.deepEqual(c.reservedSlugs, ["prereqflow", "otucalendar", "satisfactorytools", "prayercalendar", "laplaceanalyser"]);
   assert.equal(c.fonts.default, "libre-franklin");
   assert.equal(c.fonts.code, "mononoki");
   assert.deepEqual(c.links.map((l) => l.label), ["LinkedIn", "GitHub", "Email"]);

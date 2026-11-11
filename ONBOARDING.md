@@ -24,6 +24,7 @@ Top MCP Servers:
 - [ ] otucalendar — https://github.com/areeb-ece/otucalendar
 - [ ] satisfactorytools — https://github.com/areeb-ece/satisfactorytools
 - [ ] PrayerCalendar — https://github.com/areeb-ece/PrayerCalendar
+- [ ] LaplaceAnalyser — https://github.com/areeb-ece/LaplaceAnalyser
 
 ### MCP Servers to Activate
 - None needed yet.
