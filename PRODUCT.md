@@ -24,7 +24,7 @@ built, each with the maths, code, timing and block diagrams the work needs. Succ
 hiring visitor reaches a project page from the first screen, reads far enough to judge the
 engineering, and finds the contact links; a student finds a tool and opens it.
 
-It is also the home of the shared design system (`public/design/`) that all five sites load
+It is also the home of the shared design system (`public/design/`) that all six sites load
 from `/design/`.
 
 ## Positioning
@@ -42,8 +42,8 @@ from `/design/`.
 
 - Built with Astro and deployed by GitHub Actions to GitHub Pages; pushes to `main` deploy
   after unit tests and a browser check in Chromium and Firefox.
-- The four tools live in sibling repos and are served at `/prereqflow/`, `/otucalendar/`,
-  `/satisfactorytools/` and `/PrayerCalendar/`; those paths are reserved here. Their own CSS keeps an offline
+- The five tools live in sibling repos and are served at `/prereqflow/`, `/otucalendar/`,
+  `/satisfactorytools/`, `/PrayerCalendar/` and `/LaplaceAnalyser/`; those paths are reserved here. Their own CSS keeps an offline
   fallback of the night and paper colours.
 - Visitors may arrive on desktop or phone; the site is desktop-first.
 
@@ -89,7 +89,7 @@ from `/design/`.
 1. Get a hiring visitor to real engineering fast: projects lead, proof comes from the work
    itself (specs, tests, diagrams), never from claims.
 2. Areeb keeps control: everything visible is editable through Markdown or the config.
-3. One shared design system: change it once and all five sites follow.
+3. One shared design system: change it once and all six sites follow.
 4. Fast, private and quiet: nothing external, motion that can be skipped and switched off.
 5. Readable for everyone: AA contrast in every theme, keyboard access, reduced motion.
 

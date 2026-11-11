@@ -94,7 +94,7 @@ after the cursor blinks alone for a second, once per visit. Any click, key or sc
 finishes it. With JavaScript off, `animate: false` or reduced motion, the page shows
 straight away. Every timing constant is in `src/client/timing.js`.
 
-### One palette, many themes, five sites
+### One palette, many themes, six sites
 
 `public/design/tokens.css` is the master palette: every colour, radius and shadow, as a
 set of themes, followed by the scales every site shares (type sizes, spacing, control
@@ -106,17 +106,18 @@ shows them all in every state. The themes are Night, Paper, Void, Console, Amber
 dark and light, Synthwave, Ink, Sepia and Rosé. This site,
 [PrereqFlow](https://areeb-ece.github.io/prereqflow/) and
 [OTU Calendar](https://areeb-ece.github.io/otucalendar/),
-[Satisfactory Tools](https://areeb-ece.github.io/satisfactorytools/) and
-[Prayer Calendar](https://areeb-ece.github.io/PrayerCalendar/) all load it from
+[Satisfactory Tools](https://areeb-ece.github.io/satisfactorytools/),
+[Prayer Calendar](https://areeb-ece.github.io/PrayerCalendar/) and
+[Laplace Analyser](https://areeb-ece.github.io/LaplaceAnalyser/) all load it from
 `/design/tokens.css`, along with the rest of `public/design/` (they share the same
-address, so their security policies allow it). Edit it and push, and all five sites
+address, so their security policies allow it). Edit it and push, and all six sites
 change when this one deploys. `npm test` checks every theme for missing colours and
 text contrast.
 
 The gear icon on every site opens one settings panel (`public/design/ui.js`): theme
 (or follow the system's light/dark), accent colour, corners, motion, this site's typing
 effect, and the night sky. The settings live in one `localStorage` entry
-(`design.settings`), which the five sites share because they're on one origin, so a
+(`design.settings`), which the six sites share because they're on one origin, so a
 choice made on any of them applies to all of them, in later visits and in other open
 tabs. `public/design/theme.js` applies it before the first paint. Mermaid diagrams are
 drawn once at build time and their colours rewritten as CSS variables, so they follow the
