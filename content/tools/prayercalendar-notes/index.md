@@ -1,6 +1,6 @@
 ---
 title: Prayer Calendar
-description: Prayer windows, makrooh times and the gaps between them as a calendar file, for any location.
+description: Prayer windows, makrooh times and the gaps between them as a calendar file or a printable timetable, for any location.
 bannerAlt: "Prayer Calendar's day view for Oshawa: Fajr, the time between Fajr and Dhuhr, Dhuhr, Asr (Mithl and Mithlain), Maghrib and Isha laid out on a 24-hour timeline, with the makrooh times hatched"
 order: 35
 ---
@@ -9,9 +9,10 @@ order: 35
 source on [GitHub](https://github.com/areeb-ece/PrayerCalendar)
 
 Prayer times for your location as a calendar file (`.ics`) for Google, Apple or Outlook
-Calendar. Each prayer is an event lasting its whole window, and the makrooh times and the
-gap between Fajr and Dhuhr can go in too. You choose the method, the angles, how Asr is
-reckoned and what goes in the file, and preview every day before you download it.
+Calendar, or as a printable timetable (PDF). Each prayer is an event lasting its whole
+window, and the makrooh times and the gap between Fajr and Dhuhr can go in too. You
+choose the method, the angles, how Asr is reckoned and what goes in the file, and
+preview every day before you download it.
 
 ## What you can set
 
@@ -25,6 +26,7 @@ reckoned and what goes in the file, and preview every day before you download it
 | Window ends | Asr at sunset or the sunset makrooh time; Isha at midnight, the last third of the night or Fajr |
 | High latitudes | Twilight angle, one-seventh or middle of the night, or leave Fajr and Isha out |
 | Events | Each switched on or off, renamed, with its own reminder; Jumu'ah on Fridays; whole windows or a set length |
+| PDF | Letter or A4, a page per month or months running on; optional Hijri date, Ishraq, Istiwa, Zawal, sunset makrooh, midnight and last third columns |
 
 ## How the times are worked out
 
@@ -52,6 +54,9 @@ within a minute.
   istiwa when those are in the file, so the events never overlap.
 - Far from the equator in summer, the days where a high-latitude rule set Fajr or Isha
   are marked in the timetable.
+- The PDF is written in the page by a small PDF writer of its own, using the reader's
+  built-in Helvetica, so it needs no library. Each page carries the place and how the
+  times were worked out, with Fridays shaded.
 - It shares this site's themes, settings and night sky.
 
 :::note
