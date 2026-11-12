@@ -27,8 +27,9 @@ plane and every view follows it in the same frame.
 | Decomposition | The signal as a sum of one $e^{pt}$ per pole |
 
 The panels dock: drag them, resize them, stack them as tabs, and the layout is
-remembered. Sixty-seven examples come from signals, circuits, filters, control, mechanics,
-heat and fluids, chemistry and medicine, physics, queues, economics and flight.
+remembered. Eighty examples come from signals, circuits, filters, control, mechanics,
+heat and fluids, chemistry and medicine, physics, queues, economics and flight, with one
+more for each property of the transform.
 
 ## How the answer is worked out
 
@@ -68,6 +69,29 @@ Before anything is shown, the impulses and the partial fractions are added back 
 compared with the fraction they came from. If they don't agree, or the input is outside what the method
 covers, it is refused with a message that says why, not answered approximately.
 
+## The transform's properties
+
+Each property is something you can type, and the worked steps name the one at work:
+
+| Property | Typed as | The rule |
+| --- | --- | --- |
+| Linearity | `3delta(t) - 2e^t` | $\mathcal{L}\{af + g\} = aF + G$ |
+| Exponential scaling | `e^(-t) cos(t)` | $\mathcal{L}\{e^{at}g(t)\} = G(s - a)$ |
+| Multiplication by $t$ | `t e^(-t)` | $\mathcal{L}\{t\,g(t)\} = -G'(s)$ |
+| Time delay | `u(t - 1) - u(t - 2)` | $\mathcal{L}\{g(t - T)\,u(t - T)\} = e^{-sT}G(s)$ |
+| Derivative | `diff(u(t))` | $\mathcal{L}\{f'\} = sF(s) - f(0^-)$ |
+| Integral | `int(u(t))` | $\mathcal{L}\{\int_{0^-}^t f\} = F(s)/s$ |
+| Convolution | `conv(e^(-t), sin(t))` | $\mathcal{L}\{f * g\} = F(s)\,G(s)$ |
+
+Partial fractions are also shown the way they are done by hand: one unknown per term,
+both sides multiplied by the denominator, and the coefficients of each power of $s$
+equated.
+
+With a delay, a signal is a sum of pieces each switched on at its own time, and its
+transform is $\sum_T e^{-sT}F_T(s)$. A pole of one piece can cancel against another's:
+a rectangular pulse, $\frac{e^{-s} - e^{-2s}}{s}$, has no pole at all, so its integral
+converges for every $s$.
+
 ## Details
 
 - The maths box works like Desmos's: `/` starts a fraction, `^` a power, and brackets
@@ -75,9 +99,9 @@ covers, it is refused with a message that says why, not answered approximately.
 - The integral view is computed numerically at the probe, as a check you can see: inside
   the region of convergence it lands on the value the formula gives, and outside it the
   spiral grows without limit while the surface shows the analytic continuation.
-  Impulses add their share, $\sum_k d_k s^k$, as one first arrow at $t = 0$.
-- Impulses are typed as `delta(t)` and drawn on the time plot as an arrow at $t = 0$,
-  labelled with their size.
+  Impulses add their share, $e^{-sT}\sum_k d_k s^k$, at once at their time $T$.
+- Impulses are typed as `delta(t)` or `delta(t - 2)` and drawn on the time plot as an
+  arrow labelled with their size; where a step switches on, the plot jumps.
 - Any set of views saves as a PNG, or with time playing as a GIF or a video, in any
   theme.
 - It shares this site's themes, settings and night sky.
