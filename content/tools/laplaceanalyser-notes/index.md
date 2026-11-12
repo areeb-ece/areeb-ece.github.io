@@ -27,17 +27,29 @@ plane and every view follows it in the same frame.
 | Decomposition | The signal as a sum of one $e^{pt}$ per pole |
 
 The panels dock: drag them, resize them, stack them as tabs, and the layout is
-remembered. Sixty-one examples come from signals, circuits, filters, control, mechanics,
+remembered. Sixty-seven examples come from signals, circuits, filters, control, mechanics,
 heat and fluids, chemistry and medicine, physics, queues, economics and flight.
 
 ## How the answer is worked out
 
 Every signal the tool accepts is a sum of terms $c\,t^n e^{\lambda t}$ with complex
-$\lambda$, which covers polynomials, exponentials, sines and cosines and their products.
-Each term transforms exactly:
+$\lambda$, which covers polynomials, exponentials, sines and cosines and their products,
+plus impulses at $t = 0$: the Dirac delta $\delta(t)$ and its derivatives. Each term
+transforms exactly:
 
 $$
-\mathcal{L}\{t^n e^{\lambda t}\} = \frac{n!}{(s - \lambda)^{n+1}}
+\mathcal{L}\{t^n e^{\lambda t}\} = \frac{n!}{(s - \lambda)^{n+1}},
+\qquad
+\mathcal{L}\{\delta^{(k)}(t)\} = s^k
+$$
+
+So impulses are the polynomial part of a transform. A transform whose numerator's
+degree isn't the lower one is divided out first, and its inverse starts with impulses:
+
+$$
+\frac{s^2}{s + 1} = s - 1 + \frac{1}{s + 1}
+\quad\longleftrightarrow\quad
+\delta'(t) - \delta(t) + e^{-t}
 $$
 
 A differential equation with starting values becomes
@@ -47,12 +59,13 @@ Y(s) = \frac{G(s) + I(s)}{P(s)}
 $$
 
 where $P$ is the equation's polynomial, $G$ the transformed right side and $I$ what the
-starting values contribute. The poles are found numerically with their multiplicities,
+starting values contribute. With an impulse on the right, the starting values are the
+ones just before it, at $t = 0^-$. The poles are found numerically with their multiplicities,
 the partial fractions (repeated poles included) come from a Taylor expansion at each
 pole, and the inverse is read off term by term.
 
-Before anything is shown, the partial fractions are added back up and compared with the
-fraction they came from. If they don't agree, or the input is outside what the method
+Before anything is shown, the impulses and the partial fractions are added back up and
+compared with the fraction they came from. If they don't agree, or the input is outside what the method
 covers, it is refused with a message that says why, not answered approximately.
 
 ## Details
@@ -62,6 +75,9 @@ covers, it is refused with a message that says why, not answered approximately.
 - The integral view is computed numerically at the probe, as a check you can see: inside
   the region of convergence it lands on the value the formula gives, and outside it the
   spiral grows without limit while the surface shows the analytic continuation.
+  Impulses add their share, $\sum_k d_k s^k$, as one first arrow at $t = 0$.
+- Impulses are typed as `delta(t)` and drawn on the time plot as an arrow at $t = 0$,
+  labelled with their size.
 - Any set of views saves as a PNG, or with time playing as a GIF or a video, in any
   theme.
 - It shares this site's themes, settings and night sky.
