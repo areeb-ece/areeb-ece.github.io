@@ -93,33 +93,41 @@
 .card-title { font: var(--fw-head) var(--fs-3)/1.25 var(--font-text); color: var(--ink); text-wrap: balance; transition: color var(--dur-1); }
 .card-desc { font: var(--fs-3)/1.45 var(--font-text); color: var(--ink-2); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 
-/* ── tool links (::tool): the live tool under its own wordmark, its repository under that ── */
-.tool-links { display: grid; justify-items: start; gap: var(--sp-2); }
+/* ── tool links (::tool): the live tool under its own wordmark, its repository under that.
+   Both are drawn as buttons at rest (outline, arrow), not only on hover. ── */
+.tool-links { display: grid; justify-items: start; gap: var(--sp-3); }
 .prose .tool-links a[href] { text-decoration: none; -webkit-tap-highlight-color: transparent; }
 .tool-live {
-  display: inline-flex; align-items: center; gap: var(--sp-3); max-width: 100%; padding: var(--sp-3) var(--sp-5) var(--sp-3) var(--sp-3);
-  border-radius: var(--r); background: var(--card); color: var(--ink);
-  transition: background-color var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out);
+  display: inline-flex; align-items: center; gap: var(--sp-3); max-width: 100%; padding: var(--sp-3) var(--sp-4) var(--sp-3) var(--sp-3);
+  border: 1px solid color-mix(in srgb, var(--accent) 60%, var(--card)); border-radius: var(--r);
+  background: color-mix(in srgb, var(--accent) 8%, var(--card)); color: var(--ink);
+  transition: background-color var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out);
 }
 @supports (corner-shape: bevel) { .tool-live { border-top-right-radius: calc(var(--r) * 2); corner-top-right-shape: bevel; } }
-.tool-live:active { transform: scale(.985); }
 .tool-live .sd-wordmark { min-width: 0; font-size: var(--fs-5); white-space: normal; overflow-wrap: anywhere; }
 .tool-logo { flex: none; width: var(--ctl-h-lg); height: var(--ctl-h-lg); }
 .tool-logo .tl-box { fill: var(--sheet); stroke: var(--accent); }
 .tool-logo .tl-slash { stroke: var(--accent); }
 .tool-logo .tl-bar { fill: var(--ink); }
+.tool-go { flex: none; width: var(--sp-5); height: var(--sp-5); color: var(--accent); transition: transform var(--dur-2) var(--ease-out); }
+.tool-live .tool-go { margin-left: var(--sp-2); }
 .tool-repo {
   display: inline-flex; align-items: center; gap: var(--sp-2); min-height: var(--ctl-h); padding: 0 var(--sp-3);
-  border-radius: var(--r-sm); color: var(--ink-2); font: var(--fw-ui) var(--fs-2)/1.2 var(--font-mono);
-  transition: background-color var(--dur-1), color var(--dur-1);
+  border: 1px solid var(--field-line); border-radius: var(--r-sm); background: var(--card);
+  color: var(--ink); font: var(--fw-ui) var(--fs-2)/1.2 var(--font-mono);
+  transition: background-color var(--dur-1), border-color var(--dur-1), transform var(--dur-2) var(--ease-out);
 }
 .tool-repo .ico { color: var(--ink); }
+.tool-repo .tool-go { width: var(--sp-4); height: var(--sp-4); color: var(--ink-2); }
+.tool-links a:active { transform: scale(.985); }
 .tool-links a:focus-visible { outline-offset: 3px; }
 @media (hover: hover) {
-  .tool-live:hover { background: var(--card-hover); }
+  .tool-live:hover { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 16%, var(--card)); }
+  .tool-live:hover .tool-go { transform: translateX(var(--sp-1)); }
   .tool-live:hover .tl-bar { fill: var(--accent); }
-  .tool-repo:hover { background: var(--hover); color: var(--ink); }
-  .tool-repo:hover .ico { color: var(--accent); }
+  .tool-repo:hover { border-color: var(--accent); background: var(--card-hover); }
+  .tool-repo:hover :is(.ico, .tool-go) { color: var(--accent); }
+  .tool-repo:hover .tool-go { transform: translate(calc(var(--sp-1) / 2), calc(var(--sp-1) / -2)); }
 }
 
 /* ── child pages ───────────────────────────────────── */

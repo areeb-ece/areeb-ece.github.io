@@ -8,6 +8,10 @@ import { iconSvg } from "./icons.ts";
 const LOGO =
   '<svg class="tool-logo" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect class="tl-box" stroke-width="3" x="4" y="4" width="56" height="56" rx="12"/><path class="tl-slash" stroke-width="4" stroke-linecap="round" d="M22 18 L42 46"/><rect class="tl-bar" x="16" y="44" width="14" height="3.5" rx="1.5"/></svg>';
 
+/** Arrow at the end of a button: "this takes you somewhere". Out-and-up for a new tab. */
+const ARROW = '<svg class="tool-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+const OUT = '<svg class="tool-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M9 7h8v8"/></svg>';
+
 export interface ToolLinks {
   /** Address of the live tool. */
   live?: string;
@@ -51,11 +55,11 @@ export const repoLabel = (url: string) => {
 export function toolLinksHtml({ live, name, repo }: ToolLinks): string {
   const out: string[] = [];
   if (live && name) {
-    out.push(`<a class="tool-live" href="${esc(live)}">${LOGO}<span class="sd-wordmark">${wordmark(name)}</span></a>`);
+    out.push(`<a class="tool-live" href="${esc(live)}">${LOGO}<span class="sd-wordmark">${wordmark(name)}</span>${ARROW}</a>`);
   }
   if (repo) {
     const label = repoLabel(repo);
-    out.push(`<a class="tool-repo" href="${esc(repo)}" rel="noopener noreferrer" target="_blank"><span class="ico">${iconSvg("/icons/github.svg")}</span><span class="sr-only">Source on GitHub: </span><span>${esc(label)}</span></a>`);
+    out.push(`<a class="tool-repo" href="${esc(repo)}" rel="noopener noreferrer" target="_blank"><span class="ico">${iconSvg("/icons/github.svg")}</span><span class="sr-only">Source on GitHub: </span><span>${esc(label)}</span>${OUT}<span class="sr-only"> (opens in a new tab)</span></a>`);
   }
   return out.join("");
 }

@@ -116,7 +116,7 @@ test("::tool draws the live button under the tool's wordmark and the repository 
   const html = renderMarkdown(md, deps()).blocks[0].html;
   assert.match(html, /<div class="tool-links"><a class="tool-live" href="https:\/\/areeb-ece\.github\.io\/prereqflow\/"><svg class="tool-logo"/);
   assert.match(html, /<span class="sd-wordmark">PREREQ<span>\/<\/span>FLOW<\/span>/);
-  assert.match(html, /<a class="tool-repo" href="https:\/\/github\.com\/areeb-ece\/prereqflow"[^>]*>[\s\S]*<span>areeb-ece\/prereqflow<\/span><\/a>/);
+  assert.match(html, /<a class="tool-repo" href="https:\/\/github\.com\/areeb-ece\/prereqflow"[^>]*>[\s\S]*<span>areeb-ece\/prereqflow<\/span><svg class="tool-go"[\s\S]*opens in a new tab[\s\S]*<\/a>/);
   const repoOnly = renderMarkdown('::tool{repo="https://github.com/areeb-ece/cx68-linux"}', deps()).blocks[0];
   assert.ok(!repoOnly.html.includes("tool-live") && repoOnly.html.includes("tool-repo"), "a repository on its own gets only the repository button");
   assert.equal(repoOnly.kind, "media");
