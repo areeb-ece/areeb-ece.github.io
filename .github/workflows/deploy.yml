@@ -30,6 +30,20 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # --with-deps installs apt packages from Ubuntu's mirror, which has taken minutes.
+      # apt keeps the .debs in a folder that's cached, so later runs download only updates;
+      # the key changes each month to pick those up.
+      - id: apt
+        run: |
+          mkdir -p ~/apt-archives/partial
+          printf 'Dir::Cache::Archives "%s";\nBinary::apt::APT::Keep-Downloaded-Packages "true";\n' ~/apt-archives | sudo tee /etc/apt/apt.conf.d/99-ci-cache
+          echo "image=$ImageOS" >> "$GITHUB_OUTPUT"
+          echo "month=$(date +%Y-%m)" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@v6
+        with:
+          path: ~/apt-archives/*.deb
+          key: apt-chromium-${{ steps.apt.outputs.image }}-${{ steps.apt.outputs.month }}
+          restore-keys: apt-chromium-${{ steps.apt.outputs.image }}-
       # Playwright is pinned in package.json (1.56.1), as in otucalendar's CI. It drives
       # the browser check and draws Mermaid diagrams during the build.
       - run: npx playwright install --with-deps chromium
@@ -62,6 +76,20 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # --with-deps installs apt packages from Ubuntu's mirror, which has taken minutes.
+      # apt keeps the .debs in a folder that's cached, so later runs download only updates;
+      # the key changes each month to pick those up.
+      - id: apt
+        run: |
+          mkdir -p ~/apt-archives/partial
+          printf 'Dir::Cache::Archives "%s";\nBinary::apt::APT::Keep-Downloaded-Packages "true";\n' ~/apt-archives | sudo tee /etc/apt/apt.conf.d/99-ci-cache
+          echo "image=$ImageOS" >> "$GITHUB_OUTPUT"
+          echo "month=$(date +%Y-%m)" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@v6
+        with:
+          path: ~/apt-archives/*.deb
+          key: apt-chromium-firefox-${{ steps.apt.outputs.image }}-${{ steps.apt.outputs.month }}
+          restore-keys: apt-chromium-firefox-${{ steps.apt.outputs.image }}-
       - run: npx playwright install --with-deps chromium firefox
       - uses: actions/cache@v6
         with:
