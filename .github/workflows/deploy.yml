@@ -21,7 +21,8 @@ env:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    # Pinned: Playwright 1.56.1 can't install its browsers on ubuntu-latest (26.04).
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -53,7 +54,7 @@ jobs:
 
   # The same browser check in Firefox, so the site is tested in both engines.
   firefox:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
