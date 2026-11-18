@@ -12,6 +12,7 @@ import { ContentError } from "../errors.ts";
 import { esc, slugger } from "../html.ts";
 import { normalize, type Page } from "../tree.ts";
 import type { ImageInfo } from "../card.ts";
+import { toolLinksHtml, toolLinksProblem } from "../tool-links.ts";
 
 export interface Block {
   /** The block's Markdown, exactly as written in the file. */
@@ -158,8 +159,16 @@ export function renderMarkdown(body: string, deps: RenderDeps): Rendered {
           return out;
         },
         leafDirective(state, node) {
+          if (node.name === "tool") {
+            const attrs = node.attributes ?? {};
+            const problem = toolLinksProblem(attrs);
+            if (problem) throw new ContentError(where(node), problem);
+            const out: Element = { type: "element", tagName: "div", properties: { className: ["tool-links"] }, children: [raw(toolLinksHtml(attrs as Record<string, string>))] };
+            state.patch(node, out);
+            return out;
+          }
           if (node.name !== "card") {
-            throw new ContentError(where(node), `unknown block "::${node.name}". Supported: ::card{to="..."}`);
+            throw new ContentError(where(node), `unknown block "::${node.name}". Supported: ::card{to="..."}, ::tool{live="..." name="..." repo="..."}`);
           }
           const out: Element = { type: "element", tagName: "div", properties: { className: ["cards", "one"] }, children: [raw(cardFor(node))] };
           state.patch(node, out);
@@ -269,7 +278,7 @@ function toText(node: any): string {
 const stringifier = unified().use(rehypeStringify, { allowDangerousHtml: true });
 const html = (nodes: HNode[]) => stringifier.stringify({ type: "root", children: nodes } as HRoot);
 
-const MEDIA = /^(?:<figure class="fig"|<div class="cards)/;
+const MEDIA = /^(?:<figure class="fig"|<div class="cards|<div class="tool-links)/;
 
 interface Group {
   src: string;

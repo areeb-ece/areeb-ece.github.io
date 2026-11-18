@@ -16,6 +16,7 @@ doesn't work as described, that's a bug, not something you're doing wrong.
 - [Frontmatter](#frontmatter-the-settings-at-the-top-of-a-page)
 - [Banners](#banners)
 - [Cards](#cards)
+- [Tool buttons](#tool-buttons)
 - [The home page](#the-home-page)
 - [Fonts](#fonts)
 - [Colours, themes and the settings button (every site)](#colours-themes-and-the-settings-button-every-site)
@@ -217,6 +218,26 @@ never go live.
 
 Categories show their sub-pages as cards automatically. Set `children: list` for a
 plain list, or `children: none` to hide them.
+
+---
+
+## Tool buttons
+
+A tool page starts with its buttons: the live tool, shown as the site's logo next to the
+tool's name in its own title style (like PREREQ/FLOW), and its GitHub repository with the
+GitHub icon right under it.
+
+```md
+::tool{live="https://areeb-ece.github.io/prereqflow/" name="PREREQ/FLOW" repo="https://github.com/areeb-ece/prereqflow"}
+```
+
+- `live` is the tool's address and `name` is its title, written the way the tool writes
+  it. The part after the `/` is drawn in the accent colour.
+- `repo` is the repository. Its button reads `areeb-ece/prereqflow`.
+- A tool that only has a repository (an app or a script you run yourself) leaves out
+  `live` and `name`: `::tool{repo="https://github.com/areeb-ece/cx68-linux"}`.
+- Both links must start with `https://`. A missing or misspelled setting stops the
+  build and says what to fix.
 
 ---
 
@@ -531,6 +552,10 @@ double, and trailing commas are fine.
 
 See [Cards](#cards) above.
 
+### Tool buttons
+
+See [Tool buttons](#tool-buttons) above.
+
 ---
 
 ## The typing animation
@@ -581,6 +606,7 @@ Errors name the file, and usually the line, then say what's wrong:
 
 | Message contains | What to do |
 | --- | --- |
+| `::tool …` / `a ::tool block needs …` | Fix that setting in the `::tool{…}` line: see [Tool buttons](#tool-buttons). |
 | `card points to "…", but there is no page at …` | Fix the `to` path, or create that page. Check for a draft at that address. |
 | `frontmatter problem: … is required` / `unknown field` / `must be …` | Fix that field in the named file. Field names are case-sensitive (`bannerAlt`). |
 | `is missing its frontmatter` | The file must start with `---`, a `title:` line, and `---`. |

@@ -33,10 +33,10 @@ test("kitchen sink: every block keeps its exact source, and nothing is dropped",
   assert.equal([...squash(r.blocks.map((b) => b.src).join(""))].sort().join(""), [...squash(body)].sort().join(""));
   assert.ok(r.hasMath);
   const html = r.blocks.map((b) => b.html).join("");
-  for (const needle of ['class="katex"', "math-error", 'figure class="code"', 'class="diagram mermaid"', 'class="diagram wavedrom"', 'class="note sd-callout"', 'class="note sd-callout sd-warn"', 'class="cards"', 'class="cards one"', "<figcaption>", "footnotes", "contains-task-list", "<table>", "<blockquote>", 'class="anchor"']) {
+  for (const needle of ['class="katex"', "math-error", 'figure class="code"', 'class="diagram mermaid"', 'class="diagram wavedrom"', 'class="note sd-callout"', 'class="note sd-callout sd-warn"', 'class="cards"', 'class="cards one"', 'class="tool-links"', "<figcaption>", "footnotes", "contains-task-list", "<table>", "<blockquote>", 'class="anchor"']) {
     assert.ok(html.includes(needle), `kitchen sink renders ${needle}`);
   }
-  assert.equal(r.blocks.filter((b) => b.kind === "media").length, 3, "the figure and the two card blocks fade in");
+  assert.equal(r.blocks.filter((b) => b.kind === "media").length, 4, "the figure, the two card blocks and the tool links fade in");
 });
 
 test("code blocks: language label, filename, highlighted lines, copy button", () => {
@@ -109,4 +109,24 @@ test("MathML scripts keep the number of children Firefox requires (f_{\\max})", 
   });
   assert.deepEqual(bad.map((m) => m[0]), []);
   assert.match(html, /<msub><mi>f<\/mi><mrow><mi>max<\/mi><mo>/);
+});
+
+test("::tool draws the live button under the tool's wordmark and the repository button", () => {
+  const md = '::tool{live="https://areeb-ece.github.io/prereqflow/" name="PREREQ/FLOW" repo="https://github.com/areeb-ece/prereqflow"}';
+  const html = renderMarkdown(md, deps()).blocks[0].html;
+  assert.match(html, /<div class="tool-links"><a class="tool-live" href="https:\/\/areeb-ece\.github\.io\/prereqflow\/"><svg class="tool-logo"/);
+  assert.match(html, /<span class="sd-wordmark">PREREQ<span>\/<\/span>FLOW<\/span>/);
+  assert.match(html, /<a class="tool-repo" href="https:\/\/github\.com\/areeb-ece\/prereqflow"[^>]*>[\s\S]*<span>areeb-ece\/prereqflow<\/span><\/a>/);
+  const repoOnly = renderMarkdown('::tool{repo="https://github.com/areeb-ece/cx68-linux"}', deps()).blocks[0];
+  assert.ok(!repoOnly.html.includes("tool-live") && repoOnly.html.includes("tool-repo"), "a repository on its own gets only the repository button");
+  assert.equal(repoOnly.kind, "media");
+});
+
+test("a ::tool block with missing or unknown settings is reported", () => {
+  const bad = (attrs: string) => () => renderMarkdown(`::tool{${attrs}}`, deps());
+  assert.throws(bad(""), /content\/t\/index\.md:1: a ::tool block needs a live/);
+  assert.throws(bad('live="https://x.dev/"'), /no name/);
+  assert.throws(bad('name="A/B" repo="https://github.com/a/b"'), /has a name but no live/);
+  assert.throws(bad('repo="github.com/a/b"'), /isn't a web address/);
+  assert.throws(bad('repo="https://github.com/a/b" href="x"'), /doesn't know "href"/);
 });

@@ -216,5 +216,11 @@ A group of cards:
 ::card{to="/projects"}
 :::
 
+## Tool links
+
+A live tool under its wordmark, and its repository:
+
+::tool{live="https://areeb-ece.github.io/prereqflow/" name="PREREQ/FLOW" repo="https://github.com/areeb-ece/prereqflow"}
+
 [^fn]: A short footnote.
 [^long]: A longer footnote, with `code` and a [link](https://areeb-ece.github.io/prereqflow/).
