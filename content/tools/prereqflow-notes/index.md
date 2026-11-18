@@ -1,41 +1,27 @@
 ---
 title: PrereqFlow
-description: Map program course structures and view prerequisite trees.
+description: Course structures and prerequisite trees, with the courses open to you next.
 bannerAlt: "PrereqFlow showing the Electrical Engineering program map, with one course's prerequisites and the courses it unlocks traced"
 order: 10
 ---
 
-**Live: [areeb-ece.github.io/prereqflow](https://areeb-ece.github.io/prereqflow/)** ·
-source on [GitHub](https://github.com/areeb-ece/prereqflow)
+::tool{live="https://areeb-ece.github.io/prereqflow/" name="PREREQ/FLOW" repo="https://github.com/areeb-ece/prereqflow"}
 
-Map a program's course structure and view the prerequisite tree behind any course.
-Every course is a card and every prerequisite is a link, so you can see what a course
-needs and what it unlocks.
+PrereqFlow maps a program's course structure and the prerequisite tree behind every
+course. Mark the courses you've completed and it shows what's open to you next. I made
+it to make my course planning easier: courses in my program often depend on several
+others, and planning is much simpler when I can see those trees.
 
-All **16 Ontario Tech University engineering program maps (2026–2027)** are built in:
-158 courses and 266 prerequisite links. You can also bring your own courses as typed
-lines or as a JSON/CSV file exported from PrereqFlow earlier.
-
-## Why
-
-University program maps list courses by semester, but they hide the dependency
-structure. PrereqFlow draws that structure so you can:
-
-- see the full prerequisite chain behind a course, and everything it unlocks
-- check whether a missed or failed course delays later semesters
-- compare programs and specializations that share courses
-- export a clean, high-resolution flowchart for planning or presentation
-
-## How it works
-
-- **Two layouts.** *Semesters* puts courses in the semester columns of the program
-  map. *Free flow* ignores semesters and builds the columns from the prerequisite
-  graph, so every prerequisite is always left of the courses that need it.
-- **Layered graph drawing.** The layout is Sugiyama-style: longest-path layering,
-  lanes bundled per source course, barycentre ordering to reduce crossings, and
-  isotonic regression for vertical placement.
-- **Export.** PNG at up to 6×, or SVG with the font embedded, on a dark or a light
-  sheet. Course data exports as JSON, CSV or text lines and imports back in.
-
-It's a static site with no build step, no framework and no server. Sessions are
-saved in your browser's `localStorage` only.
+- All 16 Ontario Tech engineering program maps (2026–2027) built in, or your own courses
+  as typed lines or a JSON / CSV file
+- Prerequisite trees
+  - Hover a course to trace what it needs and what it unlocks
+  - Shift-click to highlight its whole prerequisite tree
+- Plan mode
+  - Mark completed courses and see what's available next
+  - Set goal courses and see the courses still needed to reach them
+- Two layouts
+  - **Semesters:** the program map's semester columns
+  - **Free flow:** columns built from the prerequisite graph
+- Engineering electives chosen from each program's list
+- Export the chart as PNG (up to 6×) or SVG, and course data as JSON, CSV or text

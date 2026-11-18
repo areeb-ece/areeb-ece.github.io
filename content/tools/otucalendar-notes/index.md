@@ -1,47 +1,25 @@
 ---
 title: OTU Calendar
-description: Converts Ontario Tech course schedules into calendar files and graphics.
+description: Ontario Tech course schedules as calendar files and clean schedule images.
 bannerAlt: "OTU Calendar's week preview of the fictional sample schedule, with lectures and a lab laid out by day"
 order: 20
 ---
 
-**Live: [areeb-ece.github.io/otucalendar](https://areeb-ece.github.io/otucalendar/)** ·
-source on [GitHub](https://github.com/areeb-ece/otucalendar)
+::tool{live="https://areeb-ece.github.io/otucalendar/" name="OTU/CALENDAR" repo="https://github.com/areeb-ece/otucalendar"}
 
-Turn your Ontario Tech course schedule into a calendar file (`.ics`) for Google,
-Apple or Outlook Calendar, or into an image of the schedule. Before you download it, you can scroll through the term
-week by week and see exactly what the file contains.
+OTU Calendar imports a course schedule from Ontario Tech's Schedule Details page and
+turns it into a calendar file (`.ics`) and a cleaner image of the schedule. I made it so
+my classes sit in my calendar apps alongside everything else.
 
-## Getting a schedule in
-
-MyOntarioTech has no export button and no public API, and a third-party site should
-never ask for your university password. So you bring the schedule to the page
-instead, in one of two ways:
-
-1. **Saved schedule page.** Save the Schedule Details page from your browser and drop
-   the `.html` or `.mhtml` file in.
-2. **Copy and paste** the Schedule Details page.
-
-As a last resort, mostly for students elsewhere, you can **enter each class by hand**,
-with an optional reading week that every-other-week classes skip over.
-
-## Privacy
-
-:::note
-The page's Content Security Policy includes `connect-src 'none'`, so it cannot send
-your schedule anywhere, even by mistake. Parsing and `.ics` generation run in the tab,
-and your schedule isn't kept once you close it.
-:::
-
-## Details
-
-- The preview is drawn from the generated `.ics` text itself, so what you see is
-  what your calendar app gets.
-- **Save image** draws the schedule as a PNG (up to 6×) or SVG. Under it, a week table
-  gives each week's dates and the day each alternating or part-term class meets.
-- Templates control each event's title, description and location, with placeholders
-  such as `{CourseCode}` and `{RoomCodeandNumber}`.
-- Times are written in UTC and converted one occurrence at a time, so daylight saving
-  never shifts a class.
-
-This is an independent utility, not an official Ontario Tech application.
+- Import
+  - A saved Schedule Details page (`.html` or `.mhtml`)
+  - Copy and paste from the page
+  - Classes entered by hand
+- Week-by-week preview of exactly what the file contains
+  - Skip dates such as holidays and reading week
+- Export
+  - `.ics` for Google, Apple or Outlook Calendar
+  - Schedule image as PNG (up to 6×) or SVG
+- Templates for each event's title, description and location
+- A reminder on every class
+- Runs entirely in the tab: nothing is uploaded
