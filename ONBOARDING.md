@@ -25,6 +25,7 @@ Top MCP Servers:
 - [ ] satisfactorytools — https://github.com/areeb-ece/satisfactorytools
 - [ ] PrayerCalendar — https://github.com/areeb-ece/PrayerCalendar
 - [ ] LaplaceAnalyser — https://github.com/areeb-ece/LaplaceAnalyser
+- [ ] CubeTrace — https://github.com/areeb-ece/CubeTrace
 
 ### MCP Servers to Activate
 - None needed yet.

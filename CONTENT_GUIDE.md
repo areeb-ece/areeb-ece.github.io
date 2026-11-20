@@ -103,8 +103,7 @@ content/
   `minecraft-adder`, not `Minecraft Adder` or `minecraft_adder`. The `title` in the
   frontmatter is what people see.
 - **Reserved names:** `prereqflow`, `otucalendar`, `satisfactorytools`, `prayercalendar`, `laplaceanalyser` and `cubetrace` can't be top-level folders, because
-  those addresses already belong to those sites (`cubetrace` is held for a tool that isn't
-  live yet). They're listed under `reservedSlugs`
+  those addresses already belong to those sites. They're listed under `reservedSlugs`
   in `site.config.yaml`. `fonts`, `icons`, `design` and `js` are used by the site itself.
 
 ### The quick way (on your computer)
