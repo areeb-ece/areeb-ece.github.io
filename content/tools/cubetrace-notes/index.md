@@ -1,27 +1,29 @@
 ---
-# Draft until the tool is live at /CubeTrace/. Then rewrite this page from the tool's
-# README, add banner.webp and a bannerAlt, and delete the draft line.
 title: Cube Trace
-description: Rubik's cube algorithms turn by turn, following the pieces each move takes apart and puts back.
+description: "Rubik's cube algorithms, turn by turn: which pieces each move carries and where they go."
+bannerAlt: "Cube Trace partway through an F2L case: the 3D cube with its right layer turning, the pieces that matter in colour and the rest grey, a hatched piece out of place and a dashed outline of the slot it left, beside the unfolded net with arrows showing where the turning stickers go"
 order: 39
-draft: true
 ---
 
 ::tool{live="https://areeb-ece.github.io/CubeTrace/" name="CUBE/TRACE" repo="https://github.com/areeb-ece/CubeTrace"}
 
-Cube Trace animates Rubik's cube algorithms on a 3D cube and shows why each move changes
-the faces it does: which pieces a turn carries, where they go, and how an algorithm
-takes the solved part of the cube apart and puts it back. It covers the beginner
-layer-by-layer method and CFOP, the method speedsolvers use.
+Cube Trace teaches the beginner method and CFOP by tracking pieces, not stickers,
+through every turn of an algorithm. You see how an algorithm takes the solved part of
+the cube apart and puts it back, on a 3D cube, on a flat net and on a last-layer
+diagram, all drawn from one shared state. It runs entirely in the browser.
 
-- Methods
-  - Beginner: white cross, white corners, second layer, yellow cross, yellow edges,
-    yellow corners placed, then twisted
-  - CFOP: cross, F2L, OLL and PLL, two-look first, then the full sets
-- Pieces that don't matter for a step are greyed out; the ones that do are outlined
-- Each turn shows its layer, axis and direction, and the stickers it slides onto the
-  neighbouring faces
-- Solved pieces an algorithm borrows leave an outline in their slot until they return
-- Algorithms split into setup, trigger and undo, with matching moves joined
-- Linked views: the 3D cube, the unfolded net and the last-layer diagram
-- Predict mode: pick where a piece will land before the move plays
+- Learn: the beginner method in seven steps and CFOP (cross, F2L, OLL, PLL), each step's
+  cases as small pictures that load into the player
+- Explore: type any moves and watch them, drag across the cube to turn a layer, scramble
+  and reset, and a twist ledger for corner orientation
+- Predict: before each move one piece is marked and you click the slot it will end up in
+- Three views of the same state: the cube in 3D, the unfolded net and the last layer from
+  above, in a workspace you can rearrange
+- Pieces that matter are in colour and the rest are grey; a displaced piece is hatched and
+  the slot it left is drawn as a dashed ghost
+- A timeline of the moves, with brackets over moves that undo each other and the
+  algorithm split into setups, triggers and inserts
+- A notation primer, letters on stickers for colour-blind use, and mirror panes for the
+  hidden faces
+- Save a PNG of the current position or a GIF of the whole algorithm
+- Every algorithm is tested: the OLL, PLL and F2L sets each cover every case exactly once
